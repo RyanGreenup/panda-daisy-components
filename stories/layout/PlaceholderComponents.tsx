@@ -43,10 +43,19 @@ export const ContentPlaceholder = ({
       justifyContent: "center",
       height: height,
       width: width,
-      rounded: "sm",
-      bg: "gray.50",
-      color: "gray.400",
+      rounded: "lg",
+      _hover: {
+        bg: "primary/30",
+        transform: "scale(1.05) rotate(2deg)",
+        // rotate: "360deg",
+      },
+
+      bg: "primary/10",
+      transition: "background 0.3s ease, transform 0.3s ease-in-out",
+      color: "base.content",
       fontSize: "2xl",
+      borderWidth: "1px",
+      borderColor: "primary/50",
     })}
   >
     <PlaceholderIcon />
@@ -57,27 +66,33 @@ export const MainContentPlaceholder = () => (
   <div
     class={css({
       p: "4",
-      border: "2px dashed",
-      borderColor: "gray.200",
-      rounded: "lg",
     })}
   >
-    <div class={grid({ columns: 3, gap: "4" })}>
-      <ContentPlaceholder height="24" />
-      <ContentPlaceholder height="24" />
-      <ContentPlaceholder height="24" />
-    </div>
-    <div class={css({ mb: "4", mt: "4" })}>
-      <ContentPlaceholder height="48" />
-    </div>
-    <div class={grid({ columns: 2, gap: "4" })}>
-      <ContentPlaceholder />
-      <ContentPlaceholder />
-      <ContentPlaceholder />
-      <ContentPlaceholder />
-    </div>
-    <div class={css({ mb: "4", mt: "4" })}>
-      <ContentPlaceholder height="48" />
+    <div
+      class={css({
+        p: "4",
+        border: "2px dashed",
+        borderColor: "gray.200",
+        rounded: "lg",
+      })}
+    >
+      <div class={grid({ columns: 3, gap: "4" })}>
+        <ContentPlaceholder height="24" />
+        <ContentPlaceholder height="24" />
+        <ContentPlaceholder height="24" />
+      </div>
+      <div class={css({ mb: "4", mt: "4" })}>
+        <ContentPlaceholder height="48" />
+      </div>
+      <div class={grid({ columns: 2, gap: "4" })}>
+        <ContentPlaceholder />
+        <ContentPlaceholder />
+        <ContentPlaceholder />
+        <ContentPlaceholder />
+      </div>
+      <div class={css({ mb: "4", mt: "4" })}>
+        <ContentPlaceholder height="48" />
+      </div>
     </div>
   </div>
 );
@@ -134,16 +149,17 @@ export const SidebarContainer = ({ children }: { children: any }) => (
 );
 
 import { BtmDashContainer } from "../../src/components/Layout";
-import { 
-  DrawerToggleStyled, 
-  NavbarToggleStyled, 
-  RightDrawerToggleStyled, 
-  BtmDrawerToggleStyled 
+import {
+  DrawerToggleStyled,
+  NavbarToggleStyled,
+  RightDrawerToggleStyled,
+  BtmDrawerToggleStyled,
 } from "../../src/components/Layout/styled";
 import Menu from "lucide-solid/icons/menu";
 import PanelBottom from "lucide-solid/icons/panel-bottom";
 import PanelLeft from "lucide-solid/icons/panel-left";
 import PanelRight from "lucide-solid/icons/panel-right";
+import { createSignal } from "solid-js";
 
 export const LayoutButtons = () => {
   return (
