@@ -62,40 +62,47 @@ export const ContentPlaceholder = ({
   </div>
 );
 
-export const MainContentPlaceholder = () => (
-  <div
-    class={css({
-      p: "4",
-    })}
-  >
+export const MainContentPlaceholder = (props: { long: boolean }) => {
+  const { long = false } = props;
+  return (
     <div
       class={css({
         p: "4",
-        border: "2px dashed",
-        borderColor: "gray.200",
-        rounded: "lg",
       })}
     >
-      <div class={grid({ columns: 3, gap: "4" })}>
-        <ContentPlaceholder height="24" />
-        <ContentPlaceholder height="24" />
-        <ContentPlaceholder height="24" />
-      </div>
-      <div class={css({ mb: "4", mt: "4" })}>
-        <ContentPlaceholder height="48" />
-      </div>
-      <div class={grid({ columns: 2, gap: "4" })}>
-        <ContentPlaceholder />
-        <ContentPlaceholder />
-        <ContentPlaceholder />
-        <ContentPlaceholder />
-      </div>
-      <div class={css({ mb: "4", mt: "4" })}>
-        <ContentPlaceholder height="48" />
+      <div
+        class={css({
+          p: "4",
+          border: "2px dashed",
+          borderColor: "gray.200",
+          rounded: "lg",
+        })}
+      >
+        <div class={grid({ columns: 3, gap: "4" })}>
+          <ContentPlaceholder height="24" />
+          <ContentPlaceholder height="24" />
+          <ContentPlaceholder height="24" />
+        </div>
+        <div class={css({ mb: "4", mt: "4" })}>
+          <ContentPlaceholder height="48" />
+        </div>
+        <div class={grid({ columns: 2, gap: "4" })}>
+          <ContentPlaceholder />
+          <ContentPlaceholder />
+          <Show when={long}>
+            <ContentPlaceholder />
+            <ContentPlaceholder />
+          </Show>
+        </div>
+        <Show when={long}>
+          <div class={css({ mb: "4", mt: "4" })}>
+            <ContentPlaceholder height="48" />
+          </div>
+        </Show>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const DrawerPlaceHolder = () => (
   <Center width="full" height="full" p="4">
@@ -116,10 +123,6 @@ export const DrawerPlaceHolder = () => (
       </div>
       <div class={css({ mb: "4", mt: "4" })}>
         <ContentPlaceholder height="48" />
-      </div>
-      <div class={grid({ columns: 2, gap: "4" })}>
-        <ContentPlaceholder />
-        <ContentPlaceholder />
       </div>
     </div>
   </Center>
@@ -159,7 +162,7 @@ import Menu from "lucide-solid/icons/menu";
 import PanelBottom from "lucide-solid/icons/panel-bottom";
 import PanelLeft from "lucide-solid/icons/panel-left";
 import PanelRight from "lucide-solid/icons/panel-right";
-import { createSignal } from "solid-js";
+import { createSignal, Show } from "solid-js";
 
 export const LayoutButtons = () => {
   return (
