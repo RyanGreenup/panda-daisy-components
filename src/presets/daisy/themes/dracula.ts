@@ -74,7 +74,9 @@ const dracula = {
   },
   radius: {
     selector: {
-      value: "1rem",
+      value: "0.5rem",
+      // I had to override this, it's too extreme
+      // value: "1rem",
     },
     field: {
       value: "0.5rem",

@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@tanstack/solid-virtual": "^3.13.12",
-    "lucide-solid": "^0.542.0"
+    "lucide-solid": "^0.542.0",
+    "solid-transition-group": "^0.3.0"
   }
 }
