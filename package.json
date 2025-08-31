@@ -25,6 +25,7 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
+    "@tanstack/solid-virtual": "^3.13.12",
     "lucide-solid": "^0.542.0"
   }
 }
