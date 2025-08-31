@@ -1,5 +1,6 @@
 import { css } from "../../styled-system/css";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
+import { createSignal } from "solid-js";
 
 import Box from "lucide-solid/icons/box";
 import Menu from "lucide-solid/icons/menu";
@@ -24,6 +25,7 @@ import {
   Sidebar,
 } from "../../src/components/Layout";
 import { useResizeKeybindings } from "../../src/components/Layout/utilities/useResizeKeybindings";
+import VirtualPhotoGrid from "../../src/components/VirtualPhotoGrid";
 
 import {
   colors,
@@ -332,6 +334,53 @@ export const CustomNavbar: Story = {
                 Example with custom navbar styling and branding.
               </p>
             </div>
+          </Main>
+        </MainArea>
+      </LayoutContainer>
+    );
+  },
+};
+
+export const PhotoGallery: Story = {
+  render: () => {
+    const [selectedPhoto, setSelectedPhoto] = createSignal<string | undefined>();
+    
+    // Generate demo photos from Lorem Picsum
+    const photos = Array.from({ length: 1000 }, (_, i) => ({
+      id: `photo-${i}`,
+      url: `https://picsum.photos/300/200?random=${i}`,
+      title: `Photo ${i + 1}`,
+      date: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toLocaleDateString()
+    }));
+
+    return (
+      <LayoutContainer>
+        <Navbar class={css({ bg: "base.200", borderBottom: "1px solid", borderColor: "base.300" })}>
+          <NavbarContent>
+            <NavbarStart>
+              <span class={css({ fontWeight: "bold", fontSize: "lg" })}>
+                Photo Gallery
+              </span>
+            </NavbarStart>
+            <NavbarEnd>
+              <span class={css({ fontSize: "sm", color: "content.neutral" })}>
+                {photos.length} photos
+              </span>
+            </NavbarEnd>
+          </NavbarContent>
+        </Navbar>
+        <MainArea>
+          <Main class={css({ p: 0 })}>
+            <VirtualPhotoGrid
+              photos={photos}
+              height="calc(100vh - 80px)"
+              selectedPhotoId={selectedPhoto()}
+              onPhotoClick={(photo) => setSelectedPhoto(photo.id)}
+              onPhotoDblClick={(photo) => {
+                console.log("Opening photo:", photo.title);
+                setSelectedPhoto(photo.id);
+              }}
+            />
           </Main>
         </MainArea>
       </LayoutContainer>
