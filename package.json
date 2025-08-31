@@ -5,7 +5,8 @@
   "scripts": {
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "prepare": "panda codegen"
+    "prepare": "panda codegen",
+    "prepare-clean": "panda codegen --clean"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.1",

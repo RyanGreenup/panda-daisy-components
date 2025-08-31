@@ -25,6 +25,11 @@ export default <StorybookConfig>{
             define: {
                 'process.env': {},
             },
+            resolve: {
+                alias: {
+                    '~': '/src',
+                },
+            },
         });
     },
     docs: {
