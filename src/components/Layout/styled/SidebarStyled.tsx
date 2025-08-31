@@ -7,6 +7,9 @@ const sidebarDaisyStyles = css({
   backgroundColor: "base.200",
   borderRight: "default",
   boxShadow: "xl",
+  // TODO this shouldn't cast a shadow on the bottom dash, but this needs to reference design tokens
+  // boxShadow: "5px 0 5px -3px rgba(0, 0, 0, 0.1), 4px 0 6px -4px rgba(0, 0, 0, 0.1)",
+
   backdropFilter: "blur(8px)",
 });
 

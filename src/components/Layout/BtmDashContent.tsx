@@ -31,14 +31,14 @@ const styles = {
     fontWeight: "medium",
     minWidth: "4rem",
     "&:hover": {
-      backgroundColor: "base.200",
+      backgroundColor: "base.300",
     },
     "&:active": {
       scale: 0.95,
     },
   }),
   styled: css({
-    backgroundColor: "base.100",
+    backgroundColor: "base.200",
     borderTop: "default",
     boxShadow: "0 -4px 6px -1px rgb(0 0 0 / 0.1)",
   }),
