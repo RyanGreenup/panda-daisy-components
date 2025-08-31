@@ -11,11 +11,11 @@ interface VirtualListProps {
 }
 
 function VirtualList(props: VirtualListProps) {
-  let parentRef: HTMLDivElement | undefined;
+  let parentRef!: HTMLDivElement;
 
   const rowVirtualizer = createVirtualizer({
     count: props.count,
-    getScrollElement: () => parentRef!,
+    getScrollElement: () => parentRef,
     estimateSize: props.estimateSize || (() => 35),
     overscan: props.overscan || 5,
   });
@@ -54,10 +54,4 @@ function VirtualList(props: VirtualListProps) {
   );
 }
 
-const VirtualListExample = () => (
-  <VirtualList
-    count={1000}
-    renderItemCallback={(index) => <div>Row {index}</div>}
-  />
-);
-export default VirtualListExample;
+export default VirtualList;
