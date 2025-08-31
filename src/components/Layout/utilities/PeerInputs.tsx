@@ -2,7 +2,7 @@ import {
   createPeerCondition,
   createPeerId,
   PeerName,
-} from "~/presets/layout/layout";
+} from "../../../presets/layout/layout";
 import { children, JSX, splitProps } from "solid-js";
 import { cx, css } from "../../../../styled-system/css";
 

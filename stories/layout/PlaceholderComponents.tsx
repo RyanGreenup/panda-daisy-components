@@ -134,91 +134,39 @@ export const SidebarContainer = ({ children }: { children: any }) => (
 );
 
 import { BtmDashContainer } from "../../src/components/Layout";
-import { Label } from "../../src/components/Layout/utilities/PeerInputs";
+import { 
+  DrawerToggleStyled, 
+  NavbarToggleStyled, 
+  RightDrawerToggleStyled, 
+  BtmDrawerToggleStyled 
+} from "../../src/components/Layout/styled";
 import Menu from "lucide-solid/icons/menu";
-import Box from "lucide-solid/icons/box";
 import PanelBottom from "lucide-solid/icons/panel-bottom";
 import PanelLeft from "lucide-solid/icons/panel-left";
 import PanelRight from "lucide-solid/icons/panel-right";
 
-// TODO these need to be somewhat exported from the layout.
 export const LayoutButtons = () => {
-  const toggleItemStyles = {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: "0.25rem",
-    padding: "0.5rem",
-    cursor: "pointer",
-    fontSize: "xs",
-    color: "base.content",
-    opacity: 0.8,
-    transition: "opacity 0.15s ease",
-    "&:hover": {
-      opacity: 1,
-    },
-  };
-
-  const checkedStyle = {
-    opacity: 1,
-    color: "primary",
-    backgroundColor: "primary/10",
-    borderRadius: "sm",
-  };
-
   return (
     <BtmDashContainer>
-      <Label
-        name="drawer"
-        class={css({
-          ...toggleItemStyles,
-          _drawerChecked: {
-            ...checkedStyle,
-          },
-        })}
-      >
+      <DrawerToggleStyled>
         <Menu size={20} />
         <span>Sidebar</span>
-      </Label>
+      </DrawerToggleStyled>
 
-      <Label
-        name="navbar"
-        class={css({
-          ...toggleItemStyles,
-          _navbarChecked: {
-            ...checkedStyle,
-          },
-        })}
-      >
+      <NavbarToggleStyled>
         <PanelLeft size={20} />
         <span>Navbar</span>
-      </Label>
+      </NavbarToggleStyled>
 
-      <Label
-        name="rightDrawer"
-        class={css({
-          ...toggleItemStyles,
-          _rightDrawerChecked: {
-            ...checkedStyle,
-          },
-        })}
-      >
+      <RightDrawerToggleStyled>
         <PanelRight size={20} />
         <span>Right</span>
-      </Label>
+      </RightDrawerToggleStyled>
 
-      <Label
-        name="btmDrawer"
-        class={css({
-          ...toggleItemStyles,
-          _btmDrawerChecked: {
-            ...checkedStyle,
-          },
-        })}
-      >
+      <BtmDrawerToggleStyled>
         <PanelBottom size={20} />
         <span>Bottom</span>
-      </Label>
+      </BtmDrawerToggleStyled>
     </BtmDashContainer>
   );
 };
