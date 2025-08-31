@@ -22,7 +22,7 @@ export const Default: Story = {
   args: {
     count: 100,
     estimateSize: () => 45,
-    renderItemCallback: (index) => (
+    renderItemCallback: (index: number) => (
       <div class={css({ p: 2, borderBottom: '1px solid', borderColor: 'base.300' })}>
         Item {index}
       </div>
@@ -35,7 +35,7 @@ export const ContactList: Story = {
     count: 1000,
     height: "400px",
     estimateSize: () => 70,
-    renderItemCallback: (index) => (
+    renderItemCallback: (index: number) => (
       <div class={css({
         p: 3,
         borderBottom: '1px solid',
@@ -79,7 +79,7 @@ export const ProductCatalog: Story = {
     count: 500,
     height: "500px",
     estimateSize: () => 120,
-    renderItemCallback: (index) => (
+    renderItemCallback: (index: number) => (
       <div class={css({
         p: 4,
         borderBottom: '1px solid',
@@ -134,7 +134,7 @@ export const NotificationFeed: Story = {
     count: 200,
     height: "350px",
     estimateSize: () => 80,
-    renderItemCallback: (index) => {
+    renderItemCallback: (index: number) => {
       const types = ['info', 'success', 'warning', 'error'];
       const type = types[index % 4];
       return (
