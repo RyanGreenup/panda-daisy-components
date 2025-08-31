@@ -10,6 +10,7 @@ import PanelRight from "lucide-solid/icons/panel-right";
 import {
   BtmDash,
   BtmDashContainer,
+  BtmDashStyled,
   BtmDrawer,
   HamburgerIcon,
   LayoutContainer,
@@ -35,6 +36,12 @@ import {
 } from "./PlaceholderComponents";
 
 import { circle, flex } from "../../styled-system/patterns";
+import {
+  BtmDrawerStyled,
+  NavbarStyled,
+  RightDrawerStyled,
+  SidebarStyled,
+} from "../../src/components/Layout/styled";
 
 const LayoutComponent = () => (
   <div>Layout Component - Use individual stories to see compositions</div>
@@ -112,6 +119,68 @@ export const FullLayout: Story = {
             <LayoutButtons />
           </BtmDashContainer>
         </BtmDash>
+      </LayoutContainer>
+    );
+  },
+};
+
+export const StyledFullLayout: Story = {
+  render: () => {
+    const { isActive } = useResizeKeybindings({
+      cssVariable: "--sizes-sidebar-width",
+      minWidth: 200,
+      maxWidth: 600,
+      defaultWidth: 320,
+      stepSize: 50,
+    });
+
+    return (
+      <LayoutContainer>
+        <NavbarStyled>
+          <NavbarContent>
+            <NavbarStart>
+              <HamburgerIcon name="drawer" />
+            </NavbarStart>
+            <NavbarContent>
+              <LayoutButtons />
+            </NavbarContent>
+            <NavbarEnd>
+              <div
+                class={circle({
+                  w: "8",
+                  h: "8",
+                  bgGradient: "to-r",
+                  gradientFrom: "primary",
+                  gradientTo: "secondary",
+                })}
+              ></div>
+            </NavbarEnd>
+          </NavbarContent>
+        </NavbarStyled>
+        <MainArea >
+          <SidebarStyled>
+            <SidebarContainer>
+              <SidebarPlaceHolder />
+            </SidebarContainer>
+          </SidebarStyled>
+          <Main>
+            <MainContentPlaceholder />
+          </Main>
+          {/* TODO RightSidebar should be renamed as RightDrawer */}
+          <RightDrawerStyled>
+            <SidebarContainer>
+              <SidebarPlaceHolder />
+            </SidebarContainer>
+          </RightDrawerStyled>
+          <BtmDrawerStyled class={colors[7]}>
+            <DrawerPlaceHolder />
+          </BtmDrawerStyled>
+        </MainArea>
+        <BtmDashStyled>
+          <BtmDashContainer>
+            <LayoutButtons />
+          </BtmDashContainer>
+        </BtmDashStyled>
       </LayoutContainer>
     );
   },
@@ -269,27 +338,3 @@ export const CustomNavbar: Story = {
     );
   },
 };
-
-const toggleItemStyles = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: "0.25rem",
-  padding: "0.5rem",
-  cursor: "pointer",
-  fontSize: "xs",
-  color: "base.content",
-  opacity: 0.8,
-  transition: "opacity 0.15s ease",
-  "&:hover": {
-    opacity: 1,
-  },
-};
-
-const checkedStyle = {
-  opacity: 1,
-  color: "primary",
-  backgroundColor: "primary/10",
-  borderRadius: "sm",
-};
-
