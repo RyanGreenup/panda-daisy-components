@@ -1,6 +1,40 @@
 import { createVirtualizer } from "@tanstack/solid-virtual";
-import { createMemo, createSignal, For, JSX, onCleanup, onMount } from "solid-js";
+import {
+  createMemo,
+  createSignal,
+  For,
+  JSX,
+  onCleanup,
+  onMount,
+} from "solid-js";
 import { css } from "../../styled-system/css";
+
+// Image validation utility - matches reference project approach
+const filterValidImages = async (photos: Photo[]): Promise<Photo[]> => {
+  console.log("Starting validation for", photos.length, "photos");
+
+  const results = await Promise.allSettled(
+    photos.map(async (photo) => {
+      try {
+        const response = await fetch(photo.url, { method: "HEAD" });
+        return response.ok ? photo : null;
+      } catch (error) {
+        console.log("Failed to validate:", photo.url, error);
+        return null;
+      }
+    }),
+  );
+
+  const validPhotos = results
+    .filter(
+      (result): result is PromiseFulfilledResult<Photo> =>
+        result.status === "fulfilled" && result.value !== null,
+    )
+    .map((result) => result.value);
+
+  console.log("Validation complete:", validPhotos.length, "valid photos");
+  return validPhotos;
+};
 
 interface Photo {
   id: string;
@@ -29,7 +63,9 @@ function VirtualPhotoGrid(props: VirtualPhotoGridProps) {
     return 2;
   };
 
-  const [columns, setColumns] = createSignal(props.columns || getColumnsForViewport());
+  const [columns, setColumns] = createSignal(
+    props.columns || getColumnsForViewport(),
+  );
   const rowHeight = 220;
   const gap = 16;
 
@@ -56,7 +92,7 @@ function VirtualPhotoGrid(props: VirtualPhotoGridProps) {
       getScrollElement: () => parentRef,
       estimateSize: () => rowHeight + gap,
       overscan: props.overscan || 3,
-    })
+    }),
   );
 
   const getPhotosForRow = (rowIndex: number) => {
@@ -71,7 +107,7 @@ function VirtualPhotoGrid(props: VirtualPhotoGridProps) {
       class={css({
         height: props.height || "100%",
         overflow: "auto",
-        bg: "base.100"
+        bg: "base.100",
       })}
     >
       <div
@@ -100,7 +136,7 @@ function VirtualPhotoGrid(props: VirtualPhotoGridProps) {
                   display: "grid",
                   gap: 4,
                   height: `${rowHeight - gap}px`,
-                  px: 4
+                  px: 4,
                 })}
                 style={{
                   "grid-template-columns": `repeat(${columns()}, 1fr)`,
@@ -112,14 +148,23 @@ function VirtualPhotoGrid(props: VirtualPhotoGridProps) {
                       class={css({
                         height: `${rowHeight - gap}px`,
                         width: "100%",
-                        bg: props.selectedPhotoId === photo.id ? "primary" : "base.200",
+                        bg:
+                          props.selectedPhotoId === photo.id
+                            ? "primary"
+                            : "base.200",
                         borderRadius: "box",
                         overflow: "hidden",
                         cursor: "pointer",
                         transition: "all 0.2s ease",
                         _hover: { transform: "scale(1.02)", boxShadow: "lg" },
-                        border: props.selectedPhotoId === photo.id ? "2px solid" : "1px solid",
-                        borderColor: props.selectedPhotoId === photo.id ? "primary" : "base.300"
+                        border:
+                          props.selectedPhotoId === photo.id
+                            ? "2px solid"
+                            : "1px solid",
+                        borderColor:
+                          props.selectedPhotoId === photo.id
+                            ? "primary"
+                            : "base.300",
                       })}
                       onClick={() => props.onPhotoClick?.(photo)}
                       onDblClick={() => props.onPhotoDblClick?.(photo)}
@@ -130,40 +175,54 @@ function VirtualPhotoGrid(props: VirtualPhotoGridProps) {
                         }
                       }}
                     >
-                      <div class={css({ position: "relative", height: "100%" })}>
+                      <div
+                        class={css({ position: "relative", height: "100%" })}
+                      >
                         <img
                           src={photo.url}
                           alt={photo.title}
                           class={css({
                             width: "100%",
                             height: "70%",
-                            objectFit: "cover"
+                            objectFit: "cover",
                           })}
                           loading="lazy"
                         />
-                        <div class={css({
-                          p: 2,
-                          height: "30%",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "center"
-                        })}>
-                          <h3 class={css({
-                            fontSize: "sm",
-                            fontWeight: "semibold",
-                            color: props.selectedPhotoId === photo.id ? "white" : "base.content",
-                            mb: 1,
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap"
-                          })}>
+                        <div
+                          class={css({
+                            p: 2,
+                            height: "30%",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                          })}
+                        >
+                          <h3
+                            class={css({
+                              fontSize: "sm",
+                              fontWeight: "semibold",
+                              color:
+                                props.selectedPhotoId === photo.id
+                                  ? "white"
+                                  : "base.content",
+                              mb: 1,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            })}
+                          >
                             {photo.title}
                           </h3>
                           {photo.date && (
-                            <p class={css({
-                              fontSize: "xs",
-                              color: props.selectedPhotoId === photo.id ? "white" : "content.neutral"
-                            })}>
+                            <p
+                              class={css({
+                                fontSize: "xs",
+                                color:
+                                  props.selectedPhotoId === photo.id
+                                    ? "white"
+                                    : "content.neutral",
+                              })}
+                            >
                               {photo.date}
                             </p>
                           )}
@@ -181,3 +240,4 @@ function VirtualPhotoGrid(props: VirtualPhotoGridProps) {
 }
 
 export default VirtualPhotoGrid;
+export { filterValidImages };
