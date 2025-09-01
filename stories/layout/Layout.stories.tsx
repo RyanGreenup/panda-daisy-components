@@ -1,4 +1,4 @@
-import { css } from "@styled/css";
+import { css } from "@panda-ui/styled-system/css";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { createSignal } from "solid-js";
 // misc comment
