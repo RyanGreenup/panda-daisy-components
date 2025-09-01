@@ -1,6 +1,6 @@
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { JSX } from "solid-js";
-import { css } from "@root/styled-system/css";
+import { css } from "@styled/css";
 
 interface VirtualListProps {
   count: number;
