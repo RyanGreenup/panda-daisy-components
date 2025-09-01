@@ -1,6 +1,8 @@
 {
   "name": "@panda-ui/storybook",
   "version": "0.0.0",
+  "description": "SolidJS UI components with PandaCSS styling",
+  "keywords": ["solid", "solidjs", "ui", "components", "pandacss"],
   "main": "src/index.ts",
   "workspaces": [
     "packages/*"
@@ -52,5 +54,9 @@
     "solid-transition-group": {
       "optional": true
     }
-  }
+  },
+  "solid": {
+    "preset": false
+  },
+  "sideEffects": false
 }
