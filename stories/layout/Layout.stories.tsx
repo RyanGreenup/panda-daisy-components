@@ -3,10 +3,15 @@ import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { createSignal } from "solid-js";
 // misc comment
 
+// @ts-ignore
 import Box from "lucide-solid/icons/box";
+// @ts-ignore
 import Menu from "lucide-solid/icons/menu";
+// @ts-ignore
 import PanelBottom from "lucide-solid/icons/panel-bottom";
+// @ts-ignore
 import PanelLeft from "lucide-solid/icons/panel-left";
+// @ts-ignore
 import PanelRight from "lucide-solid/icons/panel-right";
 
 import {

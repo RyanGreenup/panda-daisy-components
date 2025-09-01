@@ -1,7 +1,10 @@
 import { Combobox } from "@kobalte/core/combobox";
+
+// @ts-ignore
 import Check from "lucide-solid/icons/check";
 import { createSignal, For, createEffect, JSX } from "solid-js";
 
+// @ts-ignore
 import ChevronsUpDown from "lucide-solid/icons/chevrons-up-down";
 import { comboboxStyles } from "./style";
 

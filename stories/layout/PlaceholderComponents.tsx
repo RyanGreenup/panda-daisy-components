@@ -158,10 +158,16 @@ import {
   RightDrawerToggleStyled,
   BtmDrawerToggleStyled,
 } from "../../src/components/Layout/styled";
+
+// @ts-ignore
 import Menu from "lucide-solid/icons/menu";
+// @ts-ignore
 import PanelBottom from "lucide-solid/icons/panel-bottom";
+// @ts-ignore
 import PanelLeft from "lucide-solid/icons/panel-left";
+// @ts-ignore
 import PanelRight from "lucide-solid/icons/panel-right";
+// @ts-ignore
 import { createSignal, Show } from "solid-js";
 
 export const LayoutButtons = () => {

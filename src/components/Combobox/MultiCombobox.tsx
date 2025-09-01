@@ -1,5 +1,7 @@
 import { Combobox } from "@kobalte/core/combobox";
+// @ts-ignore
 import Check from "lucide-solid/icons/check";
+// @ts-ignore
 import X from "lucide-solid/icons/x";
 import { createSignal, For, JSXElement, Show, JSX } from "solid-js";
 import { Transition } from "solid-transition-group";
