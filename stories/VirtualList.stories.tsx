@@ -1,6 +1,7 @@
 import { css } from '../styled-system/css';
 import VirtualList from "../src/components/VirtualList";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
+import { createSignal } from "solid-js";
 
 const meta = {
   title: "Example/VirtualList",
@@ -170,5 +171,50 @@ export const NotificationFeed: Story = {
         </div>
       );
     }
+  }
+};
+
+export const ReactiveSlider: Story = {
+  render: () => {
+    const [count, setCount] = createSignal(20);
+    
+    return (
+      <div>
+        <div class={css({ mb: 4, p: 4, bg: 'base.200', borderRadius: 'box' })}>
+          <label class={css({ display: 'block', mb: 2, fontWeight: 'semibold' })}>
+            Item Count: {count()}
+          </label>
+          <input
+            type="range"
+            min="2"
+            max="100"
+            value={count()}
+            onInput={(e) => setCount(parseInt(e.target.value))}
+            class={css({
+              w: 'full',
+              h: 2,
+              bg: 'base.300',
+              borderRadius: 'full',
+              appearance: 'none',
+              cursor: 'pointer'
+            })}
+          />
+        </div>
+        <VirtualList
+          count={count}
+          height="300px"
+          renderItemCallback={(index: number) => (
+            <div class={css({ 
+              p: 3, 
+              borderBottom: '1px solid', 
+              borderColor: 'base.300',
+              bg: { base: 'base.100', _hover: 'base.200' }
+            })}>
+              Item {index + 1} of {count()}
+            </div>
+          )}
+        />
+      </div>
+    );
   }
 };
