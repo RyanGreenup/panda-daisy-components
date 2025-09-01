@@ -1,6 +1,7 @@
+import { Circle } from "@styled/jsx";
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { JSX, For } from "solid-js";
-import { css } from "@styled/css";
+// import { css } from "@styled/css";
 
 interface VirtualListProps {
   count: number;
@@ -28,6 +29,7 @@ export function VirtualList(props: VirtualListProps) {
         overflow: "auto",
       }}
     >
+    <Circle w="50" h="50" bg="blue.600" animation={"bounce"}/>
       <div
         style={{
           height: `${rowVirtualizer.getTotalSize()}px`,
