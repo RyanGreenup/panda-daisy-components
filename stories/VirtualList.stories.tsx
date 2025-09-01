@@ -20,7 +20,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    count: 100,
+    count: () => 100,
     estimateSize: () => 45,
     renderItemCallback: (index: number) => (
       <div class={css({ p: 2, borderBottom: '1px solid', borderColor: 'base.300' })}>
@@ -32,7 +32,7 @@ export const Default: Story = {
 
 export const ContactList: Story = {
   args: {
-    count: 1000,
+    count: () => 1000,
     height: "400px",
     estimateSize: () => 70,
     renderItemCallback: (index: number) => (
@@ -76,7 +76,7 @@ export const ContactList: Story = {
 
 export const ProductCatalog: Story = {
   args: {
-    count: 500,
+    count: () => 500,
     height: "500px",
     estimateSize: () => 120,
     renderItemCallback: (index: number) => (
@@ -131,7 +131,7 @@ export const ProductCatalog: Story = {
 
 export const NotificationFeed: Story = {
   args: {
-    count: 200,
+    count: () => 200,
     height: "350px",
     estimateSize: () => 80,
     renderItemCallback: (index: number) => {

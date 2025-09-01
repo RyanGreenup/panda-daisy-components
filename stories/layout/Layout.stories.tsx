@@ -1,4 +1,3 @@
-import { css } from "@panda-ui/styled-system/css";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { createSignal } from "solid-js";
 // misc comment
@@ -50,6 +49,7 @@ import {
   RightDrawerStyled,
   SidebarStyled,
 } from "../../src/components/Layout/styled";
+import { css } from "../../styled-system/css";
 
 const LayoutComponent = () => (
   <div>Layout Component - Use individual stories to see compositions</div>

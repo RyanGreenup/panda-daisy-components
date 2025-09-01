@@ -1,7 +1,7 @@
 // import { Circle } from "../../styled-system/jsx";
 
 import { createVirtualizer } from "@tanstack/solid-virtual";
-import { JSX, For } from "solid-js";
+import { JSX, For, Accessor } from "solid-js";
 import { css } from "../../styled-system/css";
 // import { css } from "@styled/css";
 // import { css } from "@panda-ui/styled-system/css";
@@ -10,7 +10,7 @@ import { css } from "../../styled-system/css";
 
 
 interface VirtualListProps {
-  count: number;
+  count: Accessor<number>;
   estimateSize?: () => number;
   height?: string;
   overscan?: number;
@@ -21,7 +21,7 @@ export function VirtualList(props: VirtualListProps) {
   let parentRef!: HTMLDivElement;
 
   const rowVirtualizer = createVirtualizer({
-    count: props.count,
+    count: props.count(),
     getScrollElement: () => parentRef,
     estimateSize: props.estimateSize || (() => 35),
     overscan: props.overscan || 5,
