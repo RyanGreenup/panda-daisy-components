@@ -3,10 +3,11 @@
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { JSX, For } from "solid-js";
 // import { css } from "@styled/css";
-import { css } from "@panda-ui/styled-system/css";
+// import { css } from "@panda-ui/styled-system/css";
 // import { css, cx } from "@panda-ui/storybook/styled-system/css";
-
 // import { css } from "../../styled-system/css";
+
+import { css } from "@panda-ui/storybook/css";
 
 interface VirtualListProps {
   count: number;
