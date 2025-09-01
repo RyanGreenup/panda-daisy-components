@@ -53,7 +53,7 @@ interface VirtualPhotoGridProps {
   onPhotoDblClick?: (photo: Photo) => void;
 }
 
-function VirtualPhotoGrid(props: VirtualPhotoGridProps) {
+export function VirtualPhotoGrid(props: VirtualPhotoGridProps) {
   const getColumnsForViewport = () => {
     if (typeof window === "undefined") return 2;
     const width = window.innerWidth;

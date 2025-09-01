@@ -10,7 +10,7 @@ interface VirtualListProps {
   renderItemCallback: (index: number, size: number) => JSX.Element;
 }
 
-function VirtualList(props: VirtualListProps) {
+export function VirtualList(props: VirtualListProps) {
   let parentRef!: HTMLDivElement;
 
   const rowVirtualizer = createVirtualizer({
