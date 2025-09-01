@@ -1,4 +1,4 @@
-import { css } from "../../styled-system/css";
+import { css } from "@styled/css";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { createSignal } from "solid-js";
 
@@ -344,7 +344,7 @@ export const CustomNavbar: Story = {
 export const PhotoGallery: Story = {
   render: () => {
     const [selectedPhoto, setSelectedPhoto] = createSignal<string | undefined>();
-    
+
     // Generate demo photos from Lorem Picsum
     const photos = Array.from({ length: 1000 }, (_, i) => ({
       id: `photo-${i}`,

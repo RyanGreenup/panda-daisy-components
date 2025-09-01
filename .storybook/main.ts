@@ -27,7 +27,9 @@ export default <StorybookConfig>{
             },
             resolve: {
                 alias: {
+                    // NOTE add this to tsconfig for LSP linting
                     '~': '/src',
+                    '@styled': '/styled-system',
                 },
             },
         });
