@@ -1,4 +1,5 @@
-import { Circle } from "@styled/jsx";
+import { Circle } from "../../styled-system/jsx";
+
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { JSX, For } from "solid-js";
 // import { css } from "@styled/css";
