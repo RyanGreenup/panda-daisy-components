@@ -1,5 +1,5 @@
 import { createVirtualizer } from "@tanstack/solid-virtual";
-import { JSX } from "solid-js";
+import { JSX, For } from "solid-js";
 import { css } from "@styled/css";
 
 interface VirtualListProps {
@@ -35,20 +35,22 @@ export function VirtualList(props: VirtualListProps) {
           position: "relative",
         }}
       >
-        {rowVirtualizer.getVirtualItems().map((virtualItem) => (
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: `${virtualItem.size}px`,
-              transform: `translateY(${virtualItem.start}px)`,
-            }}
-          >
-            {props.renderItemCallback(virtualItem.index, virtualItem.size)}
-          </div>
-        ))}
+        <For each={rowVirtualizer.getVirtualItems()}>
+          {(virtualItem) => (
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: `${virtualItem.size}px`,
+                transform: `translateY(${virtualItem.start}px)`,
+              }}
+            >
+              {props.renderItemCallback(virtualItem.index, virtualItem.size)}
+            </div>
+          )}
+        </For>
       </div>
     </div>
   );
