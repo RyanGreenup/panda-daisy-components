@@ -11,10 +11,12 @@
     ".": {
       "import": "./src/index.ts",
       "types": "./src/index.ts"
-    }
+    },
+    "./styled-system/*": "./packages/styled-system/*"
   },
   "files": [
-    "src"
+    "src",
+    "packages/styled-system"
   ],
   "scripts": {
     "storybook": "storybook dev -p 6006",
