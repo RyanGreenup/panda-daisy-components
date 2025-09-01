@@ -1,12 +1,7 @@
 // import { Circle } from "../../styled-system/jsx";
 
 import { createVirtualizer } from "@tanstack/solid-virtual";
-import { JSX, For, Accessor } from "solid-js";
-import { css } from "../../styled-system/css";
-// import { css } from "@styled/css";
-// import { css } from "@panda-ui/styled-system/css";
-// import { css, cx } from "@panda-ui/storybook/styled-system/css";
-// import { css } from "../../styled-system/css";
+import { JSX, For, Accessor, createMemo } from "solid-js";
 
 
 interface VirtualListProps {
@@ -20,12 +15,14 @@ interface VirtualListProps {
 export function VirtualList(props: VirtualListProps) {
   let parentRef!: HTMLDivElement;
 
-  const rowVirtualizer = createVirtualizer({
-    count: props.count(),
-    getScrollElement: () => parentRef,
-    estimateSize: props.estimateSize || (() => 35),
-    overscan: props.overscan || 5,
-  });
+  const rowVirtualizer = createMemo(() => 
+    createVirtualizer({
+      count: props.count(),
+      getScrollElement: () => parentRef,
+      estimateSize: props.estimateSize || (() => 35),
+      overscan: props.overscan || 5,
+    })
+  );
 
   return (
     <div
@@ -36,21 +33,13 @@ export function VirtualList(props: VirtualListProps) {
       }}
     >
       <div
-        class={css({
-          bg: "blue.600",
-          w: "50",
-          h: "50",
-          animation: "spin",
-        })}
-      />
-      <div
         style={{
-          height: `${rowVirtualizer.getTotalSize()}px`,
+          height: `${rowVirtualizer().getTotalSize()}px`,
           width: "100%",
           position: "relative",
         }}
       >
-        <For each={rowVirtualizer.getVirtualItems()}>
+        <For each={rowVirtualizer().getVirtualItems()}>
           {(virtualItem) => (
             <div
               style={{
