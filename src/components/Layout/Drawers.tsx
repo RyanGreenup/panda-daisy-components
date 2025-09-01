@@ -2,7 +2,7 @@ import { children, JSX, splitProps } from "solid-js";
 import { LabelPropsWithoutChildren } from "./types";
 import { cx } from "../../../styled-system/css";
 import { classesFromRecipe } from "./styles";
-import { createPeerId } from "~/presets/layout/layout";
+import { createPeerId } from "../../presets/layout/layout";
 
 export const RightDrawerOverlay = (props: LabelPropsWithoutChildren) => {
   const [local, others] = splitProps(props, ["class"]);

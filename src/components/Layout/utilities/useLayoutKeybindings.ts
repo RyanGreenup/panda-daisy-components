@@ -1,6 +1,6 @@
 import { useKeybinding } from "./useKeybinding";
 import { layoutKeys } from "./keyboardShortcuts";
-import { createPeerId } from "~/presets/layout/layout";
+import { createPeerId } from "../../../presets/layout/layout";
 
 export interface LayoutKeybindingsOptions {
   enabled?: boolean;

@@ -27,9 +27,10 @@ export default <StorybookConfig>{
             },
             resolve: {
                 alias: {
+                    // NOTE this breaks importing packages over `git` Avoid this here.
                     // NOTE add this to tsconfig for LSP linting
-                    '~': '/src',
-                    '@styled': '/styled-system',
+                    // '~': '/src',
+                    // '@styled': '/styled-system',
                 },
             },
         });

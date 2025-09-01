@@ -11,7 +11,7 @@ import {
   clampWidth,
   type ResizeOptions,
 } from "./directives/resize-utils";
-import { createPeerId } from "~/presets/layout/layout";
+import { createPeerId } from "../../../presets/layout/layout";
 
 export interface ResizeKeybindingsOptions {
   cssVariable: string;

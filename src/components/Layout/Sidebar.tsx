@@ -1,9 +1,9 @@
 import { children, JSX, splitProps } from "solid-js";
 import { DivPropsWithoutChildren, LabelPropsWithoutChildren } from "./types";
-import { createPeerId } from "~/presets/layout/layout";
 import { css, cx } from "../../../styled-system/css";
 import { classesFromRecipe } from "./styles";
 import { resize } from "./utilities/directives/resize";
+import { createPeerId } from "../../presets/layout/layout";
 // TODO move this
 
 export const Overlay = (props: LabelPropsWithoutChildren) => {
