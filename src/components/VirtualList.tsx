@@ -1,8 +1,9 @@
-import { Circle } from "../../styled-system/jsx";
+// import { Circle } from "../../styled-system/jsx";
 
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { JSX, For } from "solid-js";
 // import { css } from "@styled/css";
+import { css } from "@panda-ui/styled-system/css";
 
 interface VirtualListProps {
   count: number;
@@ -30,7 +31,14 @@ export function VirtualList(props: VirtualListProps) {
         overflow: "auto",
       }}
     >
-    <Circle w="50" h="50" bg="blue.600" animation={"bounce"}/>
+      <div
+        class={css({
+          bg: "blue.600",
+          w: "50",
+          h: "50",
+          animation: "spin",
+        })}
+      />
       <div
         style={{
           height: `${rowVirtualizer.getTotalSize()}px`,
