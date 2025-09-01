@@ -9,7 +9,7 @@
     "types": ["vite/client"],
     "paths": {
       "~/*": ["./src/*"],
-      "@styled": ["/styled-system"]
+      "@styled/*": ["./styled-system/*"]
     }
   },
   "include": [
