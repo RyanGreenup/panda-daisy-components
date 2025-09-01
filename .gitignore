@@ -4,5 +4,7 @@ storybook-static
 bun.lock
 package-lock.json
 ## Panda
-styled-system
+
+# I'm tracking the styled-system to import components through git
+# styled-system
 styled-system-studio
