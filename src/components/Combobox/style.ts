@@ -28,6 +28,9 @@ export const comboboxStyles = () => ({
   input: css({
     appearance: "none",
     display: "inline-flex",
+    // If the user wants to go the full way to the selector
+    // width: "full",
+    outline: "none",
     minWidth: "0",
     minHeight: "2rem",
     paddingLeft: "1rem",
@@ -133,7 +136,7 @@ export const comboboxStyles = () => ({
     justifyContent: "space-between",
     // TODO token only
     height: "32px",
-    paddingY: "8px",
+    paddingX: "8px",
     position: "relative",
     userSelect: "none",
     outline: "none",

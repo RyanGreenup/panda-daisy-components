@@ -67,7 +67,7 @@ export function SingleCombobox(props: SingleComboboxProps): JSX.Element {
         <Combobox.Portal>
           <Combobox.Content class={styles.content}>
             <Combobox.Arrow />
-            <Combobox.Listbox class={styles.listbox} />
+            <Combobox.Listbox class="combobox__listbox" />
           </Combobox.Content>
         </Combobox.Portal>
       </Combobox>
