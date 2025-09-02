@@ -122,7 +122,10 @@ export const comboboxStyles = () => ({
   }),
   listbox: css({
     overflowY: "auto",
-    maxHeight: "20rem",
+    // maxHeight: "20rem",
+    // This is my attempt to keep it on the screen
+    maxHeight: "clamp(5rem, 20rem, calc(100vh/2 - 2rem))",
+    maxWidth: "clamp(5rem, full, calc(100vw/2 - 2rem))",
     // TODO make a theme token?
     padding: "1rem",
     _focus: {
