@@ -1,8 +1,9 @@
-import type { Meta, StoryObj } from "storybook-solidjs";
+import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { createSignal } from "solid-js";
 
 import { SingleCombobox } from "../src/components/Combobox/SingleCombobox";
 import { MultiCombobox } from "../src/components/Combobox/MultiCombobox";
+import { Kbd } from "../src/components/Kbd/Kbd";
 
 const meta = {
   title: "Components/Combobox",
@@ -505,29 +506,15 @@ export const GlobalKeybinding: Story = {
           <p style={{ margin: "0 0 0.5rem 0", "font-weight": "600" }}>
             Try the keyboard shortcut:
           </p>
-          <p style={{ margin: "0", "font-family": "monospace" }}>
-            <kbd
-              style={{
-                "background-color": "var(--colors-base-300)",
-                padding: "0.25rem 0.5rem",
-                "border-radius": "0.25rem",
-                "font-size": "0.75rem",
-              }}
-            >
-              Ctrl+/
-            </kbd>{" "}
-            or{" "}
-            <kbd
-              style={{
-                "background-color": "var(--colors-base-300)",
-                padding: "0.25rem 0.5rem",
-                "border-radius": "0.25rem",
-                "font-size": "0.75rem",
-              }}
-            >
-              Cmd+/
-            </kbd>{" "}
-            to focus the search
+          <p style={{ margin: "0" }}>
+            <Kbd size="sm">Ctrl</Kbd>
+            <span style={{ margin: "0 0.25rem" }}>+</span>
+            <Kbd size="sm">/</Kbd>
+            <span style={{ margin: "0 0.5rem" }}>or</span>
+            <Kbd size="sm">⌘</Kbd>
+            <span style={{ margin: "0 0.25rem" }}>+</span>
+            <Kbd size="sm">/</Kbd>
+            <span style={{ "margin-left": "0.5rem" }}>to focus the search</span>
           </p>
         </div>
         <SingleCombobox
