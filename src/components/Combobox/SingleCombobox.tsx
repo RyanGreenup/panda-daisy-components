@@ -1,4 +1,4 @@
-import { Combobox } from "@kobalte/core/combobox";
+import { Combobox, ComboboxTriggerMode } from "@kobalte/core/combobox";
 
 // @ts-ignore
 import Check from "lucide-solid/icons/check";
@@ -19,6 +19,7 @@ interface SingleComboboxProps {
   onChange?: (value: string) => void;
   label?: string;
   ref?: (el: HTMLInputElement) => void;
+  triggerMode?: ComboboxTriggerMode;
 }
 
 export function SingleCombobox(props: SingleComboboxProps): JSX.Element {
@@ -43,7 +44,7 @@ export function SingleCombobox(props: SingleComboboxProps): JSX.Element {
         value={value()}
         onChange={handleChange}
         placeholder={props.placeholder || "Search..."}
-        triggerMode="manual"
+        triggerMode={props.triggerMode ?? "input"}
         itemComponent={(itemProps) => (
           <Combobox.Item item={itemProps.item} class={styles.item}>
             <Combobox.ItemLabel>{itemProps.item.rawValue}</Combobox.ItemLabel>
