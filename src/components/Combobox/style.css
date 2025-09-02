@@ -9,7 +9,9 @@
   background-color: white;
   border: 1px solid hsl(240 6% 90%);
   color: hsl(240 4% 16%);
-  transition: border-color 250ms, color 250ms;
+  transition:
+    border-color 250ms,
+    color 250ms;
 }
 .combobox__control[data-invalid] {
   border-color: hsl(0 72% 51%);
@@ -73,7 +75,9 @@
   background-color: white;
   border-radius: 6px;
   border: 1px solid hsl(240 6% 90%);
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
   transform-origin: var(--kb-combobox-content-transform-origin);
   animation: contentHide 250ms ease-in forwards;
 }
@@ -141,7 +145,15 @@
     transform: translateY(0);
   }
   to {
-      opacity: 0;
+    opacity: 0;
     transform: translateY(-8px);
   }
+}
+.combobox__animateContent {
+  transform-origin: var(--kb-combobox-content-transform-origin);
+  animation: contentHide 250ms ease-in forwards;
+}
+
+.combobox__animateContent[data-expanded] {
+  animation: contentShow 2500ms ease-out;
 }

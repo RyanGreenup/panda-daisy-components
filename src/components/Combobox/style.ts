@@ -104,20 +104,18 @@ export const comboboxStyles = () => ({
     },
   }),
   content: css({
-    position: "absolute",
-    zIndex: "50",
-    w: "full",
-    maxW: "xs",
-    bg: "base.100",
-    borderRadius: "box",
+    backgroundColor: "base.200",
+    borderRadius: "selector",
+    border: "selector",
     boxShadow: "lg",
-    border: "default",
-    p: "0.25rem",
-    mt: "0.25rem",
-    animation: "fadeIn 0.15s ease-in-out",
-    _closed: {
-      animation: "fadeOut 0.15s ease-in-out",
+    transformOrigin: "var(--kb-combobox-content-transform-origin)",
+    animation: "comboboxContentHide 250ms ease-in forwards",
+    _expanded: {
+      animation: "comboboxContentShow 250ms ease-out",
     },
+    /*
+     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    */
   }),
   listbox: css({
     maxH: "20rem",

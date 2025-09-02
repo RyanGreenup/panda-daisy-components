@@ -1,4 +1,4 @@
-import { definePreset } from "@pandacss/dev";
+import { defineAnimationStyles, definePreset } from "@pandacss/dev";
 import pandaPreset from "@pandacss/preset-panda";
 import dracula from "./themes/dracula";
 import LightTheme from "./themes/light";
@@ -11,8 +11,42 @@ const darkTheme = night;
 const defaultTheme = LightTheme;
 
 // TODO favor data-theme over prefers-color-scheme
+const keyframes = {
+  comboboxContentShow: {
+    from: {
+      opacity: 0,
+      transform: "translateY(-8px)",
+    },
+    to: {
+      opacity: 1,
+      transform: "translateY(0)",
+    },
+  },
+  comboboxContentHide: {
+    from: {
+      opacity: 1,
+      transform: "translateY(0)",
+    },
+    to: {
+      opacity: 0,
+      transform: "translateY(-8px)",
+    },
+  },
+};
 
 const backgroundTransition = "background-color 0.2s ease, color 0.2s ease";
+
+export const animationStyles = defineAnimationStyles({
+  contentShow: {
+    value: {
+      transformOrigin: "var(--kb-combobox-content-transform-origin)",
+      animationDuration: "0.3s",
+      _expanded: {
+        animationName: "contentShow",
+      },
+    },
+  },
+});
 
 const spacing = {
   navbar: {
@@ -41,6 +75,7 @@ const daisyLikePreset = definePreset({
   },
   theme: {
     extend: {
+      keyframes,
       tokens: {
         spacing,
       },

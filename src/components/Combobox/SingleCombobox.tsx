@@ -8,6 +8,7 @@ import "./style.css";
 // @ts-ignore
 import ChevronsUpDown from "lucide-solid/icons/chevrons-up-down";
 import { comboboxStyles } from "./style";
+import { cx } from "../../../styled-system/css";
 
 const styles = comboboxStyles();
 
@@ -64,9 +65,9 @@ export function SingleCombobox(props: SingleComboboxProps): JSX.Element {
           </Combobox.Trigger>
         </Combobox.Control>
         <Combobox.Portal>
-          <Combobox.Content class="combobox__content">
+          <Combobox.Content class={styles.content}>
             <Combobox.Arrow />
-            <Combobox.Listbox class="combobox__listbox" />
+            <Combobox.Listbox class={styles.listbox} />
           </Combobox.Content>
         </Combobox.Portal>
       </Combobox>
