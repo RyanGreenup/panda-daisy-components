@@ -57,7 +57,7 @@ export function SingleCombobox(props: SingleComboboxProps): JSX.Element {
         </Show>
         <Combobox.Control class={styles.control} aria-label="Fruit">
           <Combobox.Input class={styles.input} ref={props.ref} />
-          <Combobox.Trigger class="combobox__trigger">
+          <Combobox.Trigger class={styles.trigger}>
             <Combobox.Icon class="combobox__icon">
               <ChevronsUpDown />
             </Combobox.Icon>
