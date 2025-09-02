@@ -2,7 +2,8 @@ import { Combobox } from "@kobalte/core/combobox";
 
 // @ts-ignore
 import Check from "lucide-solid/icons/check";
-import { createSignal, For, createEffect, JSX } from "solid-js";
+import { createSignal, For, createEffect, JSX, Show } from "solid-js";
+import "./style.css";
 
 // @ts-ignore
 import ChevronsUpDown from "lucide-solid/icons/chevrons-up-down";
@@ -43,34 +44,29 @@ export function SingleCombobox(props: SingleComboboxProps): JSX.Element {
         placeholder={props.placeholder || "Search..."}
         triggerMode="manual"
         itemComponent={(itemProps) => (
-          <Combobox.Item item={itemProps.item} class={styles.item}>
+          <Combobox.Item item={itemProps.item} class={"combobox__item"}>
             <Combobox.ItemLabel>{itemProps.item.rawValue}</Combobox.ItemLabel>
-            <Combobox.ItemIndicator class={styles.itemIndicator}>
+            <Combobox.ItemIndicator class="combobox__item-indicator">
               <Check class={styles.icon} />
             </Combobox.ItemIndicator>
           </Combobox.Item>
         )}
       >
-        <Combobox.Control<string>
-          class={styles.control}
-          aria-label={props.label || "Selection"}
-        >
-          {(state) => (
-            <>
-              <div class={styles.inputContainer}>
-                <Combobox.Input ref={props.ref} class={styles.input} />
-              </div>
-              <Combobox.Trigger class={styles.trigger}>
-                <Combobox.Icon>
-                  <ChevronsUpDown class={styles.icon} />
-                </Combobox.Icon>
-              </Combobox.Trigger>
-            </>
-          )}
+        <Show when={props.label}>
+          <Combobox.Label>{props.label}</Combobox.Label>
+        </Show>
+        <Combobox.Control class="combobox__control" aria-label="Fruit">
+          <Combobox.Input class="combobox__input" ref={props.ref} />
+          <Combobox.Trigger class="combobox__trigger">
+            <Combobox.Icon class="combobox__icon">
+              <ChevronsUpDown />
+            </Combobox.Icon>
+          </Combobox.Trigger>
         </Combobox.Control>
         <Combobox.Portal>
-          <Combobox.Content class={styles.content}>
-            <Combobox.Listbox class={styles.listbox} />
+          <Combobox.Content class="combobox__content">
+            <Combobox.Arrow />
+            <Combobox.Listbox class="combobox__listbox" />
           </Combobox.Content>
         </Combobox.Portal>
       </Combobox>
