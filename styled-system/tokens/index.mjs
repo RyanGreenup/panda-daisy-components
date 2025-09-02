@@ -1956,7 +1956,7 @@ const tokens = {
     "variable": "var(--borders-default)"
   },
   "borders.field": {
-    "value": "var(--sizes-border) solid var(--colors-base-300)",
+    "value": "var(--borders-default)",
     "variable": "var(--borders-field)"
   },
   "borders.selector": {
