@@ -121,11 +121,13 @@ export const comboboxStyles = () => ({
     */
   }),
   listbox: css({
-    maxH: "20rem",
     overflowY: "auto",
-    display: "flex",
-    flexDirection: "column",
-    gap: "0.125rem",
+    maxHeight: "20rem",
+    // TODO make a theme token?
+    padding: "1rem",
+    _focus: {
+      outline: "none",
+    },
   }),
   item: css({
     // Text color of icons
