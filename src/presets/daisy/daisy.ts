@@ -94,6 +94,10 @@ const daisyLikePreset = definePreset({
                 _synthwaveTheme: synthwave.content.primary.value,
               },
             },
+            placeholder: {
+              // This is approx what daisy ui does in [^1]
+              value: "{colors.base.content/80}",
+            },
             secondary: {
               value: {
                 base: defaultTheme.content.secondary.value,
@@ -411,15 +415,26 @@ const daisyLikePreset = definePreset({
             },
           },
         },
+        sizes: {
+          border: {
+            value: {
+              base: `${defaultTheme.border.value}`,
+            },
+          },
+        },
         borders: {
           default: {
-            value: {
-              // Daisy UI uses base-300 for border color
-              base: `${defaultTheme.border.value} solid ${LightTheme.base[300].value}`,
-              _dark: `${darkTheme.border.value} solid ${darkTheme.base[300].value}`,
-              _osDark: `${prefersDarkTheme.border.value} solid ${prefersDarkTheme.base[300].value}`,
-              _synthwaveTheme: `${synthwave.border.value} solid ${synthwave.base[300].value}`,
-            },
+            value: "{sizes.border} solid {colors.base.300}",
+            description:
+              "Border to be used for input fields like an input for a combobox or a text area",
+          },
+          field: {
+            value: "{borders.default}",
+            description:
+              "Border to be used for input fields like an input for a combobox or a text area",
+          },
+          selector: {
+            value: "{borders.field}",
           },
         },
       },
@@ -431,3 +446,6 @@ const daisyLikePreset = definePreset({
 });
 
 export default daisyLikePreset;
+
+// Notes
+// [^1]: packages/daisyui/components/input/object.js

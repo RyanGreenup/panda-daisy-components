@@ -1771,6 +1771,10 @@ const tokens = {
     "value": "var(--colors-content-primary)",
     "variable": "var(--colors-content-primary)"
   },
+  "colors.content.placeholder": {
+    "value": "color-mix(in srgb, var(--colors-base-content) 80%, transparent)",
+    "variable": "var(--colors-content-placeholder)"
+  },
   "colors.content.secondary": {
     "value": "var(--colors-content-secondary)",
     "variable": "var(--colors-content-secondary)"
@@ -1948,8 +1952,16 @@ const tokens = {
     "variable": "var(--radii-noise)"
   },
   "borders.default": {
-    "value": "var(--borders-default)",
+    "value": "var(--sizes-border) solid var(--colors-base-300)",
     "variable": "var(--borders-default)"
+  },
+  "borders.field": {
+    "value": "var(--sizes-border) solid var(--colors-base-300)",
+    "variable": "var(--borders-field)"
+  },
+  "borders.selector": {
+    "value": "var(--borders-field)",
+    "variable": "var(--borders-selector)"
   },
   "easings.drawer": {
     "value": "ease",
@@ -1986,6 +1998,10 @@ const tokens = {
   "durations.sidebar": {
     "value": "var(--durations-md)",
     "variable": "var(--durations-sidebar)"
+  },
+  "sizes.border": {
+    "value": "1px",
+    "variable": "var(--sizes-border)"
   },
   "sizes.navbar.height": {
     "value": "4rem",
@@ -2274,6 +2290,10 @@ const tokens = {
   "colors.colorPalette.primary": {
     "value": "var(--colors-color-palette-primary)",
     "variable": "var(--colors-color-palette-primary)"
+  },
+  "colors.colorPalette.placeholder": {
+    "value": "var(--colors-color-palette-placeholder)",
+    "variable": "var(--colors-color-palette-placeholder)"
   },
   "colors.colorPalette.secondary": {
     "value": "var(--colors-color-palette-secondary)",

@@ -44,10 +44,10 @@ export function SingleCombobox(props: SingleComboboxProps): JSX.Element {
         placeholder={props.placeholder || "Search..."}
         triggerMode="manual"
         itemComponent={(itemProps) => (
-          <Combobox.Item item={itemProps.item} class={"combobox__item"}>
+          <Combobox.Item item={itemProps.item} class={styles.item}>
             <Combobox.ItemLabel>{itemProps.item.rawValue}</Combobox.ItemLabel>
-            <Combobox.ItemIndicator class="combobox__item-indicator">
-              <Check class={styles.icon} />
+            <Combobox.ItemIndicator class={styles.itemIndicator}>
+              <Check />
             </Combobox.ItemIndicator>
           </Combobox.Item>
         )}
@@ -55,8 +55,8 @@ export function SingleCombobox(props: SingleComboboxProps): JSX.Element {
         <Show when={props.label}>
           <Combobox.Label>{props.label}</Combobox.Label>
         </Show>
-        <Combobox.Control class="combobox__control" aria-label="Fruit">
-          <Combobox.Input class="combobox__input" ref={props.ref} />
+        <Combobox.Control class={styles.control} aria-label="Fruit">
+          <Combobox.Input class={styles.input} ref={props.ref} />
           <Combobox.Trigger class="combobox__trigger">
             <Combobox.Icon class="combobox__icon">
               <ChevronsUpDown />
