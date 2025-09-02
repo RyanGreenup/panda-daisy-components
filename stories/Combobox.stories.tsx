@@ -78,25 +78,36 @@ const programmingLanguages = [
 
 // Single Combobox Stories
 export const SingleDefault: Story = {
-  render: (args) => (
-    <div 
-      tabIndex={0}
-      style={{
-        padding: "2rem",
-        "background-color": "var(--colors-base-100)",
-        border: "1px solid var(--colors-base-300)",
-        "border-radius": "0.5rem",
-        "box-shadow": "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-        "min-width": "24rem",
-        outline: "none"
-      }}
-    >
-      <h3 style={{ margin: "0 0 1rem 0", "font-size": "1.125rem", "font-weight": "600" }}>
-        Single Selection
-      </h3>
-      <SingleCombobox {...args} />
-    </div>
-  ),
+  render: (args) => {
+    const [value, setValue] = createSignal("Banana");
+    
+    return (
+      <div 
+        tabIndex={0}
+        style={{
+          padding: "2rem",
+          "background-color": "var(--colors-base-100)",
+          border: "1px solid var(--colors-base-300)",
+          "border-radius": "0.5rem",
+          "box-shadow": "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+          "min-width": "24rem",
+          outline: "none"
+        }}
+      >
+        <h3 style={{ margin: "0 0 1rem 0", "font-size": "1.125rem", "font-weight": "600" }}>
+          Single Selection (with selected item)
+        </h3>
+        <SingleCombobox
+          {...args}
+          value={value()}
+          onChange={setValue}
+        />
+        <p style={{ margin: "1rem 0 0 0", "font-size": "0.875rem", color: "var(--colors-base-content)" }}>
+          Selected: {value() || "None"}
+        </p>
+      </div>
+    );
+  },
   args: {
     options: defaultOptions,
     placeholder: "Select a fruit...",
