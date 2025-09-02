@@ -85,26 +85,68 @@ function VirtualizedDataTable<T>(
   );
 
   return (
-    <div>
+    <div class={css({
+      w: "full",
+      bg: "white",
+      rounded: "lg",
+      border: "1px solid token(colors.gray.200)",
+      shadow: "sm"
+    })}>
       {props.enableGlobalFilter !== false && (
-        <div>
+        <div class={css({
+          p: 4,
+          borderBottom: "1px solid token(colors.gray.200)"
+        })}>
           <input
             value={globalFilter()}
             onInput={(e) => setGlobalFilter(e.currentTarget.value)}
             placeholder={props.searchPlaceholder || "Search all columns..."}
+            class={css({
+              w: "full",
+              px: 3,
+              py: 2,
+              border: "1px solid token(colors.gray.300)",
+              rounded: "md",
+              fontSize: "sm",
+              _placeholder: { color: "gray.500" },
+              _focus: {
+                outline: "none",
+                borderColor: "blue.500",
+                ring: "2px",
+                ringColor: "blue.500",
+                ringOpacity: 0.2
+              }
+            })}
           />
         </div>
       )}
 
-      <div>
-        <table>
-          <thead>
+      <div class={css({ overflow: "hidden" })}>
+        <table class={css({
+          w: "full",
+          borderCollapse: "separate",
+          borderSpacing: 0
+        })}>
+          <thead class={css({
+            bg: "gray.50",
+            borderBottom: "2px solid token(colors.gray.200)"
+          })}>
             <For each={table().getHeaderGroups()}>
               {(headerGroup) => (
                 <tr>
                   <For each={headerGroup.headers}>
                     {(header) => (
                       <th
+                        class={css({
+                          px: 4,
+                          py: 3,
+                          textAlign: "left",
+                          fontSize: "sm",
+                          fontWeight: "semibold",
+                          color: "gray.900",
+                          borderRight: "1px solid token(colors.gray.200)",
+                          _last: { borderRight: "none" }
+                        })}
                         style={{
                           width: header.column.columnDef.size
                             ? `${header.column.columnDef.size}px`
@@ -112,15 +154,28 @@ function VirtualizedDataTable<T>(
                         }}
                       >
                         {header.isPlaceholder ? null : (
-                          <div>
+                          <div class={css({ display: "flex", flexDirection: "column", gap: 2 })}>
                             <button
+                              class={css({
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                                bg: "transparent",
+                                border: "none",
+                                cursor: "pointer",
+                                fontSize: "sm",
+                                fontWeight: "semibold",
+                                color: "gray.900",
+                                _hover: { color: "gray.700" },
+                                _disabled: { cursor: "not-allowed", color: "gray.400" }
+                              })}
                               onClick={header.column.getToggleSortingHandler()}
                               disabled={
                                 !header.column.getCanSort() ||
                                 props.enableSorting === false
                               }
                             >
-                              <span style={{ "font-weight": "600" }}>
+                              <span>
                                 {flexRender(
                                   header.column.columnDef.header,
                                   header.getContext(),
@@ -149,6 +204,22 @@ function VirtualizedDataTable<T>(
                                     )
                                   }
                                   placeholder="Filter..."
+                                  class={css({
+                                    px: 2,
+                                    py: 1,
+                                    border: "1px solid token(colors.gray.300)",
+                                    rounded: "sm",
+                                    fontSize: "xs",
+                                    w: "full",
+                                    maxW: "20",
+                                    _placeholder: { color: "gray.400" },
+                                    _focus: {
+                                      outline: "none",
+                                      borderColor: "blue.400",
+                                      ring: "1px",
+                                      ringColor: "blue.400"
+                                    }
+                                  })}
                                 />
                               )}
                           </div>
@@ -163,10 +234,13 @@ function VirtualizedDataTable<T>(
 
           <tbody
             ref={parentRef}
-            style={{
-              height: props.height || "400px",
+            class={css({
               display: "block",
               overflow: "auto",
+              bg: "white"
+            })}
+            style={{
+              height: props.height || "400px",
             }}
           >
             <For each={rowVirtualizer().getVirtualItems()}>
@@ -176,6 +250,11 @@ function VirtualizedDataTable<T>(
 
                 return (
                   <tr
+                    class={css({
+                      borderBottom: "1px solid token(colors.gray.100)",
+                      _hover: { bg: "gray.50" },
+                      _even: { bg: "gray.25" }
+                    })}
                     style={{
                       height: `${virtualItem.size}px`,
                       transform: `translateY(${virtualItem.start}px)`,
@@ -189,6 +268,16 @@ function VirtualizedDataTable<T>(
                     <For each={row.getVisibleCells()}>
                       {(cell) => (
                         <td
+                          class={css({
+                            px: 4,
+                            py: 3,
+                            fontSize: "sm",
+                            color: "gray.900",
+                            borderRight: "1px solid token(colors.gray.100)",
+                            _last: { borderRight: "none" },
+                            display: "flex",
+                            alignItems: "center"
+                          })}
                           style={{
                             width: cell.column.columnDef.size
                               ? `${cell.column.columnDef.size}px`
@@ -215,13 +304,22 @@ function VirtualizedDataTable<T>(
                 visibility: "hidden",
               }}
             >
-              <td />
+              <td class={css({ display: "block" })} />
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div>
+      <div class={css({
+        px: 4,
+        py: 3,
+        borderTop: "1px solid token(colors.gray.200)",
+        bg: "gray.50",
+        fontSize: "sm",
+        color: "gray.600",
+        textAlign: "center",
+        roundedBottom: "lg"
+      })}>
         Showing {filteredRows().length} of {props.data.length} rows
       </div>
     </div>
