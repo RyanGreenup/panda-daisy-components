@@ -1,4 +1,4 @@
-import { createSignal, createMemo, For, Component, JSXElement } from 'solid-js'
+import { createSignal, createMemo, For, Component, JSXElement } from "solid-js";
 import {
   createSolidTable,
   flexRender,
@@ -8,127 +8,149 @@ import {
   ColumnDef,
   SortingState,
   ColumnFiltersState,
-} from '@tanstack/solid-table'
-import { createVirtualizer } from '@tanstack/solid-virtual'
-import { ChevronUp, ChevronDown } from 'lucide-solid'
-import { tableStyles, virtualTableStyles } from './styles'
+} from "@tanstack/solid-table";
+import { createVirtualizer } from "@tanstack/solid-virtual";
+import { ChevronUp, ChevronDown } from "lucide-solid";
+import { css } from "../../../styled-system/css";
 
 interface VirtualizedDataTableProps<T> {
-  data: T[]
-  columns: ColumnDef<T>[]
-  enableGlobalFilter?: boolean
-  enableColumnFilters?: boolean
-  enableSorting?: boolean
-  searchPlaceholder?: string
-  height?: string
-  estimateSize?: () => number
-  overscan?: number
+  data: T[];
+  columns: ColumnDef<T>[];
+  enableGlobalFilter?: boolean;
+  enableColumnFilters?: boolean;
+  enableSorting?: boolean;
+  searchPlaceholder?: string;
+  height?: string;
+  estimateSize?: () => number;
+  overscan?: number;
 }
 
-function VirtualizedDataTable<T>(props: VirtualizedDataTableProps<T>): JSXElement {
-  let parentRef: HTMLDivElement | undefined
+function VirtualizedDataTable<T>(
+  props: VirtualizedDataTableProps<T>,
+): JSXElement {
+  let parentRef: HTMLDivElement | undefined;
 
-  const [sorting, setSorting] = createSignal<SortingState>([])
-  const [columnFilters, setColumnFilters] = createSignal<ColumnFiltersState>([])
-  const [globalFilter, setGlobalFilter] = createSignal('')
+  const [sorting, setSorting] = createSignal<SortingState>([]);
+  const [columnFilters, setColumnFilters] = createSignal<ColumnFiltersState>(
+    [],
+  );
+  const [globalFilter, setGlobalFilter] = createSignal("");
 
   const table = createMemo(() =>
     createSolidTable({
       get data() {
-        return props.data
+        return props.data;
       },
       get columns() {
-        return props.columns
+        return props.columns;
       },
       state: {
         get sorting() {
-          return props.enableSorting !== false ? sorting() : []
+          return props.enableSorting !== false ? sorting() : [];
         },
         get columnFilters() {
-          return props.enableColumnFilters !== false ? columnFilters() : []
+          return props.enableColumnFilters !== false ? columnFilters() : [];
         },
         get globalFilter() {
-          return props.enableGlobalFilter !== false ? globalFilter() : ''
+          return props.enableGlobalFilter !== false ? globalFilter() : "";
         },
       },
       onSortingChange: props.enableSorting !== false ? setSorting : () => {},
-      onColumnFiltersChange: props.enableColumnFilters !== false ? setColumnFilters : () => {},
-      onGlobalFilterChange: props.enableGlobalFilter !== false ? setGlobalFilter : () => {},
+      onColumnFiltersChange:
+        props.enableColumnFilters !== false ? setColumnFilters : () => {},
+      onGlobalFilterChange:
+        props.enableGlobalFilter !== false ? setGlobalFilter : () => {},
       getCoreRowModel: getCoreRowModel(),
-      getSortedRowModel: props.enableSorting !== false ? getSortedRowModel() : getCoreRowModel(),
-      getFilteredRowModel: (props.enableGlobalFilter !== false || props.enableColumnFilters !== false) ? getFilteredRowModel() : getCoreRowModel(),
-    })
-  )
+      getSortedRowModel:
+        props.enableSorting !== false ? getSortedRowModel() : getCoreRowModel(),
+      getFilteredRowModel:
+        props.enableGlobalFilter !== false ||
+        props.enableColumnFilters !== false
+          ? getFilteredRowModel()
+          : getCoreRowModel(),
+    }),
+  );
 
-  const filteredRows = createMemo(() => table().getRowModel().rows)
+  const filteredRows = createMemo(() => table().getRowModel().rows);
 
   const rowVirtualizer = createMemo(() =>
     createVirtualizer({
       get count() {
-        return filteredRows().length
+        return filteredRows().length;
       },
       getScrollElement: () => parentRef!,
       estimateSize: props.estimateSize || (() => 48),
       overscan: props.overscan || 5,
-    })
-  )
-
-  const styles = tableStyles()
-  const virtualStyles = virtualTableStyles()
+    }),
+  );
 
   return (
-    <div class={styles.container}>
+    <div>
       {props.enableGlobalFilter !== false && (
-        <div class={styles.searchContainer}>
+        <div>
           <input
             value={globalFilter()}
             onInput={(e) => setGlobalFilter(e.currentTarget.value)}
-            class={styles.searchInput}
             placeholder={props.searchPlaceholder || "Search all columns..."}
           />
         </div>
       )}
 
-      <div class={styles.tableWrapper}>
-        <table class={styles.table}>
-          <thead class={styles.thead}>
+      <div>
+        <table>
+          <thead>
             <For each={table().getHeaderGroups()}>
-              {headerGroup => (
-                <tr class={styles.headerRow}>
+              {(headerGroup) => (
+                <tr>
                   <For each={headerGroup.headers}>
-                    {header => (
+                    {(header) => (
                       <th
-                        class={styles.headerCell}
                         style={{
-                          width: header.column.columnDef.size ? `${header.column.columnDef.size}px` : 'auto'
+                          width: header.column.columnDef.size
+                            ? `${header.column.columnDef.size}px`
+                            : "auto",
                         }}
                       >
                         {header.isPlaceholder ? null : (
                           <div>
                             <button
-                              class={styles.sortButton}
                               onClick={header.column.getToggleSortingHandler()}
-                              disabled={!header.column.getCanSort() || props.enableSorting === false}
+                              disabled={
+                                !header.column.getCanSort() ||
+                                props.enableSorting === false
+                              }
                             >
                               <span style={{ "font-weight": "600" }}>
-                                {flexRender(header.column.columnDef.header, header.getContext())}
+                                {flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext(),
+                                )}
                               </span>
-                              {props.enableSorting !== false && header.column.getIsSorted() === 'asc' && (
-                                <ChevronUp size={16} />
-                              )}
-                              {props.enableSorting !== false && header.column.getIsSorted() === 'desc' && (
-                                <ChevronDown size={16} />
-                              )}
+                              {props.enableSorting !== false &&
+                                header.column.getIsSorted() === "asc" && (
+                                  <ChevronUp size={16} />
+                                )}
+                              {props.enableSorting !== false &&
+                                header.column.getIsSorted() === "desc" && (
+                                  <ChevronDown size={16} />
+                                )}
                             </button>
-                            {props.enableColumnFilters !== false && header.column.getCanFilter() && (
-                              <input
-                                type="text"
-                                value={header.column.getFilterValue() as string || ''}
-                                onInput={(e) => header.column.setFilterValue(e.currentTarget.value)}
-                                placeholder="Filter..."
-                                class={styles.filterInput}
-                              />
-                            )}
+                            {props.enableColumnFilters !== false &&
+                              header.column.getCanFilter() && (
+                                <input
+                                  type="text"
+                                  value={
+                                    (header.column.getFilterValue() as string) ||
+                                    ""
+                                  }
+                                  onInput={(e) =>
+                                    header.column.setFilterValue(
+                                      e.currentTarget.value,
+                                    )
+                                  }
+                                  placeholder="Filter..."
+                                />
+                              )}
                           </div>
                         )}
                       </th>
@@ -138,24 +160,22 @@ function VirtualizedDataTable<T>(props: VirtualizedDataTableProps<T>): JSXElemen
               )}
             </For>
           </thead>
-          
-          <tbody 
+
+          <tbody
             ref={parentRef}
-            class={`${styles.tbody} ${virtualStyles.scrollContainer}`}
-            style={{ 
+            style={{
               height: props.height || "400px",
               display: "block",
-              overflow: "auto"
+              overflow: "auto",
             }}
           >
             <For each={rowVirtualizer().getVirtualItems()}>
-              {virtualItem => {
-                const row = filteredRows()[virtualItem.index]
-                if (!row) return null
+              {(virtualItem) => {
+                const row = filteredRows()[virtualItem.index];
+                if (!row) return null;
 
                 return (
                   <tr
-                    class={`${styles.bodyRow} ${virtualStyles.virtualRow}`}
                     style={{
                       height: `${virtualItem.size}px`,
                       transform: `translateY(${virtualItem.start}px)`,
@@ -163,40 +183,49 @@ function VirtualizedDataTable<T>(props: VirtualizedDataTableProps<T>): JSXElemen
                       top: "0",
                       left: "0",
                       width: "100%",
-                      display: "flex"
+                      display: "flex",
                     }}
                   >
                     <For each={row.getVisibleCells()}>
-                      {cell => (
+                      {(cell) => (
                         <td
-                          class={styles.bodyCell}
                           style={{
-                            width: cell.column.columnDef.size ? `${cell.column.columnDef.size}px` : 'auto',
-                            flex: cell.column.columnDef.size ? 'none' : '1'
+                            width: cell.column.columnDef.size
+                              ? `${cell.column.columnDef.size}px`
+                              : "auto",
+                            flex: cell.column.columnDef.size ? "none" : "1",
                           }}
                         >
-                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
                         </td>
                       )}
                     </For>
                   </tr>
-                )
+                );
               }}
             </For>
-            
+
             {/* Spacer for total height */}
-            <tr style={{ height: `${rowVirtualizer().getTotalSize()}px`, visibility: "hidden" }}>
+            <tr
+              style={{
+                height: `${rowVirtualizer().getTotalSize()}px`,
+                visibility: "hidden",
+              }}
+            >
               <td />
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div class={styles.footer}>
+      <div>
         Showing {filteredRows().length} of {props.data.length} rows
       </div>
     </div>
-  )
+  );
 }
 
-export default VirtualizedDataTable
+export default VirtualizedDataTable;
