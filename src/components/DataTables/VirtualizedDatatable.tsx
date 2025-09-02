@@ -11,7 +11,7 @@ import {
 } from '@tanstack/solid-table'
 import { createVirtualizer } from '@tanstack/solid-virtual'
 import { ChevronUp, ChevronDown } from 'lucide-solid'
-import { tableStyles } from './tableStyles'
+import { tableStyles, virtualTableStyles } from './styles'
 
 interface VirtualizedDataTableProps<T> {
   data: T[]
@@ -77,29 +77,29 @@ function VirtualizedDataTable<T>(props: VirtualizedDataTableProps<T>): JSXElemen
   const virtualStyles = virtualTableStyles()
 
   return (
-    <div class={styles.container()}>
+    <div class={styles.container}>
       {props.enableGlobalFilter !== false && (
-        <div class={styles.searchContainer()}>
+        <div class={styles.searchContainer}>
           <input
             value={globalFilter()}
             onInput={(e) => setGlobalFilter(e.currentTarget.value)}
-            class={styles.searchInput()}
+            class={styles.searchInput}
             placeholder={props.searchPlaceholder || "Search all columns..."}
           />
         </div>
       )}
 
-      <div class={styles.tableWrapper()}>
+      <div class={styles.tableWrapper}>
         {/* Fixed Header Table */}
-        <table class={`${styles.table()} table-fixed`}>
-          <thead class={`${styles.thead()} sticky top-0 z-10`}>
+        <table class={styles.table}>
+          <thead class={styles.thead}>
             <For each={table().getHeaderGroups()}>
               {headerGroup => (
-                <tr class={styles.headerRow()}>
+                <tr class={styles.headerRow}>
                   <For each={headerGroup.headers}>
                     {header => (
                       <th
-                        class={styles.headerCell()}
+                        class={styles.headerCell}
                         style={{
                           width: header.column.columnDef.size ? `${header.column.columnDef.size}px` : 'auto'
                         }}
@@ -107,11 +107,11 @@ function VirtualizedDataTable<T>(props: VirtualizedDataTableProps<T>): JSXElemen
                         {header.isPlaceholder ? null : (
                           <div>
                             <button
-                              class={styles.sortButton()}
+                              class={styles.sortButton}
                               onClick={header.column.getToggleSortingHandler()}
                               disabled={!header.column.getCanSort() || props.enableSorting === false}
                             >
-                              <span class="font-semibold">
+                              <span style={{ "font-weight": "600" }}>
                                 {flexRender(header.column.columnDef.header, header.getContext())}
                               </span>
                               {props.enableSorting !== false && header.column.getIsSorted() === 'asc' && (
@@ -127,7 +127,7 @@ function VirtualizedDataTable<T>(props: VirtualizedDataTableProps<T>): JSXElemen
                                 value={header.column.getFilterValue() as string || ''}
                                 onInput={(e) => header.column.setFilterValue(e.currentTarget.value)}
                                 placeholder="Filter..."
-                                class={styles.filterInput()}
+                                class={styles.filterInput}
                               />
                             )}
                           </div>
@@ -144,7 +144,7 @@ function VirtualizedDataTable<T>(props: VirtualizedDataTableProps<T>): JSXElemen
         {/* Virtualized Body */}
         <div
           ref={parentRef}
-          class="overflow-auto"
+          class={virtualStyles.scrollContainer}
           style={{ height: props.height || "400px" }}
         >
           <div
@@ -161,22 +161,19 @@ function VirtualizedDataTable<T>(props: VirtualizedDataTableProps<T>): JSXElemen
 
                 return (
                   <div
+                    class={virtualStyles.virtualRow}
                     style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
                       height: `${virtualItem.size}px`,
                       transform: `translateY(${virtualItem.start}px)`,
                     }}
                   >
-                    <table class={`${styles.table()} table-fixed`}>
-                      <tbody class={styles.tbody()}>
-                        <tr class={`${styles.bodyRow()} ${virtualItem.index % 2 === 0 ? 'bg-base-100' : 'bg-base-200/50'}`}>
+                    <table class={styles.table}>
+                      <tbody class={styles.tbody}>
+                        <tr class={styles.bodyRow}>
                           <For each={row.getVisibleCells()}>
                             {cell => (
                               <td
-                                class={styles.bodyCell()}
+                                class={styles.bodyCell}
                                 style={{
                                   width: cell.column.columnDef.size ? `${cell.column.columnDef.size}px` : 'auto'
                                 }}
@@ -196,7 +193,7 @@ function VirtualizedDataTable<T>(props: VirtualizedDataTableProps<T>): JSXElemen
         </div>
       </div>
 
-      <div class={styles.footer()}>
+      <div class={styles.footer}>
         Showing {filteredRows().length} of {props.data.length} rows
       </div>
     </div>
