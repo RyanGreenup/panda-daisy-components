@@ -90,7 +90,6 @@ function VirtualizedDataTable<T>(props: VirtualizedDataTableProps<T>): JSXElemen
       )}
 
       <div class={styles.tableWrapper}>
-        {/* Fixed Header Table */}
         <table class={styles.table}>
           <thead class={styles.thead}>
             <For each={table().getHeaderGroups()}>
@@ -139,19 +138,14 @@ function VirtualizedDataTable<T>(props: VirtualizedDataTableProps<T>): JSXElemen
               )}
             </For>
           </thead>
-        </table>
-
-        {/* Virtualized Body */}
-        <div
-          ref={parentRef}
-          class={virtualStyles.scrollContainer}
-          style={{ height: props.height || "400px" }}
-        >
-          <div
-            style={{
-              height: `${rowVirtualizer().getTotalSize()}px`,
-              width: '100%',
-              position: 'relative',
+          
+          <tbody 
+            ref={parentRef}
+            class={`${styles.tbody} ${virtualStyles.scrollContainer}`}
+            style={{ 
+              height: props.height || "400px",
+              display: "block",
+              overflow: "auto"
             }}
           >
             <For each={rowVirtualizer().getVirtualItems()}>
@@ -160,37 +154,42 @@ function VirtualizedDataTable<T>(props: VirtualizedDataTableProps<T>): JSXElemen
                 if (!row) return null
 
                 return (
-                  <div
-                    class={virtualStyles.virtualRow}
+                  <tr
+                    class={`${styles.bodyRow} ${virtualStyles.virtualRow}`}
                     style={{
                       height: `${virtualItem.size}px`,
                       transform: `translateY(${virtualItem.start}px)`,
+                      position: "absolute",
+                      top: "0",
+                      left: "0",
+                      width: "100%",
+                      display: "flex"
                     }}
                   >
-                    <table class={styles.table}>
-                      <tbody class={styles.tbody}>
-                        <tr class={styles.bodyRow}>
-                          <For each={row.getVisibleCells()}>
-                            {cell => (
-                              <td
-                                class={styles.bodyCell}
-                                style={{
-                                  width: cell.column.columnDef.size ? `${cell.column.columnDef.size}px` : 'auto'
-                                }}
-                              >
-                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                              </td>
-                            )}
-                          </For>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+                    <For each={row.getVisibleCells()}>
+                      {cell => (
+                        <td
+                          class={styles.bodyCell}
+                          style={{
+                            width: cell.column.columnDef.size ? `${cell.column.columnDef.size}px` : 'auto',
+                            flex: cell.column.columnDef.size ? 'none' : '1'
+                          }}
+                        >
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </td>
+                      )}
+                    </For>
+                  </tr>
                 )
               }}
             </For>
-          </div>
-        </div>
+            
+            {/* Spacer for total height */}
+            <tr style={{ height: `${rowVirtualizer().getTotalSize()}px`, visibility: "hidden" }}>
+              <td />
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <div class={styles.footer}>
