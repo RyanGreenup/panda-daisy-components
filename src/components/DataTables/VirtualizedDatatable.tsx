@@ -121,11 +121,11 @@ function VirtualizedDataTable<T>(
         </div>
       )}
 
-      <div class={css({ overflow: "hidden" })}>
+      <div class={css({ overflowX: "auto" })}>
         <table class={css({
           w: "full",
           borderCollapse: "separate",
-          borderSpacing: 0
+          borderSpacing: 0,
         })}>
           <thead class={css({
             bg: "gray.50",
