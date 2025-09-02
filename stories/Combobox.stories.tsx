@@ -32,7 +32,7 @@ type Story = StoryObj<typeof meta>;
 
 const defaultOptions = [
   "Apple",
-  "Banana", 
+  "Banana",
   "Cherry",
   "Date",
   "Elderberry",
@@ -50,12 +50,12 @@ const defaultOptions = [
   "Tangerine",
   "Ugli fruit",
   "Vanilla bean",
-  "Watermelon"
+  "Watermelon",
 ];
 
 const programmingLanguages = [
   "JavaScript",
-  "TypeScript", 
+  "TypeScript",
   "Python",
   "Java",
   "C++",
@@ -73,16 +73,16 @@ const programmingLanguages = [
   "F#",
   "Elixir",
   "Erlang",
-  "Dart"
+  "Dart",
 ];
 
 // Single Combobox Stories
 export const SingleDefault: Story = {
   render: (args) => {
     const [value, setValue] = createSignal("Banana");
-    
+
     return (
-      <div 
+      <div
         tabIndex={0}
         style={{
           padding: "2rem",
@@ -91,18 +91,26 @@ export const SingleDefault: Story = {
           "border-radius": "0.5rem",
           "box-shadow": "0 4px 6px -1px rgb(0 0 0 / 0.1)",
           "min-width": "24rem",
-          outline: "none"
+          outline: "none",
         }}
       >
-        <h3 style={{ margin: "0 0 1rem 0", "font-size": "1.125rem", "font-weight": "600" }}>
+        <h3
+          style={{
+            margin: "0 0 1rem 0",
+            "font-size": "1.125rem",
+            "font-weight": "600",
+          }}
+        >
           Single Selection (with selected item)
         </h3>
-        <SingleCombobox
-          {...args}
-          value={value()}
-          onChange={setValue}
-        />
-        <p style={{ margin: "1rem 0 0 0", "font-size": "0.875rem", color: "var(--colors-base-content)" }}>
+        <SingleCombobox {...args} value={value()} onChange={setValue} />
+        <p
+          style={{
+            margin: "1rem 0 0 0",
+            "font-size": "0.875rem",
+            color: "var(--colors-base-content)",
+          }}
+        >
           Selected: {value() || "None"}
         </p>
       </div>
@@ -118,9 +126,9 @@ export const SingleDefault: Story = {
 export const SingleWithValue: Story = {
   render: (args) => {
     const [value, setValue] = createSignal("Apple");
-    
+
     return (
-      <div 
+      <div
         tabIndex={0}
         style={{
           padding: "2rem",
@@ -129,17 +137,19 @@ export const SingleWithValue: Story = {
           "border-radius": "0.5rem",
           "box-shadow": "0 4px 6px -1px rgb(0 0 0 / 0.1)",
           "min-width": "24rem",
-          outline: "none"
+          outline: "none",
         }}
       >
-        <h3 style={{ margin: "0 0 1rem 0", "font-size": "1.125rem", "font-weight": "600" }}>
+        <h3
+          style={{
+            margin: "0 0 1rem 0",
+            "font-size": "1.125rem",
+            "font-weight": "600",
+          }}
+        >
           Single Selection (Pre-selected)
         </h3>
-        <SingleCombobox
-          {...args}
-          value={value()}
-          onChange={setValue}
-        />
+        <SingleCombobox {...args} value={value()} onChange={setValue} />
       </div>
     );
   },
@@ -152,7 +162,7 @@ export const SingleWithValue: Story = {
 
 export const SingleProgrammingLanguages: Story = {
   render: (args) => (
-    <div 
+    <div
       tabIndex={0}
       style={{
         padding: "2rem",
@@ -161,10 +171,16 @@ export const SingleProgrammingLanguages: Story = {
         "border-radius": "0.5rem",
         "box-shadow": "0 4px 6px -1px rgb(0 0 0 / 0.1)",
         "min-width": "24rem",
-        outline: "none"
+        outline: "none",
       }}
     >
-      <h3 style={{ margin: "0 0 1rem 0", "font-size": "1.125rem", "font-weight": "600" }}>
+      <h3
+        style={{
+          margin: "0 0 1rem 0",
+          "font-size": "1.125rem",
+          "font-weight": "600",
+        }}
+      >
         Programming Languages
       </h3>
       <SingleCombobox {...args} />
@@ -193,10 +209,10 @@ export const SingleLongList: Story = {
   },
 };
 
-// Multi Combobox Stories  
+// Multi Combobox Stories
 export const MultiDefault: Story = {
   render: (args) => (
-    <div 
+    <div
       tabIndex={0}
       style={{
         padding: "2rem",
@@ -205,10 +221,16 @@ export const MultiDefault: Story = {
         "border-radius": "0.5rem",
         "box-shadow": "0 4px 6px -1px rgb(0 0 0 / 0.1)",
         "min-width": "24rem",
-        outline: "none"
+        outline: "none",
       }}
     >
-      <h3 style={{ margin: "0 0 1rem 0", "font-size": "1.125rem", "font-weight": "600" }}>
+      <h3
+        style={{
+          margin: "0 0 1rem 0",
+          "font-size": "1.125rem",
+          "font-weight": "600",
+        }}
+      >
         Multiple Selection
       </h3>
       <MultiCombobox
@@ -228,9 +250,9 @@ export const MultiDefault: Story = {
 export const MultiWithValues: Story = {
   render: (args) => {
     const [value, setValue] = createSignal(["Apple", "Banana", "Cherry"]);
-    
+
     return (
-      <div 
+      <div
         tabIndex={0}
         style={{
           padding: "2rem",
@@ -239,17 +261,19 @@ export const MultiWithValues: Story = {
           "border-radius": "0.5rem",
           "box-shadow": "0 4px 6px -1px rgb(0 0 0 / 0.1)",
           "min-width": "24rem",
-          outline: "none"
+          outline: "none",
         }}
       >
-        <h3 style={{ margin: "0 0 1rem 0", "font-size": "1.125rem", "font-weight": "600" }}>
+        <h3
+          style={{
+            margin: "0 0 1rem 0",
+            "font-size": "1.125rem",
+            "font-weight": "600",
+          }}
+        >
           Multiple Selection (Pre-selected)
         </h3>
-        <MultiCombobox
-          {...args}
-          value={value()}
-          onChange={setValue}
-        />
+        <MultiCombobox {...args} value={value()} onChange={setValue} />
       </div>
     );
   },
@@ -278,12 +302,12 @@ export const MultiProgrammingLanguages: Story = {
 export const MultiControlled: Story = {
   render: (args) => {
     const [value, setValue] = createSignal<string[]>([]);
-    
+
     const handleReset = () => setValue([]);
     const handleSelectAll = () => setValue([...args.options]);
-    
+
     return (
-      <div 
+      <div
         tabIndex={0}
         style={{
           padding: "2rem",
@@ -292,20 +316,24 @@ export const MultiControlled: Story = {
           "border-radius": "0.5rem",
           "box-shadow": "0 4px 6px -1px rgb(0 0 0 / 0.1)",
           "min-width": "24rem",
-          outline: "none"
+          outline: "none",
         }}
       >
-        <h3 style={{ margin: "0 0 1rem 0", "font-size": "1.125rem", "font-weight": "600" }}>
+        <h3
+          style={{
+            margin: "0 0 1rem 0",
+            "font-size": "1.125rem",
+            "font-weight": "600",
+          }}
+        >
           Controlled Multiple Selection
         </h3>
-        <div style={{ display: "flex", "flex-direction": "column", gap: "1rem" }}>
-          <MultiCombobox
-            {...args}
-            value={value()}
-            onChange={setValue}
-          />
+        <div
+          style={{ display: "flex", "flex-direction": "column", gap: "1rem" }}
+        >
+          <MultiCombobox {...args} value={value()} onChange={setValue} />
           <div style={{ display: "flex", gap: "0.5rem" }}>
-            <button 
+            <button
               onclick={handleReset}
               style={{
                 padding: "0.5rem 1rem",
@@ -313,20 +341,20 @@ export const MultiControlled: Story = {
                 color: "white",
                 border: "none",
                 "border-radius": "0.25rem",
-                cursor: "pointer"
+                cursor: "pointer",
               }}
             >
               Clear All
             </button>
-            <button 
+            <button
               onclick={handleSelectAll}
               style={{
-                padding: "0.5rem 1rem", 
+                padding: "0.5rem 1rem",
                 "background-color": "#3b82f6",
                 color: "white",
                 border: "none",
                 "border-radius": "0.25rem",
-                cursor: "pointer"
+                cursor: "pointer",
               }}
             >
               Select All
@@ -348,9 +376,9 @@ export const Comparison: Story = {
   render: (args) => {
     const [singleValue, setSingleValue] = createSignal("");
     const [multiValue, setMultiValue] = createSignal<string[]>([]);
-    
+
     return (
-      <div 
+      <div
         tabIndex={0}
         style={{
           padding: "2rem",
@@ -359,15 +387,29 @@ export const Comparison: Story = {
           "border-radius": "0.5rem",
           "box-shadow": "0 4px 6px -1px rgb(0 0 0 / 0.1)",
           "min-width": "40rem",
-          outline: "none"
+          outline: "none",
         }}
       >
-        <h3 style={{ margin: "0 0 2rem 0", "font-size": "1.25rem", "font-weight": "700" }}>
+        <h3
+          style={{
+            margin: "0 0 2rem 0",
+            "font-size": "1.25rem",
+            "font-weight": "700",
+          }}
+        >
           Combobox Comparison
         </h3>
-        <div style={{ display: "flex", "flex-direction": "column", gap: "2rem" }}>
+        <div
+          style={{ display: "flex", "flex-direction": "column", gap: "2rem" }}
+        >
           <div>
-            <h4 style={{ margin: "0 0 1rem 0", "font-size": "1.125rem", "font-weight": "600" }}>
+            <h4
+              style={{
+                margin: "0 0 1rem 0",
+                "font-size": "1.125rem",
+                "font-weight": "600",
+              }}
+            >
               Single Selection
             </h4>
             <SingleCombobox
@@ -378,7 +420,13 @@ export const Comparison: Story = {
             />
           </div>
           <div>
-            <h4 style={{ margin: "0 0 1rem 0", "font-size": "1.125rem", "font-weight": "600" }}>
+            <h4
+              style={{
+                margin: "0 0 1rem 0",
+                "font-size": "1.125rem",
+                "font-weight": "600",
+              }}
+            >
               Multiple Selection
             </h4>
             <MultiCombobox
@@ -394,5 +442,117 @@ export const Comparison: Story = {
   },
   args: {
     options: defaultOptions.slice(0, 10),
+  },
+};
+
+export const GlobalKeybinding: Story = {
+  render: (args) => {
+    const [value, setValue] = createSignal("");
+    let inputRef: HTMLInputElement | undefined;
+
+    // Set up global keybinding (Ctrl+/ or Cmd+/)
+    const handleGlobalKeydown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "/") {
+        e.preventDefault();
+        inputRef?.focus();
+        inputRef?.select(); // Select all text if any
+      }
+    };
+
+    // Add event listener on mount, remove on cleanup
+    const cleanup = () => {
+      document.removeEventListener("keydown", handleGlobalKeydown);
+    };
+
+    document.addEventListener("keydown", handleGlobalKeydown);
+
+    // Clean up when component unmounts (Solid.js will call this)
+    setTimeout(() => {
+      return cleanup;
+    }, 0);
+
+    return (
+      <div
+        tabIndex={0}
+        style={{
+          padding: "2rem",
+          "background-color": "var(--colors-base-100)",
+          border: "1px solid var(--colors-base-300)",
+          "border-radius": "0.5rem",
+          "box-shadow": "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+          "min-width": "24rem",
+          outline: "none",
+        }}
+      >
+        <h3
+          style={{
+            margin: "0 0 1rem 0",
+            "font-size": "1.125rem",
+            "font-weight": "600",
+          }}
+        >
+          Global Keybinding Example
+        </h3>
+        <div
+          style={{
+            "background-color": "var(--colors-base-200)",
+            padding: "1rem",
+            "border-radius": "0.375rem",
+            "margin-bottom": "1.5rem",
+            "font-size": "0.875rem",
+          }}
+        >
+          <p style={{ margin: "0 0 0.5rem 0", "font-weight": "600" }}>
+            Try the keyboard shortcut:
+          </p>
+          <p style={{ margin: "0", "font-family": "monospace" }}>
+            <kbd
+              style={{
+                "background-color": "var(--colors-base-300)",
+                padding: "0.25rem 0.5rem",
+                "border-radius": "0.25rem",
+                "font-size": "0.75rem",
+              }}
+            >
+              Ctrl+/
+            </kbd>{" "}
+            or{" "}
+            <kbd
+              style={{
+                "background-color": "var(--colors-base-300)",
+                padding: "0.25rem 0.5rem",
+                "border-radius": "0.25rem",
+                "font-size": "0.75rem",
+              }}
+            >
+              Cmd+/
+            </kbd>{" "}
+            to focus the search
+          </p>
+        </div>
+        <SingleCombobox
+          {...args}
+          value={value()}
+          onChange={setValue}
+          ref={(el) => {
+            inputRef = el;
+          }}
+        />
+        <p
+          style={{
+            margin: "1rem 0 0 0",
+            "font-size": "0.875rem",
+            color: "var(--colors-base-content)",
+          }}
+        >
+          Selected: {value() || "None"}
+        </p>
+      </div>
+    );
+  },
+  args: {
+    options: defaultOptions,
+    placeholder: "Press Ctrl+/ to focus and search...",
+    label: "Searchable Fruit Selection",
   },
 };
