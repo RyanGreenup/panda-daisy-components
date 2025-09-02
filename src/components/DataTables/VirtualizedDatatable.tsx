@@ -121,7 +121,7 @@ function VirtualizedDataTable<T>(
         </div>
       )}
 
-      <div class={css({ overflowX: "auto" })}>
+      <div class={css({ overflowX: "auto", overflowY: "hidden" })}>
         <table class={css({
           w: "full",
           borderCollapse: "separate",
@@ -262,7 +262,11 @@ function VirtualizedDataTable<T>(
                     class={css({
                       borderBottom: "1px solid token(colors.gray.100)",
                       _hover: { bg: "gray.50" },
-                      _even: { bg: "gray.25" }
+                      // Striped rows - comment out the line below to remove striping
+                      bg: virtualItem.index % 2 === 0 ? "white" : "gray.50/30",
+                      // Alternative striping options:
+                      // bg: virtualItem.index % 2 === 0 ? "white" : "gray.100/20", // Lighter stripes
+                      // bg: virtualItem.index % 2 === 0 ? "white" : "blue.50/20", // Blue tinted stripes
                     })}
                     style={{
                       height: `${virtualItem.size}px`,
