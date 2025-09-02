@@ -121,7 +121,7 @@ function VirtualizedDataTable<T>(
         </div>
       )}
 
-      <div class={css({ overflowX: "auto", overflowY: "hidden" })}>
+      <div class={css({ overflow: "auto", overflowY: "hidden" })}>
         <table class={css({
           w: "full",
           borderCollapse: "separate",
