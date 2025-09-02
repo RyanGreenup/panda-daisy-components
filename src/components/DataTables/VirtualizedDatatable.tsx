@@ -129,11 +129,16 @@ function VirtualizedDataTable<T>(
         })}>
           <thead class={css({
             bg: "gray.50",
-            borderBottom: "2px solid token(colors.gray.200)"
+            borderBottom: "2px solid token(colors.gray.200)",
+            display: "block",
+            width: "100%"
           })}>
             <For each={table().getHeaderGroups()}>
               {(headerGroup) => (
-                <tr>
+                <tr class={css({
+                  display: "flex",
+                  width: "100%"
+                })}>
                   <For each={headerGroup.headers}>
                     {(header) => (
                       <th
@@ -145,12 +150,15 @@ function VirtualizedDataTable<T>(
                           fontWeight: "semibold",
                           color: "gray.900",
                           borderRight: "1px solid token(colors.gray.200)",
-                          _last: { borderRight: "none" }
+                          _last: { borderRight: "none" },
+                          display: "flex",
+                          alignItems: "center"
                         })}
                         style={{
                           width: header.column.columnDef.size
                             ? `${header.column.columnDef.size}px`
                             : "auto",
+                          flex: header.column.columnDef.size ? "none" : "1"
                         }}
                       >
                         {header.isPlaceholder ? null : (
@@ -237,7 +245,8 @@ function VirtualizedDataTable<T>(
             class={css({
               display: "block",
               overflow: "auto",
-              bg: "white"
+              bg: "white",
+              position: "relative"
             })}
             style={{
               height: props.height || "400px",
