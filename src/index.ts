@@ -6,6 +6,7 @@
 
 // Export utility components
 export { VirtualList } from './components/VirtualList';
+export { SingleCombobox } from './components/Combobox/SingleCombobox';
 // export { VirtualPhotoGrid } from './components/VirtualPhotoGrid';
 
 // Export presets and themes
