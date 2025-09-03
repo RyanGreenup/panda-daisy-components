@@ -15,6 +15,10 @@ import Funnel from "lucide-solid/icons/funnel";
 import { createMemo, createSignal, For, JSXElement, Show } from "solid-js";
 import { css } from "../../../styled-system/css";
 
+import { inputField, table } from "./styles";
+const newTableStyles = table({
+  darkHeader: true,
+});
 import { tableStyles } from "./styles";
 
 interface VirtualizedDataTableProps<T> {
@@ -89,14 +93,14 @@ function VirtualizedDataTable<T>(
   );
 
   return (
-    <div class={tableStyles.container}>
+    <div class={newTableStyles.container}>
       {props.enableGlobalFilter !== false && (
-        <div class={tableStyles.globalSearchContainer}>
+        <div class={newTableStyles.outerHeader}>
           <input
             value={globalFilter()}
             onInput={(e) => setGlobalFilter(e.currentTarget.value)}
             placeholder={props.searchPlaceholder || "Search all columns..."}
-            class={tableStyles.globalSearchInput}
+            class={newTableStyles.globalSearchInput}
           />
         </div>
       )}
@@ -111,11 +115,13 @@ function VirtualizedDataTable<T>(
           style={{
             width: "100%",
           }}
+          class={newTableStyles.table}
         >
           <thead
-            class={tableStyles.tableHead}
+            class={newTableStyles.header}
             style={{
               width: "100%",
+              display: "block",
             }}
           >
             <For each={table().getHeaderGroups()}>
@@ -129,7 +135,7 @@ function VirtualizedDataTable<T>(
                   <For each={headerGroup.headers}>
                     {(header) => (
                       <th
-                        class={tableStyles.th}
+                        class={newTableStyles.th}
                         style={{
                           width: header.column.columnDef.size
                             ? `${header.column.columnDef.size}px`
@@ -145,8 +151,8 @@ function VirtualizedDataTable<T>(
                               // TODO Let's remove this and have the input automatically shrink to fit
                               // Probably need flex argument on the input
                               overflow: "hidden",
+                              gap: "0.25rem",
                             }}
-                            class={tableStyles.headerContainer}
                           >
                             <button
                               class={tableStyles.sortButton}
@@ -192,7 +198,7 @@ function VirtualizedDataTable<T>(
                                   )
                                 }
                                 placeholder={"Filter..."}
-                                class={tableStyles.filterInput}
+                                class={css(inputField)}
                               />
                             </Show>
                           </div>
@@ -213,7 +219,7 @@ function VirtualizedDataTable<T>(
               position: "relative",
               height: props.height || "400px",
             }}
-            class={tableStyles.tableBody}
+            class={newTableStyles.body}
           >
             <For each={rowVirtualizer().getVirtualItems()}>
               {(virtualItem) => {
@@ -222,7 +228,7 @@ function VirtualizedDataTable<T>(
 
                 return (
                   <tr
-                    class={tableStyles.tableRow}
+                    class={newTableStyles.row}
                     style={{
                       height: `${virtualItem.size}px`,
                       transform: `translateY(${virtualItem.start}px)`,
@@ -236,7 +242,7 @@ function VirtualizedDataTable<T>(
                     <For each={row.getVisibleCells()}>
                       {(cell) => (
                         <td
-                          class={tableStyles.tableCell}
+                          class={newTableStyles.cell}
                           style={{
                             width: cell.column.columnDef.size
                               ? `${cell.column.columnDef.size}px`
@@ -273,7 +279,7 @@ function VirtualizedDataTable<T>(
         </table>
       </div>
 
-      <div class={tableStyles.footer}>
+      <div class={newTableStyles.outerFooter}>
         Showing {filteredRows().length} of {props.data.length} rows
       </div>
     </div>

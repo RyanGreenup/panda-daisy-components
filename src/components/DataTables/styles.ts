@@ -1,7 +1,8 @@
-import { css } from "../../../styled-system/css";
+import { css, sva } from "../../../styled-system/css";
 
 // TODO should this be a utility or just a raw  css?
-const inputField = css.raw({
+// TODO candidate for either an atomic or preset recipe
+export const inputField = css.raw({
   border: "default",
   borderRadius: "field",
   fontSize: "field",
@@ -19,59 +20,6 @@ const inputField = css.raw({
 });
 
 export const tableStyles = {
-  container: css({
-    // w: "min-content",
-    // p: 4,
-    bg: "base.100",
-    rounded: "lg",
-    border: "default",
-    shadow: "sm",
-  }),
-  globalSearchContainer: css({
-    // TODO uniform tokens
-    p: 4,
-
-    // TODO VARIANT: verticalBorder
-    // borderBottom: "default",
-    bg: "base.200",
-  }),
-  globalSearchInput: css(inputField, {
-    w: "full",
-    maxW: "20rem",
-  }),
-  table: css({
-    borderCollapse: "separate",
-    borderSpacing: "0",
-  }),
-  tableHead: css({
-    display: "block",
-    // color: "base.content",
-
-    // TODO VARIANT: verticalBorder
-    // If it's enabled, we make this darker with a bottom border to visually
-    // separate
-    bg: "base.200",
-    // borderBottom: "default",
-  }),
-  th: css({
-    // TODO should this padding be a default?
-    px: 4,
-    py: 3,
-    textAlign: "left",
-    fontSize: "sm",
-    fontWeight: "semibold",
-    color: "base.content",
-    display: "flex",
-    alignItems: "center",
-
-    borderBottom: "default",
-    // TODO VARIANT: verticalBorder
-    // borderRight: "default",
-    // _last: { borderRight: "none" },
-  }),
-  headerContainer: css({
-    gap: "2",
-  }),
   sortButton: css({
     display: "flex",
     alignItems: "center",
@@ -100,49 +48,160 @@ export const tableStyles = {
       color: "content.placeholder",
     },
   }),
-  filterInput: css(inputField, {
-    overflow: "hidden",
-  }),
-  tableBody: css({
-    bg: "base.100",
-  }),
-  tableRow: css({
-    borderBottom: "default",
-    _hover: {
-      // TODO I need a hover background color
-      // bg: "color-mix(in sRGB, var(--colors-base-100) 90%, var(--colors-base-content))",
-      bg: "primary/20",
-      transition: "background 0.3s ease",
-    },
-    bg: {
-      // TODO I need a striped color
-      // TODO VARIANT
-      _even: "base.100",
-      _odd: "base.100",
-    },
-  }),
-  tableCell: css({
-    px: 4,
-    py: 3,
-    // fontSize: "sm",
-    // color: "gray.900",
-    display: "flex",
-    alignItems: "center",
-
-    // TODO VARIANT: verticalBorder
-    // borderRight: "default",
-    // _last: { borderRight: "none" },
-  }),
-
-  footer: css({
-    px: 4,
-    py: 3,
-    borderTop: "default",
-    bg: "base.200",
-    fontSize: "sm",
-    color: "base.content",
-    textAlign: "center",
-    // TODO common token
-    roundedBottom: "lg",
-  }),
 };
+
+export const table = sva({
+  slots: [
+    "outerHeader",
+    "header",
+    "row",
+    "cell",
+    "th",
+    "outerFooter",
+    "body",
+    "table",
+    "globalSearchInput",
+    "container",
+  ],
+  base: {
+    container: {
+      bg: "base.100",
+      // TODO token for card maybe?
+      rounded: "lg",
+      border: "default",
+      // TODO token for shadow on, I suppose card
+      shadow: "sm",
+    },
+    globalSearchInput: css.raw(inputField, {
+      w: "full",
+      maxW: "20rem",
+    }),
+    table: {
+      borderCollapse: "separate",
+      borderSpacing: "0",
+    },
+    body: {
+      bg: "base.100",
+    },
+    outerFooter: {
+      px: 4,
+      py: 3,
+      borderTop: "default",
+      bg: "base.200",
+      fontSize: "sm",
+      color: "base.content",
+      textAlign: "center",
+      // TODO common token
+      roundedBottom: "lg",
+    },
+    outerHeader: {
+      p: 4,
+    },
+    row: {
+      _hover: {
+        // TODO I need a hover background color
+        bg: "primary/20",
+        transition: "background 0.3s ease",
+      },
+    },
+    cell: {
+      px: 4,
+      py: 3,
+      display: "flex",
+      alignItems: "center",
+    },
+    th: {
+      // TODO should this padding be a default?
+      px: 4,
+      py: 3,
+      textAlign: "left",
+      fontSize: "sm",
+      fontWeight: "semibold",
+      color: "base.content",
+      display: "flex",
+      alignItems: "center",
+
+      borderBottom: "default",
+    },
+  },
+  variants: {
+    darkHeader: {
+      true: {
+        outerHeader: {
+          bg: "base.200",
+        },
+
+        header: {
+          bg: "base.200",
+        },
+      },
+      false: {
+        outerHeader: {
+          bg: "base.100",
+        },
+        header: {
+          bg: "base.100",
+        },
+      },
+    },
+    striped: {
+      true: {
+        row: {
+          bg: {
+            _even: "base.100",
+            _odd: "color-mix(in sRGB, var(--colors-base-100) 90%, var(--colors-base-content))",
+          },
+        },
+      },
+      false: {
+        row: {
+          bg: "base.100",
+        },
+      },
+    },
+    horizontalBorder: {
+      true: {
+        row: {
+          borderBottom: "default",
+        },
+      },
+    },
+    verticalBorders: {
+      true: {
+        outerHeader: {
+          bg: "base.200",
+          borderBottom: "default",
+        },
+        header: {
+          bg: "base.200",
+        },
+        cell: {
+          borderRight: "default",
+          _last: { borderRight: "none" },
+        },
+        th: {
+          borderRight: "default",
+          _last: { borderRight: "none" },
+        },
+      },
+    },
+    noFooter: {
+      true: {
+        outerFooter: {
+          display: "none",
+        },
+      },
+    },
+    noHeader: {
+      true: {
+        outerHeader: {
+          display: "none",
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    darkHeader: true,
+    horizontalBorder: true,
+  },
+});
