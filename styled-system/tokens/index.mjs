@@ -1751,6 +1751,10 @@ const tokens = {
     "value": "var(--breakpoints-sm)",
     "variable": "var(--breakpoints-min-width-btm-dash)"
   },
+  "fontSizes.field": {
+    "value": "sm",
+    "variable": "var(--font-sizes-field)"
+  },
   "colors.base.100": {
     "value": "var(--colors-base-100)",
     "variable": "var(--colors-base-100)"
@@ -1766,6 +1770,10 @@ const tokens = {
   "colors.base.content": {
     "value": "var(--colors-base-content)",
     "variable": "var(--colors-base-content)"
+  },
+  "colors.border.default": {
+    "value": "color-mix(in srgb, var(--colors-base-content) 20%, transparent)",
+    "variable": "var(--colors-border-default)"
   },
   "colors.content.primary": {
     "value": "var(--colors-content-primary)",
@@ -1952,7 +1960,7 @@ const tokens = {
     "variable": "var(--radii-noise)"
   },
   "borders.default": {
-    "value": "var(--sizes-border) solid var(--colors-base-300)",
+    "value": "var(--sizes-border) solid var(--colors-border-default)",
     "variable": "var(--borders-default)"
   },
   "borders.field": {
@@ -2287,6 +2295,10 @@ const tokens = {
     "value": "var(--colors-color-palette-content)",
     "variable": "var(--colors-color-palette-content)"
   },
+  "colors.colorPalette.default": {
+    "value": "var(--colors-color-palette-default)",
+    "variable": "var(--colors-color-palette-default)"
+  },
   "colors.colorPalette.primary": {
     "value": "var(--colors-color-palette-primary)",
     "variable": "var(--colors-color-palette-primary)"
@@ -2322,10 +2334,6 @@ const tokens = {
   "colors.colorPalette.error": {
     "value": "var(--colors-color-palette-error)",
     "variable": "var(--colors-color-palette-error)"
-  },
-  "colors.colorPalette.default": {
-    "value": "var(--colors-color-palette-default)",
-    "variable": "var(--colors-color-palette-default)"
   },
   "colors.colorPalette.hover": {
     "value": "var(--colors-color-palette-hover)",

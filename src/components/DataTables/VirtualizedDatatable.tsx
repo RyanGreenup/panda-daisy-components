@@ -1,17 +1,19 @@
-import { createSignal, createMemo, For, Component, JSXElement } from "solid-js";
 import {
+  ColumnDef,
+  ColumnFiltersState,
   createSolidTable,
   flexRender,
   getCoreRowModel,
-  getSortedRowModel,
   getFilteredRowModel,
-  ColumnDef,
+  getSortedRowModel,
   SortingState,
-  ColumnFiltersState,
 } from "@tanstack/solid-table";
 import { createVirtualizer } from "@tanstack/solid-virtual";
-import { ChevronUp, ChevronDown } from "lucide-solid";
+import { ChevronDown, ChevronUp } from "lucide-solid";
+import { createMemo, createSignal, For, JSXElement, Show } from "solid-js";
 import { css } from "../../../styled-system/css";
+
+import { tableStyles } from "./styles";
 
 interface VirtualizedDataTableProps<T> {
   data: T[];
@@ -85,98 +87,67 @@ function VirtualizedDataTable<T>(
   );
 
   return (
-    <div class={css({
-      w: "full",
-      bg: "white",
-      rounded: "lg",
-      border: "1px solid token(colors.gray.200)",
-      shadow: "sm"
-    })}>
+    <div class={tableStyles.container}>
       {props.enableGlobalFilter !== false && (
-        <div class={css({
-          p: 4,
-          borderBottom: "1px solid token(colors.gray.200)"
-        })}>
+        <div class={tableStyles.globalSearchContainer}>
           <input
             value={globalFilter()}
             onInput={(e) => setGlobalFilter(e.currentTarget.value)}
             placeholder={props.searchPlaceholder || "Search all columns..."}
-            class={css({
-              w: "full",
-              px: 3,
-              py: 2,
-              border: "1px solid token(colors.gray.300)",
-              rounded: "md",
-              fontSize: "sm",
-              _placeholder: { color: "gray.500" },
-              _focus: {
-                outline: "none",
-                borderColor: "blue.500",
-                ring: "2px",
-                ringColor: "blue.500",
-                ringOpacity: 0.2
-              }
-            })}
+            class={tableStyles.globalSearchInput}
           />
         </div>
       )}
 
-      <div class={css({ overflow: "auto", overflowY: "hidden" })}>
-        <table class={css({
-          w: "full",
-          borderCollapse: "separate",
-          borderSpacing: 0,
-        })}>
-          <thead class={css({
-            bg: "gray.50",
-            borderBottom: "2px solid token(colors.gray.200)",
-            display: "block",
-            width: "100%"
-          })}>
+      <div
+        style={{
+          overflow: "scroll",
+          "overflow-y": "hidden",
+        }}
+      >
+        <table
+          style={{
+            width: "100%",
+          }}
+        >
+          <thead
+            class={tableStyles.tableHead}
+            style={{
+              width: "100%",
+            }}
+          >
             <For each={table().getHeaderGroups()}>
               {(headerGroup) => (
-                <tr class={css({
-                  display: "flex",
-                  width: "100%"
-                })}>
+                <tr
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                  }}
+                >
                   <For each={headerGroup.headers}>
                     {(header) => (
                       <th
-                        class={css({
-                          px: 4,
-                          py: 3,
-                          textAlign: "left",
-                          fontSize: "sm",
-                          fontWeight: "semibold",
-                          color: "gray.900",
-                          borderRight: "1px solid token(colors.gray.200)",
-                          _last: { borderRight: "none" },
-                          display: "flex",
-                          alignItems: "center"
-                        })}
+                        class={tableStyles.th}
                         style={{
                           width: header.column.columnDef.size
                             ? `${header.column.columnDef.size}px`
                             : "auto",
-                          flex: header.column.columnDef.size ? "none" : "1"
+                          flex: header.column.columnDef.size ? "none" : "1",
                         }}
                       >
                         {header.isPlaceholder ? null : (
-                          <div class={css({ display: "flex", flexDirection: "column", gap: 2 })}>
+                          <div
+                            style={{
+                              display: "flex",
+                              "flex-direction": "column",
+                              // TODO Let's remove this and have the input automatically shrink to fit
+                              // Probably need flex argument on the input
+                              overflow: "hidden",
+                            }}
+                            class={tableStyles.headerContainer}
+                          >
                             <button
-                              class={css({
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 1,
-                                bg: "transparent",
-                                border: "none",
-                                cursor: "pointer",
-                                fontSize: "sm",
-                                fontWeight: "semibold",
-                                color: "gray.900",
-                                _hover: { color: "gray.700" },
-                                _disabled: { cursor: "not-allowed", color: "gray.400" }
-                              })}
+                              class={tableStyles.sortButton}
                               onClick={header.column.getToggleSortingHandler()}
                               disabled={
                                 !header.column.getCanSort() ||
@@ -198,38 +169,30 @@ function VirtualizedDataTable<T>(
                                   <ChevronDown size={16} />
                                 )}
                             </button>
-                            {props.enableColumnFilters !== false &&
-                              header.column.getCanFilter() && (
-                                <input
-                                  type="text"
-                                  value={
-                                    (header.column.getFilterValue() as string) ||
-                                    ""
-                                  }
-                                  onInput={(e) =>
-                                    header.column.setFilterValue(
-                                      e.currentTarget.value,
-                                    )
-                                  }
-                                  placeholder="Filter..."
-                                  class={css({
-                                    px: 2,
-                                    py: 1,
-                                    border: "1px solid token(colors.gray.300)",
-                                    rounded: "sm",
-                                    fontSize: "xs",
-                                    w: "full",
-                                    maxW: "20",
-                                    _placeholder: { color: "gray.400" },
-                                    _focus: {
-                                      outline: "none",
-                                      borderColor: "blue.400",
-                                      ring: "1px",
-                                      ringColor: "blue.400"
-                                    }
-                                  })}
-                                />
-                              )}
+                            <Show
+                              when={
+                                props.enableColumnFilters !== false &&
+                                header.column.getCanFilter()
+                              }
+                            >
+                              <input
+                                style={{
+                                  flex: "1",
+                                }}
+                                type="text"
+                                value={
+                                  (header.column.getFilterValue() as string) ||
+                                  ""
+                                }
+                                onInput={(e) =>
+                                  header.column.setFilterValue(
+                                    e.currentTarget.value,
+                                  )
+                                }
+                                placeholder="Filter..."
+                                class={tableStyles.filterInput}
+                              />
+                            </Show>
                           </div>
                         )}
                       </th>
@@ -246,7 +209,7 @@ function VirtualizedDataTable<T>(
               display: "block",
               overflow: "auto",
               bg: "white",
-              position: "relative"
+              position: "relative",
             })}
             style={{
               height: props.height || "400px",
@@ -289,7 +252,7 @@ function VirtualizedDataTable<T>(
                             borderRight: "1px solid token(colors.gray.100)",
                             _last: { borderRight: "none" },
                             display: "flex",
-                            alignItems: "center"
+                            alignItems: "center",
                           })}
                           style={{
                             width: cell.column.columnDef.size
@@ -323,16 +286,18 @@ function VirtualizedDataTable<T>(
         </table>
       </div>
 
-      <div class={css({
-        px: 4,
-        py: 3,
-        borderTop: "1px solid token(colors.gray.200)",
-        bg: "gray.50",
-        fontSize: "sm",
-        color: "gray.600",
-        textAlign: "center",
-        roundedBottom: "lg"
-      })}>
+      <div
+        class={css({
+          px: 4,
+          py: 3,
+          borderTop: "1px solid token(colors.gray.200)",
+          bg: "gray.50",
+          fontSize: "sm",
+          color: "gray.600",
+          textAlign: "center",
+          roundedBottom: "lg",
+        })}
+      >
         Showing {filteredRows().length} of {props.data.length} rows
       </div>
     </div>
