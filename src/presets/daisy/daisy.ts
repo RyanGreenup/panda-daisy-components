@@ -58,7 +58,7 @@ const spacing = {
     y: { value: "0.75rem" },
   },
 };
-const daisyLikePreset = definePreset({
+export const daisyLikePreset = definePreset({
   name: "my-preset",
   presets: [pandaPreset],
   conditions: {

@@ -11,5 +11,6 @@ export { SingleCombobox } from './components/Combobox/SingleCombobox';
 
 // Export presets and themes
 export * from './presets/daisy/daisy';
+export { daisyLikePreset } from './presets/daisy/daisy';
 export * from './presets/layout/layout';
 
