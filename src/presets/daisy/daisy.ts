@@ -67,7 +67,7 @@ const daisyLikePreset = definePreset({
       backgroundColor: "base.100",
       color: "base.content",
       // TODO: Should we use dvh for chrome or is vh good enough?
-      minHeight: "100vh",
+      minHeight: "100dvh",
     },
     "*": {
       transition: backgroundTransition,
@@ -118,6 +118,11 @@ const daisyLikePreset = definePreset({
                 _synthwaveTheme: synthwave.base.content.value,
               },
               description: "Adaptive base content color",
+            },
+          },
+          border: {
+            default: {
+              value: "{colors.base.content/20}",
             },
           },
           content: {
@@ -459,7 +464,7 @@ const daisyLikePreset = definePreset({
         },
         borders: {
           default: {
-            value: "{sizes.border} solid {colors.base.300}",
+            value: "{sizes.border} solid {colors.border.default}",
             description:
               "Border to be used for input fields like an input for a combobox or a text area",
           },
