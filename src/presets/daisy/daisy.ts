@@ -34,6 +34,10 @@ const keyframes = {
   },
 };
 
+const fontSizes = {
+  field: { value: "sm" },
+};
+
 const backgroundTransition = "background-color 0.2s ease, color 0.2s ease";
 
 export const animationStyles = defineAnimationStyles({
@@ -80,6 +84,7 @@ const daisyLikePreset = definePreset({
         spacing,
       },
       semanticTokens: {
+        fontSizes,
         colors: {
           // Base color system with dark mode
           base: {
