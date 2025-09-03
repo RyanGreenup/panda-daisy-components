@@ -33,6 +33,7 @@ export const tableStyles = {
 
     // TODO VARIANT: verticalBorder
     // borderBottom: "default",
+    bg: "base.200",
   }),
   globalSearchInput: css(inputField, {
     w: "full",
@@ -49,7 +50,7 @@ export const tableStyles = {
     // TODO VARIANT: verticalBorder
     // If it's enabled, we make this darker with a bottom border to visually
     // separate
-    // bg: "base.200",
+    bg: "base.200",
     // borderBottom: "default",
   }),
   th: css({
