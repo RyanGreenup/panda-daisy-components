@@ -1,4 +1,5 @@
-import { css } from "../../../styled-system/css";
+// import { css } from "../../../styled-system/css";
+import { css } from "@ryangreenup/panda-daisy-components/css";
 
 export const comboboxStyles = () => ({
   control: css({
