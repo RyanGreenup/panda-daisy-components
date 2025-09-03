@@ -30,7 +30,9 @@ export const tableStyles = {
   globalSearchContainer: css({
     // TODO uniform tokens
     p: 4,
-    borderBottom: "default",
+
+    // TODO VARIANT: verticalBorder
+    // borderBottom: "default",
   }),
   globalSearchInput: css(inputField, {
     w: "full",
@@ -41,10 +43,14 @@ export const tableStyles = {
     borderSpacing: "0",
   }),
   tableHead: css({
-    bg: "base.200",
-    borderBottom: "default",
     display: "block",
     // color: "base.content",
+
+    // TODO VARIANT: verticalBorder
+    // If it's enabled, we make this darker with a bottom border to visually
+    // separate
+    // bg: "base.200",
+    // borderBottom: "default",
   }),
   th: css({
     // TODO should this padding be a default?
@@ -54,10 +60,13 @@ export const tableStyles = {
     fontSize: "sm",
     fontWeight: "semibold",
     color: "base.content",
-    borderRight: "default",
-    _last: { borderRight: "none" },
     display: "flex",
     alignItems: "center",
+
+    borderBottom: "default",
+    // TODO VARIANT: verticalBorder
+    // borderRight: "default",
+    // _last: { borderRight: "none" },
   }),
   headerContainer: css({
     gap: "2",
@@ -91,9 +100,48 @@ export const tableStyles = {
     },
   }),
   filterInput: css(inputField, {
-    // w: "full",
-    // mx: "2",
     overflow: "hidden",
-    // maxW: "20",
+  }),
+  tableBody: css({
+    bg: "base.100",
+  }),
+  tableRow: css({
+    borderBottom: "default",
+    _hover: {
+      // TODO I need a hover background color
+      // bg: "color-mix(in sRGB, var(--colors-base-100) 90%, var(--colors-base-content))",
+      bg: "primary/20",
+      transition: "background 0.3s ease",
+    },
+    bg: {
+      // TODO I need a striped color
+      // TODO VARIANT
+      _even: "base.100",
+      _odd: "base.100",
+    },
+  }),
+  tableCell: css({
+    px: 4,
+    py: 3,
+    // fontSize: "sm",
+    // color: "gray.900",
+    display: "flex",
+    alignItems: "center",
+
+    // TODO VARIANT: verticalBorder
+    // borderRight: "default",
+    // _last: { borderRight: "none" },
+  }),
+
+  footer: css({
+    px: 4,
+    py: 3,
+    borderTop: "default",
+    bg: "base.200",
+    fontSize: "sm",
+    color: "base.content",
+    textAlign: "center",
+    // TODO common token
+    roundedBottom: "lg",
   }),
 };

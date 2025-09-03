@@ -9,7 +9,9 @@ import {
   SortingState,
 } from "@tanstack/solid-table";
 import { createVirtualizer } from "@tanstack/solid-virtual";
-import { ChevronDown, ChevronUp } from "lucide-solid";
+import ChevronUp from "lucide-solid/icons/chevron-up";
+import ChevronDown from "lucide-solid/icons/chevron-down";
+import Funnel from "lucide-solid/icons/funnel";
 import { createMemo, createSignal, For, JSXElement, Show } from "solid-js";
 import { css } from "../../../styled-system/css";
 
@@ -189,7 +191,7 @@ function VirtualizedDataTable<T>(
                                     e.currentTarget.value,
                                   )
                                 }
-                                placeholder="Filter..."
+                                placeholder={"Filter..."}
                                 class={tableStyles.filterInput}
                               />
                             </Show>
@@ -205,15 +207,13 @@ function VirtualizedDataTable<T>(
 
           <tbody
             ref={parentRef}
-            class={css({
+            style={{
               display: "block",
               overflow: "auto",
-              bg: "white",
               position: "relative",
-            })}
-            style={{
               height: props.height || "400px",
             }}
+            class={tableStyles.tableBody}
           >
             <For each={rowVirtualizer().getVirtualItems()}>
               {(virtualItem) => {
@@ -222,15 +222,7 @@ function VirtualizedDataTable<T>(
 
                 return (
                   <tr
-                    class={css({
-                      borderBottom: "1px solid token(colors.gray.100)",
-                      _hover: { bg: "gray.50" },
-                      // Striped rows - comment out the line below to remove striping
-                      bg: virtualItem.index % 2 === 0 ? "white" : "gray.50/30",
-                      // Alternative striping options:
-                      // bg: virtualItem.index % 2 === 0 ? "white" : "gray.100/20", // Lighter stripes
-                      // bg: virtualItem.index % 2 === 0 ? "white" : "blue.50/20", // Blue tinted stripes
-                    })}
+                    class={tableStyles.tableRow}
                     style={{
                       height: `${virtualItem.size}px`,
                       transform: `translateY(${virtualItem.start}px)`,
@@ -244,16 +236,7 @@ function VirtualizedDataTable<T>(
                     <For each={row.getVisibleCells()}>
                       {(cell) => (
                         <td
-                          class={css({
-                            px: 4,
-                            py: 3,
-                            fontSize: "sm",
-                            color: "gray.900",
-                            borderRight: "1px solid token(colors.gray.100)",
-                            _last: { borderRight: "none" },
-                            display: "flex",
-                            alignItems: "center",
-                          })}
+                          class={tableStyles.tableCell}
                           style={{
                             width: cell.column.columnDef.size
                               ? `${cell.column.columnDef.size}px`
@@ -280,24 +263,17 @@ function VirtualizedDataTable<T>(
                 visibility: "hidden",
               }}
             >
-              <td class={css({ display: "block" })} />
+              <td
+                style={{
+                  display: "block",
+                }}
+              />
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div
-        class={css({
-          px: 4,
-          py: 3,
-          borderTop: "1px solid token(colors.gray.200)",
-          bg: "gray.50",
-          fontSize: "sm",
-          color: "gray.600",
-          textAlign: "center",
-          roundedBottom: "lg",
-        })}
-      >
+      <div class={tableStyles.footer}>
         Showing {filteredRows().length} of {props.data.length} rows
       </div>
     </div>
