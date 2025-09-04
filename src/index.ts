@@ -1,6 +1,7 @@
-// Export all Layout components
-// export * from './components/Layout';
+// NOTE do not export the presets through here, export them through
+// the package.json directly!
 
+// export * from './components/Layout';
 // // Export all Combobox components
 // export * from './components/Combobox';
 
@@ -8,9 +9,4 @@
 export { VirtualList } from './components/VirtualList';
 export { SingleCombobox } from './components/Combobox/SingleCombobox';
 // export { VirtualPhotoGrid } from './components/VirtualPhotoGrid';
-
-// Export presets and themes
-export * from './presets/daisy/daisy';
-export { daisyLikePreset } from './presets/daisy/daisy';
-export * from './presets/layout/layout';
 

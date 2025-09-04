@@ -20,14 +20,10 @@
       "import": "./src/index.ts",
       "types": "./src/index.ts"
     },
-
-
-
-
-
-
-
-
+    "./presets/*": {
+      "import": "./src/presets/*.ts",
+      "types": "./src/presets/*.ts"
+    },
     "./css": {
       "types": "./styled-system/css/index.d.ts",
       "require": "./styled-system/css/index.mjs",

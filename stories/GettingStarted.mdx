@@ -48,6 +48,14 @@ import { css } from '../styled-system/css';
 2. Update the `panda.config.ts` to scan the appropriate files:
 
    ```ts
+   import { defineConfig } from "@pandacss/dev";
+   import pandaPreset from "@pandacss/preset-panda";
+
+   // Most components depend on this preset
+   import { daisyLikePreset } from "@ryangreenup/panda-daisy-components/presets/daisy/daisy";
+   // Further requirement for the layout
+   import { layoutPreset } from "@ryangreenup/panda-daisy-components/presets/layout/layout";
+
    export default defineConfig({
      // Whether to use css reset
      preflight: true,
@@ -68,6 +76,9 @@ import { css } from '../styled-system/css';
        // "../panda-storybook/stories/**/*.{js,tsx,ts,tsx,mdx}",
        // "../panda-storybook/src/**/*.{js,tsx,ts,tsx,mdx}",
      ],
+
+     presets: [pandaPreset, layoutPreset, daisyLikePreset],
+
 
      // ...
 
@@ -109,6 +120,21 @@ import { css } from '../styled-system/css';
        ...
      ]
      ```
+
+
+4. Import the Preset
+
+   ```
+   import { daisyLikePreset } from "@ryangreenup/panda-daisy-components/presets/daisy/daisy";
+
+
+   export default defineConfig({
+     // Whether to use css reset
+     preflight: true,
+     // Import the preset
+     presets: [pandaPreset, layoutPreset, daisyLikePreset],
+   ```
+
 
 4. Import a library, like so:
 
@@ -182,8 +208,13 @@ import { css } from '../styled-system/css';
          ".": {
            "import": "./src/index.ts",
            "types": "./src/index.ts"
+         },
+         "./presets/*": {
+           "import": "./src/presets/*.ts",
+           "types": "./src/presets/*.ts"
          }
        },
+
        "files": ["src"],
        "scripts": {
          "storybook": "storybook dev -p 6006",
@@ -219,5 +250,17 @@ import { css } from '../styled-system/css';
 
    - These won't be imported automatically, but the consumer can check / be advised
 
-7. Push to Github
+7. Export the components through `index.ts` allowing the consumer to import them like so:
+
+    ```tsx
+    import { VirtualList } from "@ryangreenup/panda-daisy-components";
+    ```
+
+8. Export the `presets` through the `package.json` (as shown above), these **cannot** be exported through the `index.ts` and must be exported directly. The consumer can import the presets like so:
+
+    ```ts
+    import { daisyLikePreset } from "@ryangreenup/panda-daisy-components/presets/daisy/daisy";
+    ```
+
+9. Push to Github
 
