@@ -35,7 +35,7 @@ interface VirtualizedDataTableProps<T> {
   overscan?: number;
 }
 
-function VirtualizedDataTable<T>(
+export function VirtualizedDataTable<T>(
   props: VirtualizedDataTableProps<T>,
 ): JSXElement {
   let parentRef: HTMLDivElement | undefined;
