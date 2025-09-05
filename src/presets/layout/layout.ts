@@ -1,9 +1,9 @@
 import { definePreset } from "@pandacss/dev";
 import pandaPreset from "@pandacss/preset-panda";
 
-import daisyLikePreset from "../daisy/daisy";
 import { LayoutRecipe } from "./recipes/layout.recipe";
 
+import { DaisyPreset } from "../daisy/daisy";
 // Handle Peers
 export const createPeerId = (name: string) => `${name}-toggle`;
 export const createPeerCondition = (name: string) =>
@@ -43,7 +43,7 @@ const easings = {
 
 const layoutPreset = definePreset({
   name: "layout-preset",
-  presets: [pandaPreset, daisyLikePreset],
+  presets: [pandaPreset, DaisyPreset],
   conditions: {
     extend: {
       ...peerConditions,
