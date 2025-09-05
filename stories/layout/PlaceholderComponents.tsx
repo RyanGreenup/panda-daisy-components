@@ -62,7 +62,7 @@ export const ContentPlaceholder = ({
   </div>
 );
 
-export const MainContentPlaceholder = (props: { long: boolean }) => {
+export const MainContentPlaceholder = (props: { long?: boolean }) => {
   const { long = false } = props;
   return (
     <div

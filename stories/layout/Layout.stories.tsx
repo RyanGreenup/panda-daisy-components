@@ -13,24 +13,18 @@ import PanelLeft from "lucide-solid/icons/panel-left";
 // @ts-ignore
 import PanelRight from "lucide-solid/icons/panel-right";
 
+import { BtmDashStyled, Button, HamburgerIcon, LayoutContainer, Main, MainArea, NavbarContent, NavbarEnd, NavbarStart } from "@ryangreenup/panda-daisy-components";
+
 import {
   BtmDash,
   BtmDashContainer,
-  BtmDashStyled,
   BtmDrawer,
-  HamburgerIcon,
-  LayoutContainer,
-  Main,
-  MainArea,
   Navbar,
-  NavbarContent,
-  NavbarEnd,
-  NavbarStart,
   RightSidebar,
   Sidebar,
-} from "../../src/components/Layout";
-import { useResizeKeybindings } from "../../src/components/Layout/utilities/useResizeKeybindings";
-import VirtualPhotoGrid from "../../src/components/VirtualPhotoGrid";
+} from "@ryangreenup/panda-daisy-components";
+import { useResizeKeybindings } from "@ryangreenup/panda-daisy-components";
+import { VirtualPhotoGrid } from "@ryangreenup/panda-daisy-components";
 
 import {
   colors,
@@ -48,7 +42,7 @@ import {
   NavbarStyled,
   RightDrawerStyled,
   SidebarStyled,
-} from "../../src/components/Layout/styled";
+} from "@ryangreenup/panda-daisy-components";
 import { css } from "../../styled-system/css";
 
 const LayoutComponent = () => (

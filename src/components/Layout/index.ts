@@ -5,13 +5,13 @@ import { Sidebar } from "./Sidebar";
 import { NavbarContent, NavbarStart, NavbarCenter, NavbarEnd, NavbarLink } from "./NavbarContent";
 import { BtmDashStyled, BtmDashContainer, BtmDashItem } from "./BtmDashContent";
 import { HamburgerIcon } from "./HamburgerIcon";
-import { 
-  ToggleButton, 
-  DrawerToggle, 
-  NavbarToggle, 
-  RightDrawerToggle, 
-  BtmDrawerToggle, 
-  BtmDashToggle 
+import {
+  ToggleButton,
+  DrawerToggle,
+  NavbarToggle,
+  RightDrawerToggle,
+  BtmDrawerToggle,
+  BtmDashToggle
 } from "./ToggleButtons";
 
 import { LayoutComponentsType } from "./types";
@@ -21,15 +21,15 @@ export { LayoutContainer, Navbar, MainArea, Main, BtmDash } from "./Layout";
 export { BtmDrawer, RightSidebar } from "./Drawers";
 export { Sidebar } from "./Sidebar";
 export { NavbarContent, NavbarStart, NavbarCenter, NavbarEnd, NavbarLink } from "./NavbarContent";
-export { BtmDashStyled, BtmDashContainer, BtmDashItem } from "./BtmDashContent";
+export { BtmDashContainer, BtmDashItem } from "./BtmDashContent";
 export { HamburgerIcon } from "./HamburgerIcon";
-export { 
-  ToggleButton, 
-  DrawerToggle, 
-  NavbarToggle, 
-  RightDrawerToggle, 
-  BtmDrawerToggle, 
-  BtmDashToggle 
+export {
+  ToggleButton,
+  DrawerToggle,
+  NavbarToggle,
+  RightDrawerToggle,
+  BtmDrawerToggle,
+  BtmDashToggle
 } from "./ToggleButtons";
 
 // Export types
@@ -57,7 +57,6 @@ export const NavbarComponents = {
 };
 
 export const BtmDashComponents = {
-  BtmDashStyled,
   BtmDashContainer,
   BtmDashItem,
 };
