@@ -1751,6 +1751,10 @@ const tokens = {
     "value": "var(--breakpoints-sm)",
     "variable": "var(--breakpoints-min-width-btm-dash)"
   },
+  "fontSizes.field": {
+    "value": "sm",
+    "variable": "var(--font-sizes-field)"
+  },
   "colors.base.100": {
     "value": "var(--colors-base-100)",
     "variable": "var(--colors-base-100)"
@@ -1766,6 +1770,14 @@ const tokens = {
   "colors.base.content": {
     "value": "var(--colors-base-content)",
     "variable": "var(--colors-base-content)"
+  },
+  "colors.base.hover": {
+    "value": "color-mix(in srgb, var(--colors-primary) 20%, transparent)",
+    "variable": "var(--colors-base-hover)"
+  },
+  "colors.border.default": {
+    "value": "color-mix(in srgb, var(--colors-base-content) 20%, transparent)",
+    "variable": "var(--colors-border-default)"
   },
   "colors.content.primary": {
     "value": "var(--colors-content-primary)",
@@ -1907,53 +1919,37 @@ const tokens = {
     "value": "bg.yellow.600/50",
     "variable": "var(--colors-dev-7)"
   },
+  "shadows.selector": {
+    "value": "md",
+    "variable": "var(--shadows-selector)"
+  },
+  "shadows.field": {
+    "value": "md",
+    "variable": "var(--shadows-field)"
+  },
+  "shadows.box": {
+    "value": "md",
+    "variable": "var(--shadows-box)"
+  },
   "radii.selector": {
-    "value": "var(--radii-selector)",
+    "value": "0.5rem",
     "variable": "var(--radii-selector)"
   },
   "radii.field": {
-    "value": "var(--radii-field)",
+    "value": "0.25rem",
     "variable": "var(--radii-field)"
   },
   "radii.box": {
-    "value": "var(--radii-box)",
+    "value": "0.5rem",
     "variable": "var(--radii-box)"
   },
-  "radii.sizes.selector": {
-    "value": "var(--radii-sizes-selector)",
-    "variable": "var(--radii-sizes-selector)"
-  },
-  "radii.sizes.card.padding": {
-    "value": "1rem",
-    "variable": "var(--radii-sizes-card-padding)"
-  },
-  "radii.sizes.card.sm": {
-    "value": "0.75rem",
-    "variable": "var(--radii-sizes-card-sm)"
-  },
-  "radii.sizes.card.md": {
-    "value": "1.25rem",
-    "variable": "var(--radii-sizes-card-md)"
-  },
-  "radii.sizes.card.lg": {
-    "value": "1.5rem",
-    "variable": "var(--radii-sizes-card-lg)"
-  },
-  "radii.sizes.field": {
-    "value": "var(--radii-sizes-field)",
-    "variable": "var(--radii-sizes-field)"
-  },
-  "radii.depth": {
-    "value": "var(--radii-depth)",
-    "variable": "var(--radii-depth)"
-  },
-  "radii.noise": {
-    "value": "var(--radii-noise)",
-    "variable": "var(--radii-noise)"
-  },
   "borders.default": {
-    "value": "var(--sizes-border) solid var(--colors-base-300)",
+    "value": "var(--sizes-border) solid var(--colors-border-default)",
     "variable": "var(--borders-default)"
+  },
+  "borders.box": {
+    "value": "var(--borders-default)",
+    "variable": "var(--borders-box)"
   },
   "borders.field": {
     "value": "var(--borders-default)",
@@ -2002,6 +1998,14 @@ const tokens = {
   "sizes.border": {
     "value": "1px",
     "variable": "var(--sizes-border)"
+  },
+  "sizes.selector": {
+    "value": "var(--sizes-selector)",
+    "variable": "var(--sizes-selector)"
+  },
+  "sizes.field": {
+    "value": "0.25rem",
+    "variable": "var(--sizes-field)"
   },
   "sizes.navbar.height": {
     "value": "4rem",
@@ -2287,6 +2291,14 @@ const tokens = {
     "value": "var(--colors-color-palette-content)",
     "variable": "var(--colors-color-palette-content)"
   },
+  "colors.colorPalette.hover": {
+    "value": "var(--colors-color-palette-hover)",
+    "variable": "var(--colors-color-palette-hover)"
+  },
+  "colors.colorPalette.default": {
+    "value": "var(--colors-color-palette-default)",
+    "variable": "var(--colors-color-palette-default)"
+  },
   "colors.colorPalette.primary": {
     "value": "var(--colors-color-palette-primary)",
     "variable": "var(--colors-color-palette-primary)"
@@ -2322,14 +2334,6 @@ const tokens = {
   "colors.colorPalette.error": {
     "value": "var(--colors-color-palette-error)",
     "variable": "var(--colors-color-palette-error)"
-  },
-  "colors.colorPalette.default": {
-    "value": "var(--colors-color-palette-default)",
-    "variable": "var(--colors-color-palette-default)"
-  },
-  "colors.colorPalette.hover": {
-    "value": "var(--colors-color-palette-hover)",
-    "variable": "var(--colors-color-palette-hover)"
   },
   "colors.colorPalette.underline": {
     "value": "var(--colors-color-palette-underline)",
