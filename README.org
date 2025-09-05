@@ -1,0 +1,174 @@
+#+title: Readme
+#+OPTIONS: H:6
+* Panda CSS Components Storybook
+** Usage
+*** Import the Preset
+1. Add this to package.json
+
+   - Local
+
+     #+begin_src json
+       "dependencies": {
+         "@ryangreenup/panda-daisy-components": "file:../panda-storybook",
+     #+end_src
+
+   - Git
+
+     #+begin_example
+
+      "dependencies": {
+
+     "@ryangreenup/panda-daisy-components": "github:RyanGreenup/panda-daisy-components/#main",
+     #+end_example
+
+2. Import the preset
+
+   #+begin_example
+
+   import { daisyLikePreset } from "@ryangreenup/panda-daisy-components/presets/daisy/daisy";
+   #+end_example
+*** Walkthrough
+**** Create fresh project
+#+begin_src sh
+name="SOME_NAME"
+npm init solid@latest -- -t basic --solidstart --ts -p "${name}"
+cd "${name}"
+bun install
+git init
+git add -A
+git commit -m "initial commit"
+#+end_src
+**** Install Panda CSS
+See [[the docs]], but broadly:
+
+1. Install Panda
+
+   #+begin_src sh
+bun add -D @pandacss/dev
+bun panda init --postcss
+   #+end_src
+
+2. Add panda codegen to the =package.json=, so it might look something like this:
+
+   #+begin_src json
+{
+  "name": "example-basic",
+  "type": "module",
+  "scripts": {
+    "prepare": "panda codegen",
+    "prepare-clean": "panda codegen --clean",
+    "dev": "vinxi dev",
+    "build": "vinxi build",
+    "start": "vinxi start",
+    "version": "vinxi version"
+  },
+  "dependencies": {
+    "@solidjs/meta": "^0.29.4",
+    "@solidjs/router": "^0.15.0",
+    "@solidjs/start": "^1.1.0",
+    "solid-js": "^1.9.5",
+    "vinxi": "^0.5.7"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "@pandacss/dev": "^1.2.0"
+  }
+}
+
+   #+end_src
+
+3. Overwrite the =app.css=
+   #+begin_src
+echo '@layer reset, base, tokens, recipes, utilities;' > src/app.css
+   #+end_src
+**** Install this library
+
+1. Install the dependency
+   #+begin_src sh
+bun install "@ryangreenup/panda-daisy-components@github:RyanGreenup/panda-daisy-components/#main"
+   #+end_src
+
+2. Update the vite config so it does not optimize solid components into React:
+
+   #+begin_src typescript
+   optimizeDeps: {
+     exclude: [
+         '@ryangreenup/panda-daisy-components',
+     ],
+   },
+   #+end_src
+
+   For Solid Start, which uses Vinxi, this would be the `app.config.ts`, here's a full example:
+
+   #+begin_src javascript
+   import { defineConfig } from "@solidjs/start/config";
+   /* @ts-ignore */
+   import pkg from "@vinxi/plugin-mdx";
+
+   const { default: mdx } = pkg;
+   export default defineConfig({
+     extensions: ["mdx", "md"],
+     vite: {
+       optimizeDeps: {
+         exclude: ["@ryangreenup/panda-daisy-components"],
+       },
+       plugins: [
+         mdx.withImports({})({
+           jsx: true,
+           jsxImportSource: "solid-js",
+           providerImportSource: "solid-mdx",
+         }),
+       ],
+     },
+   });
+   #+end_src
+
+3. Update the =panda.config.ts= to scan the appropriate files and import the preset:
+
+   #+begin_src typescript
+   import { defineConfig } from "@pandacss/dev";
+   import pandaPreset from "@pandacss/preset-panda";
+
+   // Most components depend on this preset
+   import { daisyLikePreset } from "@ryangreenup/panda-daisy-components/presets/daisy/daisy";
+   // Further requirement for the layout
+   import { layoutPreset } from "@ryangreenup/panda-daisy-components/presets/layout/layout";
+
+   export default defineConfig({
+       // Whether to use css reset
+       preflight: true,
+
+       jsxFramework: "solid",
+
+       include: [
+       "./src/**/*.{js,jsx,ts,tsx}",
+       "./pages/**/*.{js,jsx,ts,tsx}",
+       "./src/**/*.mdx",
+       "./pages/**/*.mdx",
+
+       // If installed as a node module
+       "./node_modules/@ryangreenup/panda-daisy-components/stories/**/*.{js,tsx,ts,tsx,mdx}",
+       "./node_modules/@ryangreenup/panda-daisy-components/src/**/*.{js,tsx,ts,tsx,mdx}",
+
+       // If using filepaths
+       // "../panda-storybook/stories/**/*.{js,tsx,ts,tsx,mdx}",
+       // "../panda-storybook/src/**/*.{js,tsx,ts,tsx,mdx}",
+       ],
+
+       presets: [pandaPreset, layoutPreset, daisyLikePreset],
+
+
+       // ...
+
+       // The output directory for your css system
+       outdir: "styled-system",
+   });
+   #+end_src
+
+4. Import a library, like so:
+
+   #+begin_src typescript
+   import { VirtualList } from "@panda-ui/storybook";
+   #+end_src

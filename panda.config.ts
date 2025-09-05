@@ -25,8 +25,8 @@
 
 import { defineConfig } from "@pandacss/dev";
 import pandaPreset from "@pandacss/preset-panda";
-import daisyLikePreset from "./src/presets/daisy/daisy.ts";
 import layoutPreset from "./src/presets/layout/layout";
+import { DaisyPreset } from "./src/presets/daisy/daisy";
 
 export default defineConfig({
   // Whether to use css reset
@@ -45,7 +45,8 @@ export default defineConfig({
 
   // Files to exclude
   exclude: [],
-  presets: [pandaPreset, daisyLikePreset(), layoutPreset],
+  // TODO resolve typing error
+  presets: [pandaPreset, DaisyPreset, layoutPreset],
 
   // Useful for theme customization
   theme: {

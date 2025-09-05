@@ -1,4 +1,4 @@
-import { defineAnimationStyles } from "@pandacss/dev";
+import { defineAnimationStyles, definePreset } from "@pandacss/dev";
 import pandaPreset from "@pandacss/preset-panda";
 import { articleRecipe } from "./recipes/article.recipe";
 import dracula from "./themes/dracula";
@@ -105,7 +105,7 @@ const colors = {
       description: "Adaptive base content color",
     },
     hover: {
-        value: "{colors.primary/20}"
+      value: "{colors.primary/20}",
     },
   },
   border: {
@@ -367,119 +367,117 @@ const colors = {
   },
 };
 
-export default async function DaisyPreset() {
-  return {
-    name: "my-preset",
-    presets: [pandaPreset],
-    conditions: {
-      light: "[data-color-mode=light] &",
-      dark: "[data-color-mode=dark] &",
-      synthwaveTheme: "[data-theme=synthwave] &",
+export const DaisyPreset = definePreset({
+  name: "my-preset",
+  presets: [pandaPreset],
+  conditions: {
+    light: "[data-color-mode=light] &",
+    dark: "[data-color-mode=dark] &",
+    synthwaveTheme: "[data-theme=synthwave] &",
+  },
+  globalCss: {
+    "html, body": {
+      backgroundColor: "base.100",
+      color: "base.content",
+      // TODO: Should we use dvh for chrome or is vh good enough?
+      minHeight: "100dvh",
     },
-    globalCss: {
-      "html, body": {
-        backgroundColor: "base.100",
-        color: "base.content",
-        // TODO: Should we use dvh for chrome or is vh good enough?
-        minHeight: "100dvh",
-      },
-      "*": {
-        transition: backgroundTransition,
-      },
+    "*": {
+      transition: backgroundTransition,
     },
-    theme: {
-      extend: {
-        keyframes,
-        tokens: {
-          spacing,
-          foo: {},
-        },
-        semanticTokens: {
-          fontSizes,
-          colors,
-          shadows: {
-            selector: {
-              value: "md",
-              description: descriptions.selector,
-            },
-            field: {
-              value: "md",
-              description: descriptions.field,
-            },
-            box: {
-              value: "md",
-              description: descriptions.box,
-            },
+  },
+  theme: {
+    extend: {
+      keyframes,
+      tokens: {
+        spacing,
+        foo: {},
+      },
+      semanticTokens: {
+        fontSizes,
+        colors,
+        shadows: {
+          selector: {
+            value: "md",
+            description: descriptions.selector,
           },
+          field: {
+            value: "md",
+            description: descriptions.field,
+          },
+          box: {
+            value: "md",
+            description: descriptions.box,
+          },
+        },
 
-          radii: {
-            selector: {
-              value: "0.5rem",
-              description: descriptions.selector,
+        radii: {
+          selector: {
+            value: "0.5rem",
+            description: descriptions.selector,
+          },
+          field: {
+            value: "0.25rem",
+            description: descriptions.field,
+          },
+          box: {
+            // TODO refer to tokens above
+            value: "0.5rem",
+            description: descriptions.box,
+          },
+          depth: {
+            value: 0,
+          },
+          noise: {
+            value: 0,
+          },
+        },
+        sizes: {
+          border: {
+            value: {
+              base: "1px",
             },
-            field: {
-              value: "0.25rem",
-              description: descriptions.field,
-            },
-            box: {
-              // TODO refer to tokens above
-              value: "0.5rem",
-              description: descriptions.box,
-            },
-            depth: {
-              value: 0,
-            },
-            noise: {
-              value: 0,
+            description: "Width of a Border",
+          },
+          selector: {
+            value: {
+              base: "0.25rem",
+              description: `This is for ??? ${descriptions.selector}`,
             },
           },
-          sizes: {
-            border: {
-              value: {
-                base: "1px",
-              },
-              description: "Width of a Border",
+          field: {
+            value: {
+              base: "0.25rem",
             },
-            selector: {
-              value: {
-                base: "0.25rem",
-                description: `This is for ??? ${descriptions.selector}`,
-              },
-            },
-            field: {
-              value: {
-                base: "0.25rem",
-              },
-              description: `This is for ??? ${descriptions.field}`,
-            },
+            description: `This is for ??? ${descriptions.field}`,
           },
-          borders: {
-            default: {
-              value: "{sizes.border} solid {colors.border.default}",
-              description:
-                "Border to be used for input fields like an input for a combobox or a text area",
-            },
-            box: {
-              value: "{borders.default}",
-              description: `Border to be used for ${descriptions.box}`,
-            },
-            field: {
-              value: "{borders.default}",
-              description: `Border to be used for ${descriptions.field}`,
-            },
-            selector: {
-              value: "{borders.field}",
-              description: `Border to be used for ${descriptions.selector}`,
-            },
+        },
+        borders: {
+          default: {
+            value: "{sizes.border} solid {colors.border.default}",
+            description:
+              "Border to be used for input fields like an input for a combobox or a text area",
+          },
+          box: {
+            value: "{borders.default}",
+            description: `Border to be used for ${descriptions.box}`,
+          },
+          field: {
+            value: "{borders.default}",
+            description: `Border to be used for ${descriptions.field}`,
+          },
+          selector: {
+            value: "{borders.field}",
+            description: `Border to be used for ${descriptions.selector}`,
           },
         },
       },
-      recipes: {
-        article: articleRecipe,
-      },
     },
-  };
-}
+    recipes: {
+      article: articleRecipe,
+    },
+  },
+});
 
 // Notes
 // [^1]: packages/daisyui/components/input/object.js
