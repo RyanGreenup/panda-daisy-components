@@ -9,3 +9,4 @@ export { SingleCombobox } from "./components/Combobox/SingleCombobox";
 export { VirtualPhotoGrid } from "./components/VirtualPhotoGrid";
 export { Progress } from "./components/Progress";
 export { Badge } from "./components/Badge";
+export { Button } from "./components/Button";
