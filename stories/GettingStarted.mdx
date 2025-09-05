@@ -4,6 +4,10 @@ import { css } from '../styled-system/css';
 <Meta title="Getting Started" />
 
 
+<div class="sbdocs-no-override">
+
+
+
 # Panda Component Library
 
 
@@ -48,6 +52,14 @@ import { css } from '../styled-system/css';
 2. Update the `panda.config.ts` to scan the appropriate files:
 
    ```ts
+   import { defineConfig } from "@pandacss/dev";
+   import pandaPreset from "@pandacss/preset-panda";
+
+   // Most components depend on this preset
+   import { daisyLikePreset } from "@ryangreenup/panda-daisy-components/presets/daisy/daisy";
+   // Further requirement for the layout
+   import { layoutPreset } from "@ryangreenup/panda-daisy-components/presets/layout/layout";
+
    export default defineConfig({
      // Whether to use css reset
      preflight: true,
@@ -68,6 +80,9 @@ import { css } from '../styled-system/css';
        // "../panda-storybook/stories/**/*.{js,tsx,ts,tsx,mdx}",
        // "../panda-storybook/src/**/*.{js,tsx,ts,tsx,mdx}",
      ],
+
+     presets: [pandaPreset, layoutPreset, daisyLikePreset],
+
 
      // ...
 
@@ -110,6 +125,21 @@ import { css } from '../styled-system/css';
      ]
      ```
 
+
+4. Import the Preset
+
+   ```
+   import { daisyLikePreset } from "@ryangreenup/panda-daisy-components/presets/daisy/daisy";
+
+
+   export default defineConfig({
+     // Whether to use css reset
+     preflight: true,
+     // Import the preset
+     presets: [pandaPreset, layoutPreset, daisyLikePreset],
+   ```
+
+
 4. Import a library, like so:
 
    ```
@@ -129,6 +159,43 @@ import { css } from '../styled-system/css';
    - Develop or copy over presets such as
      - `../src/presets/daisy/daisy.ts`
      - [../src/presets/layout/layout.ts](/story/example-layout-compositions--styled-full-layout)
+   - Reset the override on the `prose` class to ensure the docs still render correctly. So the `src/index.css` should look something like this
+     ```css
+     @layer reset, base, tokens, recipes, utilities;
+
+     .sbdocs-no-override * {
+       all: revert; /* Reverts all applied styles to browser defaults */
+     }
+     ```
+     
+     Then wrap all `mdx` files in:
+     
+     ```html
+     <div class="sbdocs-no-override">
+
+     CONTENT HERE
+
+     </div>
+     
+     Use Panda CSS here, e.g.
+
+     <div class={css({
+     bg: "red.600",
+     animation: "spin",
+     w: "50",
+     h: "50",
+     })} >
+     foo
+     </div>
+
+     <div class="sbdocs-no-override">
+
+     CONTINUE CONTENT HERE
+
+     </div>
+     ```
+     
+     This is not mentioned in the [Panda Docs](https://panda-css.com/docs/installation/storybook) although there are tangential Github issues on storybook, see e.g. [#10270](https://github.com/storybookjs/storybook/issues/10270)
 
 3. Track Styled-System by removing it from `.gitignore`, `git add`, `git commit`
 
@@ -182,8 +249,13 @@ import { css } from '../styled-system/css';
          ".": {
            "import": "./src/index.ts",
            "types": "./src/index.ts"
+         },
+         "./presets/*": {
+           "import": "./src/presets/*.ts",
+           "types": "./src/presets/*.ts"
          }
        },
+
        "files": ["src"],
        "scripts": {
          "storybook": "storybook dev -p 6006",
@@ -219,5 +291,71 @@ import { css } from '../styled-system/css';
 
    - These won't be imported automatically, but the consumer can check / be advised
 
-7. Push to Github
+7. Export the components through `index.ts` allowing the consumer to import them like so:
 
+    ```tsx
+    import { VirtualList } from "@ryangreenup/panda-daisy-components";
+    ```
+
+8. Export the `presets` through the `package.json` (as shown above), these **cannot** be exported through the `index.ts` and must be exported directly. The consumer can import the presets like so:
+
+    ```ts
+    import { daisyLikePreset } from "@ryangreenup/panda-daisy-components/presets/daisy/daisy";
+    ```
+
+9. Push to Github
+
+
+</div>
+
+
+## Appendix
+
+### Example of Panda CSS in MDX
+
+<div class="sbdocs-no-override">
+This paragraph is inside the `sbdocs-no-override` class, then it ends to permit Panda CSS Below
+</div>
+
+<table>
+<thead>
+<tr class="header">
+<th>Spinning</th>
+<th>Pulsing</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="group">
+    <div class={css({
+    bg: "red.600",
+    animation: "bounce",
+    w: "50",
+    h: "50",
+    _groupHover: {
+      bg: "red.800",
+      transform: "scale(2)",
+      transition: "all 0.3s ease",
+    }
+    })} >
+    foo
+    </div>
+</td>
+<td class="group">
+    <div class={css({
+    bg: "red.600",
+    animation: "pulse",
+    w: "50",
+    h: "50",
+    _groupHover: {
+      bg: "red.800",
+      transform: "scale(2)",
+      transition: "all 0.3s ease",
+    }
+    })} >
+    foo
+    </div>
+</td>
+</tr>
+</tbody>
+</table>

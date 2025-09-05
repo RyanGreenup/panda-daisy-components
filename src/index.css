@@ -1,1 +1,9 @@
+/* @layer reset, base, tokens, recipes, utilities; */
+
 @layer reset, base, tokens, recipes, utilities;
+
+
+/* Override for .sbdocs children */
+.sbdocs-no-override * {
+  all: revert; /* Reverts all applied styles to browser defaults */
+}

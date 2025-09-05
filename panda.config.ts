@@ -38,19 +38,18 @@ export default defineConfig({
   include: [
     "./pages/**/*.mdx",
     "./pages/**/*.{js,jsx,ts,tsx}",
-    "./src/**/*.mdx",
-    "./src/**/*.{js,jsx,ts,tsx}",
-    "./stories/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx,mdx}",
+    "./stories/**/*.{js,jsx,ts,tsx,mdx}",
+    "./stories/GettingStarted.mdx",
   ],
 
   // Files to exclude
   exclude: [],
-  presets: [pandaPreset, daisyLikePreset, layoutPreset],
+  presets: [pandaPreset, daisyLikePreset(), layoutPreset],
 
   // Useful for theme customization
   theme: {
     extend: {
-      
       // recipes: {
       //   tree: treeRecipe,
       // },
