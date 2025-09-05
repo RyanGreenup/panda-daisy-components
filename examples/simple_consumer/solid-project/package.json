@@ -1,0 +1,31 @@
+{
+  "name": "example-basic",
+  "type": "module",
+  "scripts": {
+    "prepare": "panda codegen",
+    "prepare-clean": "panda codegen --clean",
+    "dev": "vinxi dev",
+    "build": "vinxi build",
+    "start": "vinxi start",
+    "version": "vinxi version"
+  },
+  "dependencies": {
+    "@kobalte/core": "^0.13.11",
+    "@ryangreenup/panda-daisy-components": "github:RyanGreenup/panda-daisy-components/#main",
+    "@solidjs/meta": "^0.29.4",
+    "@solidjs/router": "^0.15.3",
+    "@solidjs/start": "^1.1.7",
+    "@tanstack/solid-table": "^8.21.3",
+    "@tanstack/solid-virtual": "^3.13.12",
+    "lucide-solid": "^0.542.0",
+    "solid-js": "^1.9.9",
+    "solid-transition-group": "^0.3.0",
+    "vinxi": "^0.5.8"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "@pandacss/dev": "^1.2.0"
+  }
+}
