@@ -9,6 +9,7 @@ import { Transition } from "solid-transition-group";
 import ChevronsUpDown from "lucide-solid/icons/chevrons-up-down";
 import { comboboxStyles } from "./style";
 import { css, cx } from "../../../styled-system/css";
+import { Badge } from "../Badge";
 
 const styles = comboboxStyles();
 
@@ -54,12 +55,19 @@ export function MultiCombobox(props: MultiComboboxProps): JSX.Element {
         >
           {(state) => (
             <>
-              <div class={cx(styles.inputContainer, css({px: "0.25rem", py: "0.5rem" }))}>
+              <div
+                class={cx(
+                  styles.inputContainer,
+                  css({ px: "0.25rem", py: "0.5rem" }),
+                )}
+              >
                 <For each={state.selectedOptions()}>
                   {(option) => (
-                    <span
-                      class={styles.tag}
+                    <Badge
                       onPointerDown={(e) => e.stopPropagation()}
+                      class={css({
+                        fontSize: "0.75rem",
+                      })}
                     >
                       {option}
                       <button
@@ -69,7 +77,7 @@ export function MultiCombobox(props: MultiComboboxProps): JSX.Element {
                       >
                         <X class="w-3 h-3" />
                       </button>
-                    </span>
+                    </Badge>
                   )}
                 </For>
                 <Combobox.Input ref={props.ref} class={styles.input} />
