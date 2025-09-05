@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/solid-table";
 import { VirtualizedDataTable } from "@ryangreenup/panda-daisy-components";
 import { css } from "../styled-system/css";
 import { Badge } from "../src/components/Badge";
+import { Progress } from "../src/components/Progress";
 
 interface Employee {
   id: number;
@@ -64,26 +65,6 @@ const emailLinkStyle = css.raw({
 });
 
 
-const performanceBarContainerStyle = css.raw({
-  display: "flex",
-  alignItems: "center",
-  gap: "0.5rem",
-});
-
-const performanceBarStyle = css.raw({
-  w: "4rem",
-  bg: "base.300",
-  borderRadius: "full",
-  h: "0.5rem",
-  overflow: "hidden",
-});
-
-const performanceTextStyle = css.raw({
-  fontSize: "0.75rem",
-  color: "base.content",
-  w: "2rem",
-  textAlign: "right",
-});
 
 const getColumns = (): ColumnDef<Employee>[] => [
   {
@@ -152,27 +133,22 @@ const getColumns = (): ColumnDef<Employee>[] => [
     header: "Performance",
     cell: (info) => {
       const performance = info.getValue() as number;
-      const getPerformanceColor = (score: number) => {
+      const [value] = createSignal(performance);
+      const [showLabel] = createSignal(true);
+      
+      const getPerformanceVariant = (score: number) => {
         if (score >= 80) return "success";
         if (score >= 60) return "warning";
-        return css({ bg: "error" });
+        return "error";
       };
 
       return (
-        <div class={css(performanceBarContainerStyle)}>
-          <div class={css(performanceBarStyle)}>
-            <div
-              class={css({
-                h: "full",
-                borderRadius: "full",
-                transition: "all",
-                bg: getPerformanceColor(performance),
-                width: performance,
-              })}
-            />
-          </div>
-          <span class={css(performanceTextStyle)}>{performance}%</span>
-        </div>
+        <Progress 
+          value={value} 
+          variant={getPerformanceVariant(performance)}
+          showLabel={showLabel}
+          class={css({ w: "4rem" })}
+        />
       );
     },
     size: 150,
