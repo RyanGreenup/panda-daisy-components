@@ -194,4 +194,159 @@ export default function Home() {
    #+end_src
 
 
-5. Implement the default layout. Edit
+1. Implement the default layout.
+   1. Move the Index:
+      #+begin_src sh
+touch src/routes/(app).tsx
+mkdir src/routes/app/
+mv src/routes/index.tsx src/routes/app/
+      #+end_src
+   2. Implement the layout group
+      #+begin_src tsx
+import {
+  BtmDashContainer,
+  BtmDashStyled,
+  BtmDrawerToggleStyled,
+  DrawerToggleStyled,
+  HamburgerIcon,
+  LayoutContainer,
+  Main,
+  MainArea,
+  NavbarContent,
+  NavbarEnd,
+  NavbarStart,
+  NavbarToggleStyled,
+  RightDrawerToggleStyled,
+  BtmDrawerStyled,
+  NavbarStyled,
+  RightDrawerStyled,
+  SidebarStyled,
+  Button,
+} from "@ryangreenup/panda-daisy-components";
+
+import { circle } from "../../styled-system/patterns";
+import { css } from "../../styled-system/css";
+// @ts-ignore
+import Menu from "lucide-solid/icons/menu";
+// @ts-ignore
+import PanelBottom from "lucide-solid/icons/panel-bottom";
+// @ts-ignore
+import PanelLeft from "lucide-solid/icons/panel-left";
+// @ts-ignore
+import PanelRight from "lucide-solid/icons/panel-right";
+import { For, JSXElement } from "solid-js";
+
+export default function Layout(props: { children: JSXElement }) {
+  // const Layout = (props: { children: JSXElement }) => {
+  return (
+    <div
+      class={css({
+        height: "100dvh",
+      })}
+    >
+      <LayoutContainer>
+        <NavbarStyled>
+          <NavbarContent>
+            <NavbarStart>
+              <HamburgerIcon name="drawer" />
+            </NavbarStart>
+            <NavbarContent>
+              <BtmDashContainer>
+                <ToggleButtons />
+              </BtmDashContainer>
+            </NavbarContent>
+            <NavbarEnd>
+              <div
+                class={circle({
+                  w: "8",
+                  h: "8",
+                  bgGradient: "to-r",
+                  gradientFrom: "primary",
+                  gradientTo: "secondary",
+                })}
+              ></div>
+            </NavbarEnd>
+          </NavbarContent>
+        </NavbarStyled>
+        <MainArea>
+          <SidebarStyled>
+            <SidebarContainer>
+              <SidebarPlaceHolder />
+            </SidebarContainer>
+          </SidebarStyled>
+          <Main>{props.children}</Main>
+          {/* TODO RightSidebar may be renamed as RightDrawer */}
+          <RightDrawerStyled>
+            <SidebarContainer>
+              <SidebarPlaceHolder />
+            </SidebarContainer>
+          </RightDrawerStyled>
+          <BtmDrawerStyled>
+            <ToggleButtons />
+          </BtmDrawerStyled>
+        </MainArea>
+        <BtmDashStyled>
+          <BtmDashContainer>
+            <ToggleButtons />
+          </BtmDashContainer>
+        </BtmDashStyled>
+      </LayoutContainer>
+    </div>
+  );
+}
+
+const SidebarContainer = (props: { children: JSXElement }) => {
+  return (
+    <div
+      class={css({
+        p: "4",
+        display: "flex",
+        flexDirection: "column",
+        gap: "3",
+        height: "100%",
+      })}
+    >
+      {props.children}
+    </div>
+  );
+};
+
+const SidebarPlaceHolder = () => {
+  return (
+    <ul>
+      <For
+        each={Array.from({ length: 100 }, (_, i) => i)}
+        fallback={<div>No items</div>}
+      >
+        {(item, index) => <li data-index={index()}>{item}</li>}
+      </For>
+    </ul>
+  );
+};
+
+const ToggleButtons = () => {
+  return (
+    <>
+      <DrawerToggleStyled>
+        <Menu size={20} />
+        <span>Sidebar</span>
+      </DrawerToggleStyled>
+
+      <NavbarToggleStyled>
+        <PanelLeft size={20} />
+        <span>Navbar</span>
+      </NavbarToggleStyled>
+
+      <RightDrawerToggleStyled>
+        <PanelRight size={20} />
+        <span>Right</span>
+      </RightDrawerToggleStyled>
+
+      <BtmDrawerToggleStyled>
+        <PanelBottom size={20} />
+        <span>Bottom</span>
+      </BtmDrawerToggleStyled>
+    </>
+  );
+};
+      #+end_src
