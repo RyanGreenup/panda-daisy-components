@@ -4,6 +4,10 @@ import { css } from '../styled-system/css';
 <Meta title="Getting Started" />
 
 
+<div class="sbdocs-no-override">
+
+
+
 # Panda Component Library
 
 
@@ -155,6 +159,43 @@ import { css } from '../styled-system/css';
    - Develop or copy over presets such as
      - `../src/presets/daisy/daisy.ts`
      - [../src/presets/layout/layout.ts](/story/example-layout-compositions--styled-full-layout)
+   - Reset the override on the `prose` class to ensure the docs still render correctly. So the `src/index.css` should look something like this
+     ```css
+     @layer reset, base, tokens, recipes, utilities;
+
+     .sbdocs-no-override * {
+       all: revert; /* Reverts all applied styles to browser defaults */
+     }
+     ```
+     
+     Then wrap all `mdx` files in:
+     
+     ```html
+     <div class="sbdocs-no-override">
+
+     CONTENT HERE
+
+     </div>
+     
+     Use Panda CSS here, e.g.
+
+     <div class={css({
+     bg: "red.600",
+     animation: "spin",
+     w: "50",
+     h: "50",
+     })} >
+     foo
+     </div>
+
+     <div class="sbdocs-no-override">
+
+     CONTINUE CONTENT HERE
+
+     </div>
+     ```
+     
+     This is not mentioned in the [Panda Docs](https://panda-css.com/docs/installation/storybook) although there are tangential Github issues on storybook, see e.g. [#10270](https://github.com/storybookjs/storybook/issues/10270)
 
 3. Track Styled-System by removing it from `.gitignore`, `git add`, `git commit`
 
@@ -264,3 +305,57 @@ import { css } from '../styled-system/css';
 
 9. Push to Github
 
+
+</div>
+
+
+## Appendix
+
+### Example of Panda CSS in MDX
+
+<div class="sbdocs-no-override">
+This paragraph is inside the `sbdocs-no-override` class, then it ends to permit Panda CSS Below
+</div>
+
+<table>
+<thead>
+<tr class="header">
+<th>Spinning</th>
+<th>Pulsing</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="group">
+    <div class={css({
+    bg: "red.600",
+    animation: "bounce",
+    w: "50",
+    h: "50",
+    _groupHover: {
+      bg: "red.800",
+      transform: "scale(2)",
+      transition: "all 0.3s ease",
+    }
+    })} >
+    foo
+    </div>
+</td>
+<td class="group">
+    <div class={css({
+    bg: "red.600",
+    animation: "pulse",
+    w: "50",
+    h: "50",
+    _groupHover: {
+      bg: "red.800",
+      transform: "scale(2)",
+      transition: "all 0.3s ease",
+    }
+    })} >
+    foo
+    </div>
+</td>
+</tr>
+</tbody>
+</table>
