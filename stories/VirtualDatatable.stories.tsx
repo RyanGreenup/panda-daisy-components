@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { createSignal } from "solid-js";
 import { ColumnDef } from "@tanstack/solid-table";
-import VirtualizedDataTable from "../src/components/DataTables/VirtualizedDatatable";
+import { VirtualizedDataTable } from "@ryangreenup/panda-daisy-components";
 import { css } from "../styled-system/css";
 
 interface Employee {
