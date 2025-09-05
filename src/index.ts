@@ -7,3 +7,5 @@ export { VirtualizedDataTable } from "./components/DataTables/VirtualizedDatatab
 export { VirtualList } from "./components/VirtualList";
 export { SingleCombobox } from "./components/Combobox/SingleCombobox";
 export { VirtualPhotoGrid } from "./components/VirtualPhotoGrid";
+export { Progress } from "./components/Progress";
+export { Badge } from "./components/Badge";

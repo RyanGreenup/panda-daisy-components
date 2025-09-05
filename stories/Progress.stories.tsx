@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
-import { Progress } from "../src/components/Progress";
+import { Progress } from "@ryangreenup/panda-daisy-components";
 import { css } from "../styled-system/css";
-import { createSignal, createEffect, createMemo } from "solid-js";
+import { createSignal, createEffect } from "solid-js";
 
 const meta = {
   title: "Components/Progress",
@@ -52,7 +52,7 @@ export const Default: Story = {
 
     return (
       <div style={{ width: "300px" }}>
-        <Progress 
+        <Progress
           value={value}
           max={max}
           showLabel={showLabel}
@@ -80,7 +80,14 @@ export const AllVariants: Story = {
     const [showLabel] = createSignal(true);
 
     return (
-      <div class={css({ display: "flex", flexDirection: "column", gap: "1rem", width: "300px" })}>
+      <div
+        class={css({
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+          width: "300px",
+        })}
+      >
         <Progress value={value1} variant="default" showLabel={showLabel} />
         <Progress value={value2} variant="success" showLabel={showLabel} />
         <Progress value={value3} variant="warning" showLabel={showLabel} />
@@ -98,18 +105,64 @@ export const AllSizes: Story = {
     const [showLabel] = createSignal(true);
 
     return (
-      <div class={css({ display: "flex", flexDirection: "column", gap: "1rem", width: "300px" })}>
+      <div
+        class={css({
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+          width: "300px",
+        })}
+      >
         <div>
-          <p class={css({ fontSize: "0.875rem", mb: "0.5rem", color: "base.content" })}>Small</p>
-          <Progress value={value1} size="sm" variant="success" showLabel={showLabel} />
+          <p
+            class={css({
+              fontSize: "0.875rem",
+              mb: "0.5rem",
+              color: "base.content",
+            })}
+          >
+            Small
+          </p>
+          <Progress
+            value={value1}
+            size="sm"
+            variant="success"
+            showLabel={showLabel}
+          />
         </div>
         <div>
-          <p class={css({ fontSize: "0.875rem", mb: "0.5rem", color: "base.content" })}>Medium</p>
-          <Progress value={value2} size="md" variant="default" showLabel={showLabel} />
+          <p
+            class={css({
+              fontSize: "0.875rem",
+              mb: "0.5rem",
+              color: "base.content",
+            })}
+          >
+            Medium
+          </p>
+          <Progress
+            value={value2}
+            size="md"
+            variant="default"
+            showLabel={showLabel}
+          />
         </div>
         <div>
-          <p class={css({ fontSize: "0.875rem", mb: "0.5rem", color: "base.content" })}>Large</p>
-          <Progress value={value3} size="lg" variant="warning" showLabel={showLabel} />
+          <p
+            class={css({
+              fontSize: "0.875rem",
+              mb: "0.5rem",
+              color: "base.content",
+            })}
+          >
+            Large
+          </p>
+          <Progress
+            value={value3}
+            size="lg"
+            variant="warning"
+            showLabel={showLabel}
+          />
         </div>
       </div>
     );
@@ -126,19 +179,27 @@ export const ProgressList: Story = {
     const [showLabel] = createSignal(true);
 
     return (
-      <div class={css({ 
-        display: "flex", 
-        flexDirection: "column", 
-        gap: "0.75rem", 
-        width: "400px",
-        p: "1.5rem",
-        bg: "base.50",
-        borderRadius: "md",
-      })}>
-        <h3 class={css({ fontSize: "1.125rem", fontWeight: "semibold", mb: "0.5rem" })}>
+      <div
+        class={css({
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.75rem",
+          width: "400px",
+          p: "1.5rem",
+          bg: "base.50",
+          borderRadius: "md",
+        })}
+      >
+        <h3
+          class={css({
+            fontSize: "1.125rem",
+            fontWeight: "semibold",
+            mb: "0.5rem",
+          })}
+        >
           Progress Overview
         </h3>
-        
+
         <Progress value={value1} variant="error" showLabel={showLabel} />
         <Progress value={value2} variant="warning" showLabel={showLabel} />
         <Progress value={value3} variant="default" showLabel={showLabel} />
@@ -160,18 +221,64 @@ export const WithCustomMax: Story = {
     const [showLabel] = createSignal(true);
 
     return (
-      <div class={css({ display: "flex", flexDirection: "column", gap: "1rem", width: "300px" })}>
+      <div
+        class={css({
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+          width: "300px",
+        })}
+      >
         <div>
-          <p class={css({ fontSize: "0.875rem", mb: "0.5rem", color: "base.content" })}>Score: 85/120</p>
-          <Progress value={value1} max={max1} variant="success" showLabel={showLabel} />
+          <p
+            class={css({
+              fontSize: "0.875rem",
+              mb: "0.5rem",
+              color: "base.content",
+            })}
+          >
+            Score: 85/120
+          </p>
+          <Progress
+            value={value1}
+            max={max1}
+            variant="success"
+            showLabel={showLabel}
+          />
         </div>
         <div>
-          <p class={css({ fontSize: "0.875rem", mb: "0.5rem", color: "base.content" })}>Tasks: 12/20</p>
-          <Progress value={value2} max={max2} variant="warning" showLabel={showLabel} />
+          <p
+            class={css({
+              fontSize: "0.875rem",
+              mb: "0.5rem",
+              color: "base.content",
+            })}
+          >
+            Tasks: 12/20
+          </p>
+          <Progress
+            value={value2}
+            max={max2}
+            variant="warning"
+            showLabel={showLabel}
+          />
         </div>
         <div>
-          <p class={css({ fontSize: "0.875rem", mb: "0.5rem", color: "base.content" })}>Storage: 750GB/1TB</p>
-          <Progress value={value3} max={max3} variant="error" showLabel={showLabel} />
+          <p
+            class={css({
+              fontSize: "0.875rem",
+              mb: "0.5rem",
+              color: "base.content",
+            })}
+          >
+            Storage: 750GB/1TB
+          </p>
+          <Progress
+            value={value3}
+            max={max3}
+            variant="error"
+            showLabel={showLabel}
+          />
         </div>
       </div>
     );
@@ -188,7 +295,14 @@ export const WithoutLabel: Story = {
     const [showLabel] = createSignal(false);
 
     return (
-      <div class={css({ display: "flex", flexDirection: "column", gap: "0.5rem", width: "300px" })}>
+      <div
+        class={css({
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.5rem",
+          width: "300px",
+        })}
+      >
         <Progress value={value1} variant="error" showLabel={showLabel} />
         <Progress value={value2} variant="warning" showLabel={showLabel} />
         <Progress value={value3} variant="default" showLabel={showLabel} />

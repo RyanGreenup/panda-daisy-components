@@ -1,10 +1,12 @@
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { createSignal } from "solid-js";
 import { ColumnDef } from "@tanstack/solid-table";
-import { VirtualizedDataTable } from "@ryangreenup/panda-daisy-components";
+import {
+  VirtualizedDataTable,
+  Badge,
+  Progress,
+} from "@ryangreenup/panda-daisy-components";
 import { css } from "../styled-system/css";
-import { Badge } from "../src/components/Badge";
-import { Progress } from "../src/components/Progress";
 
 interface Employee {
   id: number;
@@ -64,8 +66,6 @@ const emailLinkStyle = css.raw({
   },
 });
 
-
-
 const getColumns = (): ColumnDef<Employee>[] => [
   {
     accessorKey: "id",
@@ -97,9 +97,7 @@ const getColumns = (): ColumnDef<Employee>[] => [
     // TODO this should be a categorical filter
     accessorKey: "department",
     header: "Department",
-    cell: (info) => (
-      <Badge>{info.getValue() as string}</Badge>
-    ),
+    cell: (info) => <Badge>{info.getValue() as string}</Badge>,
     size: 130,
   },
   {
@@ -120,11 +118,7 @@ const getColumns = (): ColumnDef<Employee>[] => [
     header: "Status",
     cell: (info) => {
       const status = info.getValue() as Employee["status"];
-      return (
-        <Badge variant={statusVariants[status]}>
-          {status}
-        </Badge>
-      );
+      return <Badge variant={statusVariants[status]}>{status}</Badge>;
     },
     size: 120,
   },
@@ -135,7 +129,7 @@ const getColumns = (): ColumnDef<Employee>[] => [
       const performance = info.getValue() as number;
       const [value] = createSignal(performance);
       const [showLabel] = createSignal(true);
-      
+
       const getPerformanceVariant = (score: number) => {
         if (score >= 80) return "success";
         if (score >= 60) return "warning";
@@ -143,8 +137,8 @@ const getColumns = (): ColumnDef<Employee>[] => [
       };
 
       return (
-        <Progress 
-          value={value} 
+        <Progress
+          value={value}
           variant={getPerformanceVariant(performance)}
           showLabel={showLabel}
           class={css({ w: "4rem" })}

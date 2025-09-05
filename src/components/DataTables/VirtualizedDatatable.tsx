@@ -17,7 +17,7 @@ import { css } from "../../../styled-system/css";
 
 import { Input } from "../Input";
 
-import { inputField, table } from "./styles";
+import { table } from "./styles";
 const newTableStyles = table({
   darkHeader: true,
 });
