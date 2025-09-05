@@ -14,6 +14,8 @@ import {
   BtmDashToggle 
 } from "./ToggleButtons";
 
+import { LayoutComponentsType } from "./types";
+
 // Export all individual components
 export { LayoutContainer, Navbar, MainArea, Main, BtmDash } from "./Layout";
 export { BtmDrawer, RightSidebar } from "./Drawers";
@@ -31,7 +33,7 @@ export {
 } from "./ToggleButtons";
 
 // Export types
-export type { LayoutComponentsType, LabelPropsWithoutChildren, DivPropsWithoutChildren } from './types'
+export type { LabelPropsWithoutChildren, DivPropsWithoutChildren } from './types'
 export type { ToggleButtonProps } from './ToggleButtons';
 
 // Export grouped components for convenience (keeping existing API)
