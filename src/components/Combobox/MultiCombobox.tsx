@@ -8,7 +8,7 @@ import { Transition } from "solid-transition-group";
 
 import ChevronsUpDown from "lucide-solid/icons/chevrons-up-down";
 import { comboboxStyles } from "./style";
-import { cx } from "../../../styled-system/css";
+import { css, cx } from "../../../styled-system/css";
 
 const styles = comboboxStyles();
 
@@ -54,7 +54,7 @@ export function MultiCombobox(props: MultiComboboxProps): JSX.Element {
         >
           {(state) => (
             <>
-              <div class={styles.inputContainer}>
+              <div class={cx(styles.inputContainer, css({px: "0.25rem", py: "0.5rem" }))}>
                 <For each={state.selectedOptions()}>
                   {(option) => (
                     <span
