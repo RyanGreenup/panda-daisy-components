@@ -99,7 +99,6 @@ bun install "@ryangreenup/panda-daisy-components@github:RyanGreenup/panda-daisy-
      ],
    },
    #+end_src
-
    For Solid Start, which uses Vinxi, this would be the `app.config.ts`, here's a full example:
 
    #+begin_src typescript
@@ -124,9 +123,7 @@ export default defineConfig({
     },
 });
    #+end_src
-
 3. Update the =panda.config.ts= to scan the appropriate files and import the preset, it may look something like this:
-
    #+begin_src typescript
 import { defineConfig } from "@pandacss/dev";
 import pandaPreset from "@pandacss/preset-panda";
@@ -161,17 +158,11 @@ export default defineConfig({
     outdir: "styled-system",
 });
    #+end_src
-
-
 4. Install the peer dependencies (be sure to check the =package.json= to be sure)
-
    #+begin_src sh
    bun install "@kobalte/core" "solid-js" "@tanstack/solid-virtual" "lucide-solid" "solid-transition-group" "@tanstack/solid-table"
    #+end_src
-
-
 5. Create a route with a component, e.g. =src/routes/index.tsx=:
-
    #+begin_src typescript
 import { Button } from "@ryangreenup/panda-daisy-components";
 import { css } from "../../styled-system/css";
@@ -192,14 +183,12 @@ export default function Home() {
   );
 }
    #+end_src
-
-
-1. Implement the default layout.
+6. Implement the default layout.
    1. Move the Index:
       #+begin_src sh
-touch src/routes/(app).tsx
-mkdir src/routes/app/
-mv src/routes/index.tsx src/routes/app/
+touch "src/routes/(app).tsx"
+mkdir "src/routes/(app)/"
+mv src/routes/index.tsx "src/routes/(app)"
       #+end_src
    2. Implement the layout group
       #+begin_src tsx
