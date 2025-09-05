@@ -3,6 +3,7 @@ import { createSignal } from "solid-js";
 import { ColumnDef } from "@tanstack/solid-table";
 import { VirtualizedDataTable } from "@ryangreenup/panda-daisy-components";
 import { css } from "../styled-system/css";
+import { Badge } from "../src/components/Badge";
 
 interface Employee {
   id: number;
@@ -47,12 +48,12 @@ const generateEmployeeData = (count: number): Employee[] => {
   }));
 };
 
-const statusStyles = {
-  Active: css.raw({ bg: "success", color: "content.success" }),
-  Inactive: css.raw({ bg: "base.300", color: "base.content" }),
-  Pending: css.raw({ bg: "warning", color: "content.warning" }),
-  Suspended: css.raw({ bg: "error", color: "content.error" }),
-};
+const statusVariants = {
+  Active: "success",
+  Inactive: "neutral",
+  Pending: "warning",
+  Suspended: "error",
+} as const;
 
 const emailLinkStyle = css.raw({
   color: "primary",
@@ -62,17 +63,6 @@ const emailLinkStyle = css.raw({
   },
 });
 
-const departmentBadgeStyle = css.raw({
-  display: "inline-flex",
-  alignItems: "center",
-  px: "0.625rem",
-  py: "0.125rem",
-  borderRadius: "full",
-  fontSize: "0.75rem",
-  fontWeight: "medium",
-  bg: "secondary",
-  color: "content.secondary",
-});
 
 const performanceBarContainerStyle = css.raw({
   display: "flex",
@@ -127,7 +117,7 @@ const getColumns = (): ColumnDef<Employee>[] => [
     accessorKey: "department",
     header: "Department",
     cell: (info) => (
-      <span class={css(departmentBadgeStyle)}>{info.getValue() as string}</span>
+      <Badge>{info.getValue() as string}</Badge>
     ),
     size: 130,
   },
@@ -150,9 +140,9 @@ const getColumns = (): ColumnDef<Employee>[] => [
     cell: (info) => {
       const status = info.getValue() as Employee["status"];
       return (
-        <span class={css(departmentBadgeStyle, statusStyles[status])}>
+        <Badge variant={statusVariants[status]}>
           {status}
-        </span>
+        </Badge>
       );
     },
     size: 120,
