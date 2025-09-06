@@ -63,7 +63,7 @@ export type ProgressVariants = RecipeVariantProps<typeof progressStyle> &
 export interface ProgressProps extends ProgressVariants {
   value: Accessor<number>;
   max?: Accessor<number>;
-  showLabel?: Accessor<number>;
+  showLabel?: Accessor<boolean>;
   children?: JSXElement;
   class?: string;
 }
