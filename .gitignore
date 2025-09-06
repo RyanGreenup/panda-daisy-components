@@ -1,5 +1,6 @@
 node_modules
-dist
+# Simpler to track for now
+# dist
 storybook-static
 bun.lock
 package-lock.json
