@@ -7,7 +7,7 @@ export default defineConfig([
     entry: ["./src/index.ts"],
     platform: "neutral",
     dts: true,
-    plugins: [solid({ solid: { generate: "ssr" } })],
+    plugins: [solid({ solid: { generate: "dom" } })],
   },
   {
     entry: ["./src/index.ts"],
