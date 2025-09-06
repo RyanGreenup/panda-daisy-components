@@ -1,4 +1,4 @@
-import { Dynamic, addEventListener, className, createComponent, delegateEvents, effect, insert, memo, mergeProps, setAttribute, setStyleProperty, spread, template, use } from "solid-js/web";
+import { Dynamic, createComponent, escape, mergeProps, ssr, ssrAttribute, ssrElement, ssrStyleProperty } from "solid-js/web";
 import { For, Show, children, createComponent as createComponent$1, createComputed, createEffect, createMemo, createSignal, mergeProps as mergeProps$1, onCleanup, onMount, splitProps } from "solid-js";
 import { Combobox } from "@kobalte/core/combobox";
 import Check from "lucide-solid/icons/check";
@@ -49,7 +49,7 @@ function withoutImportant(value) {
 function withoutSpace(str) {
 	return typeof str === "string" ? str.replaceAll(" ", "_") : str;
 }
-var memo$2 = (fn) => {
+var memo$1 = (fn) => {
 	const cache = /* @__PURE__ */ new Map();
 	const get = (...args) => {
 		const key = JSON.stringify(args);
@@ -128,18 +128,18 @@ var sanitize = (value) => typeof value === "string" ? value.replaceAll(/[\n\s]+/
 function createCss(context$1) {
 	const { utility, hash, conditions: conds = fallbackCondition } = context$1;
 	const formatClassName = (str) => [utility.prefix, str].filter(Boolean).join("-");
-	const hashFn = (conditions$1, className$1) => {
+	const hashFn = (conditions$1, className) => {
 		let result;
 		if (hash) {
-			const baseArray = [...conds.finalize(conditions$1), className$1];
+			const baseArray = [...conds.finalize(conditions$1), className];
 			result = formatClassName(utility.toHash(baseArray, toHash));
 		} else {
-			const baseArray = [...conds.finalize(conditions$1), formatClassName(className$1)];
+			const baseArray = [...conds.finalize(conditions$1), formatClassName(className)];
 			result = baseArray.join(":");
 		}
 		return result;
 	};
-	return memo$2(({ base,...styles$4 } = {}) => {
+	return memo$1(({ base,...styles$4 } = {}) => {
 		const styleObject = Object.assign(styles$4, base);
 		const normalizedObject = normalizeStyleObject(styleObject, context$1);
 		const classNames = /* @__PURE__ */ new Set();
@@ -149,9 +149,9 @@ function createCss(context$1) {
 			const [prop, ...allConditions] = conds.shift(paths);
 			const conditions$1 = filterBaseConditions(allConditions);
 			const transformed = utility.transform(prop, withoutImportant(sanitize(value)));
-			let className$1 = hashFn(conditions$1, transformed.className);
-			if (important) className$1 = `${className$1}!`;
-			classNames.add(className$1);
+			let className = hashFn(conditions$1, transformed.className);
+			if (important) className = `${className}!`;
+			classNames.add(className);
 		});
 		return Array.from(classNames).join(" ");
 	});
@@ -172,13 +172,13 @@ function createMergeCss(context$1) {
 		return Object.assign({}, ...resolve(styles$4));
 	}
 	return {
-		mergeCss: memo$2(mergeCss$1),
+		mergeCss: memo$1(mergeCss$1),
 		assignCss: assignCss$1
 	};
 }
 var wordRegex = /([A-Z])/g;
 var msRegex = /^ms-/;
-var hypenateProperty = memo$2((property) => {
+var hypenateProperty = memo$1((property) => {
 	if (property.startsWith("--")) return property;
 	return property.replace(wordRegex, "-$1").replace(msRegex, "-ms-").toLowerCase();
 });
@@ -298,10 +298,10 @@ const classNameByProp = /* @__PURE__ */ new Map();
 const shorthands = /* @__PURE__ */ new Map();
 utilities.split(",").forEach((utility) => {
 	const [prop, meta] = utility.split(":");
-	const [className$1, ...shorthandList] = meta.split("/");
-	classNameByProp.set(prop, className$1);
+	const [className, ...shorthandList] = meta.split("/");
+	classNameByProp.set(prop, className);
 	if (shorthandList.length) shorthandList.forEach((shorthand) => {
-		shorthands.set(shorthand === "1" ? className$1 : shorthand, prop);
+		shorthands.set(shorthand === "1" ? className : shorthand, prop);
 	});
 });
 const resolveShorthand = (prop) => shorthands.get(prop) || prop;
@@ -387,7 +387,7 @@ function cva(config) {
 		return splitProps$1(props, variantKeys);
 	}
 	const variantMap = Object.fromEntries(Object.entries(variants).map(([key, value]) => [key, Object.keys(value)]));
-	return Object.assign(memo$2(cvaFn), {
+	return Object.assign(memo$1(cvaFn), {
 		__cva__: true,
 		variantMap,
 		variantKeys,
@@ -441,7 +441,7 @@ function sva(config) {
 		...compact(variants$1)
 	});
 	const variantMap = Object.fromEntries(Object.entries(variants).map(([key, value]) => [key, Object.keys(value)]));
-	return Object.assign(memo$2(svaFn), {
+	return Object.assign(memo$1(svaFn), {
 		__cva__: false,
 		raw,
 		config,
@@ -531,7 +531,7 @@ const mergeRecipes = (recipeA, recipeB) => {
 const articleFn = /* @__PURE__ */ createRecipe("article", {}, []);
 const articleVariantMap = {};
 const articleVariantKeys = Object.keys(articleVariantMap);
-const article = /* @__PURE__ */ Object.assign(memo$2(articleFn.recipeFn), {
+const article = /* @__PURE__ */ Object.assign(memo$1(articleFn.recipeFn), {
 	__recipe__: true,
 	__name__: "article",
 	__getCompoundVariantCss__: articleFn.__getCompoundVariantCss__,
@@ -568,7 +568,7 @@ const layoutSlotNames = [
 	["btmDrawer", "mainLayout__btmDrawer"]
 ];
 const layoutSlotFns = /* @__PURE__ */ layoutSlotNames.map(([slotName, slotKey]) => [slotName, createRecipe(slotKey, layoutDefaultVariants, getSlotCompoundVariant(layoutCompoundVariants, slotName))]);
-const layoutFn = memo$2((props = {}) => {
+const layoutFn = memo$1((props = {}) => {
 	return Object.fromEntries(layoutSlotFns.map(([slotName, slotFn]) => [slotName, slotFn.recipeFn(props)]));
 });
 const layoutVariantKeys = [
@@ -2356,160 +2356,117 @@ const layoutPreset = definePreset({
 
 //#endregion
 //#region src/components/Layout/Drawers.tsx
-var _tmpl$$12 = /* @__PURE__ */ template(`<label>`), _tmpl$2$10 = /* @__PURE__ */ template(`<aside>`);
 const RightDrawerOverlay = (props) => {
 	const [local, others] = splitProps(props, ["class"]);
-	return (() => {
-		var _el$ = _tmpl$$12();
-		spread(_el$, mergeProps(others, {
-			get ["for"]() {
-				return createPeerId("rightDrawer");
-			},
-			get ["class"]() {
-				return cx(classesFromRecipe.rightDrawerOverlay, local.class);
-			}
-		}), false, false);
-		return _el$;
-	})();
+	return ssrElement("label", mergeProps(others, {
+		get ["for"]() {
+			return createPeerId("rightDrawer");
+		},
+		get ["class"]() {
+			return cx(classesFromRecipe.rightDrawerOverlay, local.class);
+		}
+	}), void 0, false);
 };
 const BtmDrawerOverlay = (props) => {
 	const [local, others] = splitProps(props, ["class"]);
-	return (() => {
-		var _el$2 = _tmpl$$12();
-		spread(_el$2, mergeProps(others, {
-			get ["for"]() {
-				return createPeerId("btmDrawer");
-			},
-			get ["class"]() {
-				return cx(classesFromRecipe.btmDrawerOverlay, local.class);
-			}
-		}), false, false);
-		return _el$2;
-	})();
+	return ssrElement("label", mergeProps(others, {
+		get ["for"]() {
+			return createPeerId("btmDrawer");
+		},
+		get ["class"]() {
+			return cx(classesFromRecipe.btmDrawerOverlay, local.class);
+		}
+	}), void 0, false);
 };
 const RightSidebar = (props) => {
 	const [local, others] = splitProps(props, ["class", "children"]);
 	const safeChildren = children(() => local.children);
-	return (() => {
-		var _el$3 = _tmpl$2$10();
-		spread(_el$3, mergeProps(others, { get ["class"]() {
-			return cx(classesFromRecipe.rightSidebar, local.class);
-		} }), false, true);
-		insert(_el$3, safeChildren);
-		return _el$3;
-	})();
+	return ssrElement("aside", mergeProps(others, { get ["class"]() {
+		return cx(classesFromRecipe.rightSidebar, local.class);
+	} }), escape(safeChildren()), false);
 };
 const BtmDrawer = (props) => {
 	const [local, others] = splitProps(props, ["class", "children"]);
 	const safeChildren = children(() => local.children);
-	return (() => {
-		var _el$4 = _tmpl$2$10();
-		spread(_el$4, mergeProps(others, { get ["class"]() {
-			return cx(classesFromRecipe.btmDrawer, local.class);
-		} }), false, true);
-		insert(_el$4, safeChildren);
-		return _el$4;
-	})();
+	return ssrElement("aside", mergeProps(others, { get ["class"]() {
+		return cx(classesFromRecipe.btmDrawer, local.class);
+	} }), escape(safeChildren()), false);
 };
 
 //#endregion
 //#region src/components/Layout/Sidebar.tsx
-var _tmpl$$11 = /* @__PURE__ */ template(`<label>`), _tmpl$2$9 = /* @__PURE__ */ template(`<aside>`), _tmpl$3$5 = /* @__PURE__ */ template(`<div><div>`);
+var _tmpl$$9 = [
+	"<div",
+	"><div",
+	"></div></div>"
+];
 const Overlay = (props) => {
 	const [local, others] = splitProps(props, ["class"]);
-	return (() => {
-		var _el$ = _tmpl$$11();
-		spread(_el$, mergeProps(others, {
-			get ["for"]() {
-				return createPeerId("drawer");
-			},
-			get ["class"]() {
-				return cx(classesFromRecipe.overlay, local.class);
-			}
-		}), false, false);
-		return _el$;
-	})();
+	return ssrElement("label", mergeProps(others, {
+		get ["for"]() {
+			return createPeerId("drawer");
+		},
+		get ["class"]() {
+			return cx(classesFromRecipe.overlay, local.class);
+		}
+	}), void 0, false);
 };
 const Sidebar = (props) => {
 	const [local, others] = splitProps(props, ["class", "children"]);
 	const safeChildren = children(() => local.children);
-	return (() => {
-		var _el$2 = _tmpl$2$9();
-		spread(_el$2, mergeProps(others, { get ["class"]() {
-			return cx(classesFromRecipe.sidebar, local.class);
-		} }), false, true);
-		insert(_el$2, safeChildren, null);
-		insert(_el$2, createComponent(SidebarHandle, {}), null);
-		return _el$2;
-	})();
+	return ssrElement("aside", mergeProps(others, { get ["class"]() {
+		return cx(classesFromRecipe.sidebar, local.class);
+	} }), [escape(safeChildren()), escape(createComponent(SidebarHandle, {}))], false);
 };
 const SidebarHandle = (props) => {
-	return (() => {
-		var _el$3 = _tmpl$3$5(), _el$4 = _el$3.firstChild;
-		use(resize, _el$3, () => ({
-			cssVariable: "--sizes-sidebar-width",
-			minWidth: 200,
-			maxWidth: 600,
-			defaultWidth: 320
-		}));
-		effect((_p$) => {
-			var _v$ = cx("group", css({
-				display: "none",
-				minWidthDrawer: {
-					position: "absolute",
-					width: "0px",
-					right: "0px",
-					_drawerChecked: {
-						width: "sidebar.handle.grab.width",
-						right: "calc(0px - {sizes.sidebar.handle.grab.width})"
-					},
-					transition: "right 0.3s ease",
-					top: "0",
-					height: "100%",
-					cursor: "col-resize",
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "center",
-					background: "transparent"
-				}
-			})), _v$2 = css({
-				position: "absolute",
-				left: "0",
-				height: "sidebar.handle.display.height",
-				width: "sidebar.handle.display.width",
-				background: "gray.400",
-				borderRadius: "3px",
-				opacity: 0,
-				transition: [
-					"opacity",
-					"width",
-					"height",
-					"transform"
-				].join(" 0.3s ease, "),
-				transform: {
-					base: "translateX(-100%)",
-					_drawerChecked: "translateX(0%)"
-				},
-				_groupHover: {
-					opacity: 1,
-					height: "sidebar.handle.display.hover.height",
-					width: "sidebar.handle.display.hover.width"
-				},
-				_sidebarResizing: {
-					opacity: 1,
-					height: "sidebar.handle.display.hover.height",
-					width: "sidebar.handle.display.hover.width"
-				}
-			});
-			_v$ !== _p$.e && className(_el$3, _p$.e = _v$);
-			_v$2 !== _p$.t && className(_el$4, _p$.t = _v$2);
-			return _p$;
-		}, {
-			e: void 0,
-			t: void 0
-		});
-		return _el$3;
-	})();
+	return ssr(_tmpl$$9, ssrAttribute("class", escape(cx("group", css({
+		display: "none",
+		minWidthDrawer: {
+			position: "absolute",
+			width: "0px",
+			right: "0px",
+			_drawerChecked: {
+				width: "sidebar.handle.grab.width",
+				right: "calc(0px - {sizes.sidebar.handle.grab.width})"
+			},
+			transition: "right 0.3s ease",
+			top: "0",
+			height: "100%",
+			cursor: "col-resize",
+			display: "flex",
+			alignItems: "center",
+			justifyContent: "center",
+			background: "transparent"
+		}
+	})), true), false), ssrAttribute("class", escape(css({
+		position: "absolute",
+		left: "0",
+		height: "sidebar.handle.display.height",
+		width: "sidebar.handle.display.width",
+		background: "gray.400",
+		borderRadius: "3px",
+		opacity: 0,
+		transition: [
+			"opacity",
+			"width",
+			"height",
+			"transform"
+		].join(" 0.3s ease, "),
+		transform: {
+			base: "translateX(-100%)",
+			_drawerChecked: "translateX(0%)"
+		},
+		_groupHover: {
+			opacity: 1,
+			height: "sidebar.handle.display.hover.height",
+			width: "sidebar.handle.display.hover.width"
+		},
+		_sidebarResizing: {
+			opacity: 1,
+			height: "sidebar.handle.display.hover.height",
+			width: "sidebar.handle.display.hover.width"
+		}
+	}), true), false));
 };
 
 //#endregion
@@ -2629,23 +2586,9 @@ function useLayoutKeybindings(options = {}) {
 
 //#endregion
 //#region src/components/Layout/utilities/PeerInputs.tsx
-var _tmpl$$10 = /* @__PURE__ */ template(`<input type=checkbox>`), _tmpl$2$8 = /* @__PURE__ */ template(`<label>`);
+var _tmpl$$8 = ["<input type=\"checkbox\"", ">"];
 const InputHidden = (props) => {
-	return (() => {
-		var _el$ = _tmpl$$10();
-		effect((_p$) => {
-			var _v$ = createPeerId(props.name), _v$2 = props.name, _v$3 = css({ srOnly: true });
-			_v$ !== _p$.e && setAttribute(_el$, "id", _p$.e = _v$);
-			_v$2 !== _p$.t && setAttribute(_el$, "data-peer", _p$.t = _v$2);
-			_v$3 !== _p$.a && className(_el$, _p$.a = _v$3);
-			return _p$;
-		}, {
-			e: void 0,
-			t: void 0,
-			a: void 0
-		});
-		return _el$;
-	})();
+	return ssr(_tmpl$$8, ssrAttribute("id", escape(createPeerId(props.name), true), false) + ssrAttribute("data-peer", escape(props.name, true), false) + ssrAttribute("class", escape(css({ srOnly: true }), true), false));
 };
 const Label = (props) => {
 	const [local, others] = splitProps(props, [
@@ -2654,24 +2597,18 @@ const Label = (props) => {
 		"name"
 	]);
 	const safeChildren = children(() => local.children);
-	return (() => {
-		var _el$2 = _tmpl$2$8();
-		spread(_el$2, mergeProps(others, {
-			get ["for"]() {
-				return createPeerId(local.name);
-			},
-			get ["class"]() {
-				return cx(css({ userSelect: "none" }), local.class);
-			}
-		}), false, true);
-		insert(_el$2, safeChildren);
-		return _el$2;
-	})();
+	return ssrElement("label", mergeProps(others, {
+		get ["for"]() {
+			return createPeerId(local.name);
+		},
+		get ["class"]() {
+			return cx(css({ userSelect: "none" }), local.class);
+		}
+	}), escape(safeChildren()), false);
 };
 
 //#endregion
 //#region src/components/Layout/Layout.tsx
-var _tmpl$$9 = /* @__PURE__ */ template(`<div>`), _tmpl$2$7 = /* @__PURE__ */ template(`<nav>`), _tmpl$3$4 = /* @__PURE__ */ template(`<footer>`), _tmpl$4$1 = /* @__PURE__ */ template(`<main>`);
 const LayoutContainer = (props) => {
 	const [local, others] = splitProps(props, ["class", "children"]);
 	const safeChildren = children(() => local.children);
@@ -2682,78 +2619,51 @@ const LayoutContainer = (props) => {
 		createComponent(InputHidden, { name: "drawer" }),
 		createComponent(InputHidden, { name: "rightDrawer" }),
 		createComponent(InputHidden, { name: "btmDrawer" }),
-		(() => {
-			var _el$ = _tmpl$$9();
-			spread(_el$, mergeProps(others, { get ["class"]() {
-				return cx(classesFromRecipe.layoutContainer, local.class);
-			} }), false, true);
-			insert(_el$, safeChildren);
-			return _el$;
-		})()
+		ssrElement("div", mergeProps(others, { get ["class"]() {
+			return cx(classesFromRecipe.layoutContainer, local.class);
+		} }), escape(safeChildren()), false)
 	];
 };
 const Navbar = (props) => {
 	const [local, others] = splitProps(props, ["class"]);
-	return (() => {
-		var _el$2 = _tmpl$2$7();
-		spread(_el$2, mergeProps(others, { get ["class"]() {
-			return cx(classesFromRecipe.navbar, local.class);
-		} }), false, false);
-		return _el$2;
-	})();
+	return ssrElement("nav", mergeProps(others, { get ["class"]() {
+		return cx(classesFromRecipe.navbar, local.class);
+	} }), void 0, false);
 };
 const MainArea = (props) => {
 	const [local, others] = splitProps(props, ["class", "children"]);
 	const safeChildren = children(() => local.children);
-	return (() => {
-		var _el$3 = _tmpl$$9();
-		spread(_el$3, mergeProps(others, { get ["class"]() {
-			return cx(classesFromRecipe.mainArea, local.class);
-		} }), false, true);
-		insert(_el$3, safeChildren, null);
-		insert(_el$3, createComponent(Overlay, {}), null);
-		insert(_el$3, createComponent(BtmDrawerOverlay, {}), null);
-		insert(_el$3, createComponent(RightDrawerOverlay, {}), null);
-		return _el$3;
-	})();
+	return ssrElement("div", mergeProps(others, { get ["class"]() {
+		return cx(classesFromRecipe.mainArea, local.class);
+	} }), [
+		escape(safeChildren()),
+		escape(createComponent(Overlay, {})),
+		escape(createComponent(BtmDrawerOverlay, {})),
+		escape(createComponent(RightDrawerOverlay, {}))
+	], false);
 };
 const BtmDash = (props) => {
 	const [local, others] = splitProps(props, ["class"]);
-	return (() => {
-		var _el$4 = _tmpl$3$4();
-		spread(_el$4, mergeProps(others, { get ["class"]() {
-			return cx(classesFromRecipe.btmDash, local.class);
-		} }), false, false);
-		return _el$4;
-	})();
+	return ssrElement("footer", mergeProps(others, { get ["class"]() {
+		return cx(classesFromRecipe.btmDash, local.class);
+	} }), void 0, false);
 };
 const Main = (props) => {
 	const [local, others] = splitProps(props, ["class", "children"]);
 	const safeChildren = children(() => local.children);
-	return (() => {
-		var _el$5 = _tmpl$4$1();
-		spread(_el$5, mergeProps(others, { get ["class"]() {
-			return cx(classesFromRecipe.mainContent, local.class);
-		} }), false, true);
-		insert(_el$5, safeChildren);
-		return _el$5;
-	})();
+	return ssrElement("main", mergeProps(others, { get ["class"]() {
+		return cx(classesFromRecipe.mainContent, local.class);
+	} }), escape(safeChildren()), false);
 };
 
 //#endregion
 //#region src/components/Layout/NavbarContent.tsx
-var _tmpl$$8 = /* @__PURE__ */ template(`<div>`), _tmpl$2$6 = /* @__PURE__ */ template(`<a>`);
 const createNavbarComponent = (baseStyles) => (props) => {
 	const [local, others] = splitProps(props, ["class", "children"]);
 	const safeChildren = children(() => local.children);
-	return (() => {
-		var _el$ = _tmpl$$8();
-		spread(_el$, mergeProps(others, { get ["class"]() {
-			return cx(baseStyles, local.class);
-		} }), false, true);
-		insert(_el$, safeChildren);
-		return _el$;
-	})();
+	return ssrElement("div", mergeProps(others, { get ["class"]() {
+		return cx(baseStyles, local.class);
+	} }), escape(safeChildren()), false);
 };
 const styles$3 = {
 	content: css({
@@ -2782,19 +2692,14 @@ const NavbarEnd = createNavbarComponent(styles$3.section);
 const NavbarLink = (props) => {
 	const [local, others] = splitProps(props, ["class", "children"]);
 	const safeChildren = children(() => local.children);
-	return (() => {
-		var _el$2 = _tmpl$2$6();
-		spread(_el$2, mergeProps(others, { get ["class"]() {
-			return cx(styles$3.link, local.class);
-		} }), false, true);
-		insert(_el$2, safeChildren);
-		return _el$2;
-	})();
+	return ssrElement("a", mergeProps(others, { get ["class"]() {
+		return cx(styles$3.link, local.class);
+	} }), escape(safeChildren()), false);
 };
 
 //#endregion
 //#region src/components/Layout/BtmDashContent.tsx
-var _tmpl$$7 = /* @__PURE__ */ template(`<div>`), _tmpl$2$5 = /* @__PURE__ */ template(`<button type=button>`), _tmpl$3$3 = /* @__PURE__ */ template(`<span>`);
+var _tmpl$$7 = ["<span>", "</span>"];
 const styles$2 = {
 	container: css({
 		display: "flex",
@@ -2831,14 +2736,9 @@ const styles$2 = {
 const BtmDashContainer = (props) => {
 	const [local, others] = splitProps(props, ["class", "children"]);
 	const safeChildren = children(() => local.children);
-	return (() => {
-		var _el$ = _tmpl$$7();
-		spread(_el$, mergeProps(others, { get ["class"]() {
-			return cx(styles$2.container, local.class);
-		} }), false, true);
-		insert(_el$, safeChildren);
-		return _el$;
-	})();
+	return ssrElement("div", mergeProps(others, { get ["class"]() {
+		return cx(styles$2.container, local.class);
+	} }), escape(safeChildren()), false);
 };
 const BtmDashItem = (props) => {
 	const [local, others] = splitProps(props, [
@@ -2848,23 +2748,13 @@ const BtmDashItem = (props) => {
 		"label"
 	]);
 	const safeChildren = children(() => local.children);
-	return (() => {
-		var _el$2 = _tmpl$2$5();
-		spread(_el$2, mergeProps(others, { get ["class"]() {
-			return cx(styles$2.item, local.class);
-		} }), false, true);
-		insert(_el$2, () => local.icon, null);
-		insert(_el$2, (() => {
-			var _c$ = memo(() => !!local.label);
-			return () => _c$() && (() => {
-				var _el$3 = _tmpl$3$3();
-				insert(_el$3, () => local.label);
-				return _el$3;
-			})();
-		})(), null);
-		insert(_el$2, safeChildren, null);
-		return _el$2;
-	})();
+	return ssrElement("button", mergeProps({ type: "button" }, others, { get ["class"]() {
+		return cx(styles$2.item, local.class);
+	} }), [
+		escape(local.icon),
+		local.label && ssr(_tmpl$$7, escape(local.label)),
+		escape(safeChildren())
+	], false);
 };
 
 //#endregion
@@ -2884,7 +2774,7 @@ const BtmDashToggle = (props) => createComponent(ToggleButton, mergeProps({ name
 
 //#endregion
 //#region src/components/Layout/HamburgerIcon.tsx
-var _tmpl$$6 = /* @__PURE__ */ template(`<span>`);
+var _tmpl$$6 = "<span></span>";
 const hamburgerIconStyles = css({
 	width: "6",
 	height: "6",
@@ -2916,9 +2806,9 @@ const HamburgerIcon = (props) => {
 		}
 	}, others, { get children() {
 		return [
-			_tmpl$$6(),
-			_tmpl$$6(),
-			_tmpl$$6()
+			ssr(_tmpl$$6),
+			ssr(_tmpl$$6),
+			ssr(_tmpl$$6)
 		];
 	} }));
 };
@@ -3275,7 +3165,11 @@ const comboboxStyles = () => ({
 
 //#endregion
 //#region src/components/Combobox/SingleCombobox.tsx
-var _tmpl$$5 = /* @__PURE__ */ template(`<div style=max-width:20rem>`);
+var _tmpl$$5 = [
+	"<div style=\"",
+	"\">",
+	"</div>"
+];
 const styles$1 = comboboxStyles();
 function SingleCombobox(props) {
 	const [value, setValue] = createSignal(props.value || "");
@@ -3287,104 +3181,93 @@ function SingleCombobox(props) {
 		setValue(val);
 		props.onChange?.(val);
 	};
-	return (() => {
-		var _el$ = _tmpl$$5();
-		setStyleProperty(_el$, "width", "100%");
-		insert(_el$, createComponent(Combobox, {
-			multiple: false,
-			get options() {
-				return props.options;
+	return ssr(_tmpl$$5, ssrStyleProperty("width:", "100%") + ssrStyleProperty(";max-width:", "20rem"), escape(createComponent(Combobox, {
+		multiple: false,
+		get options() {
+			return props.options;
+		},
+		get value() {
+			return value();
+		},
+		onChange: handleChange,
+		get placeholder() {
+			return props.placeholder || "Search...";
+		},
+		get triggerMode() {
+			return props.triggerMode ?? "input";
+		},
+		itemComponent: (itemProps) => createComponent(Combobox.Item, {
+			get item() {
+				return itemProps.item;
 			},
-			get value() {
-				return value();
+			get ["class"]() {
+				return styles$1.item;
 			},
-			onChange: handleChange,
-			get placeholder() {
-				return props.placeholder || "Search...";
-			},
-			get triggerMode() {
-				return props.triggerMode ?? "input";
-			},
-			itemComponent: (itemProps) => createComponent(Combobox.Item, {
-				get item() {
-					return itemProps.item;
-				},
-				get ["class"]() {
-					return styles$1.item;
-				},
-				get children() {
-					return [createComponent(Combobox.ItemLabel, { get children() {
-						return itemProps.item.rawValue;
-					} }), createComponent(Combobox.ItemIndicator, {
-						get ["class"]() {
-							return styles$1.itemIndicator;
-						},
-						get children() {
-							return createComponent(Check, {});
-						}
-					})];
-				}
-			}),
 			get children() {
-				return [
-					createComponent(Show, {
-						get when() {
+				return [createComponent(Combobox.ItemLabel, { get children() {
+					return itemProps.item.rawValue;
+				} }), createComponent(Combobox.ItemIndicator, {
+					get ["class"]() {
+						return styles$1.itemIndicator;
+					},
+					get children() {
+						return createComponent(Check, {});
+					}
+				})];
+			}
+		}),
+		get children() {
+			return [
+				createComponent(Show, {
+					get when() {
+						return props.label;
+					},
+					get children() {
+						return createComponent(Combobox.Label, { get children() {
 							return props.label;
-						},
-						get children() {
-							return createComponent(Combobox.Label, { get children() {
-								return props.label;
-							} });
-						}
-					}),
-					createComponent(Combobox.Control, {
-						get ["class"]() {
-							return styles$1.control;
-						},
-						"aria-label": "Fruit",
-						get children() {
-							return [createComponent(Combobox.Input, {
-								get ["class"]() {
-									return styles$1.input;
-								},
-								ref(r$) {
-									var _ref$ = props.ref;
-									typeof _ref$ === "function" ? _ref$(r$) : props.ref = r$;
-								}
-							}), createComponent(Combobox.Trigger, {
-								get ["class"]() {
-									return styles$1.trigger;
-								},
-								get children() {
-									return createComponent(Combobox.Icon, {
-										get ["class"]() {
-											return styles$1.icon;
-										},
-										get children() {
-											return createComponent(ChevronsUpDown, {});
-										}
-									});
-								}
-							})];
-						}
-					}),
-					createComponent(Combobox.Portal, { get children() {
-						return createComponent(Combobox.Content, {
+						} });
+					}
+				}),
+				createComponent(Combobox.Control, {
+					get ["class"]() {
+						return styles$1.control;
+					},
+					"aria-label": "Fruit",
+					get children() {
+						return [createComponent(Combobox.Input, { get ["class"]() {
+							return styles$1.input;
+						} }), createComponent(Combobox.Trigger, {
 							get ["class"]() {
-								return styles$1.content;
+								return styles$1.trigger;
 							},
 							get children() {
-								return [createComponent(Combobox.Arrow, {}), createComponent(Combobox.Listbox, { get ["class"]() {
-									return styles$1.listbox;
-								} })];
+								return createComponent(Combobox.Icon, {
+									get ["class"]() {
+										return styles$1.icon;
+									},
+									get children() {
+										return createComponent(ChevronsUpDown, {});
+									}
+								});
 							}
-						});
-					} })
-				];
-			}
-		}));
-		return _el$;
-	})();
+						})];
+					}
+				}),
+				createComponent(Combobox.Portal, { get children() {
+					return createComponent(Combobox.Content, {
+						get ["class"]() {
+							return styles$1.content;
+						},
+						get children() {
+							return [createComponent(Combobox.Arrow, {}), createComponent(Combobox.Listbox, { get ["class"]() {
+								return styles$1.listbox;
+							} })];
+						}
+					});
+				} })
+			];
+		}
+	})));
 }
 
 //#endregion
@@ -3395,7 +3278,7 @@ var cssPropertiesStr = "WebkitAppearance,WebkitBorderBefore,WebkitBorderBeforeCo
 var allCssProperties = cssPropertiesStr.split(",").concat(userGenerated);
 var properties = new Map(allCssProperties.map((prop) => [prop, true]));
 var cssPropertySelectorRegex = /&|@/;
-var isCssProperty = /* @__PURE__ */ memo$2((prop) => {
+var isCssProperty = /* @__PURE__ */ memo$1((prop) => {
 	return properties.has(prop) || prop.startsWith("--") || cssPropertySelectorRegex.test(prop);
 });
 
@@ -4034,7 +3917,26 @@ const Badge = styled("span", badgeStyle);
 
 //#endregion
 //#region src/components/Combobox/MultiCombobox.tsx
-var _tmpl$$4 = /* @__PURE__ */ template(`<div style=max-width:20rem><p>Selected: `), _tmpl$2$4 = /* @__PURE__ */ template(`<div>`), _tmpl$3$2 = /* @__PURE__ */ template(`<button type=button>`);
+var _tmpl$$4 = [
+	"<div style=\"",
+	"\">",
+	"<p",
+	">Selected: ",
+	"</p></div>"
+], _tmpl$2$4 = [
+	"<div",
+	">",
+	"",
+	"</div>"
+], _tmpl$3$2 = [
+	"<button class=\"",
+	"\" type=\"button\">",
+	"</button>"
+], _tmpl$4$2 = [
+	"<button",
+	" type=\"button\">",
+	"</button>"
+];
 const styles = comboboxStyles();
 function MultiCombobox(props) {
 	const [value, setValue] = createSignal(props.value || []);
@@ -4042,141 +3944,110 @@ function MultiCombobox(props) {
 		setValue(newValue);
 		props.onChange?.(newValue);
 	};
-	return (() => {
-		var _el$ = _tmpl$$4(), _el$2 = _el$.firstChild;
-		_el$2.firstChild;
-		setStyleProperty(_el$, "width", "100%");
-		insert(_el$, createComponent(Combobox, {
-			multiple: true,
-			get options() {
-				return props.options;
+	return ssr(_tmpl$$4, ssrStyleProperty("width:", "100%") + ssrStyleProperty(";max-width:", "20rem"), escape(createComponent(Combobox, {
+		multiple: true,
+		get options() {
+			return props.options;
+		},
+		get value() {
+			return value();
+		},
+		onChange: handleChange,
+		get placeholder() {
+			return props.placeholder || "Search...";
+		},
+		get triggerMode() {
+			return props.triggerMode ?? "input";
+		},
+		itemComponent: (itemProps) => createComponent(Combobox.Item, {
+			get item() {
+				return itemProps.item;
 			},
-			get value() {
-				return value();
+			get ["class"]() {
+				return styles.item;
 			},
-			onChange: handleChange,
-			get placeholder() {
-				return props.placeholder || "Search...";
-			},
-			get triggerMode() {
-				return props.triggerMode ?? "input";
-			},
-			itemComponent: (itemProps) => createComponent(Combobox.Item, {
-				get item() {
-					return itemProps.item;
-				},
-				get ["class"]() {
-					return styles.item;
-				},
-				get children() {
-					return [createComponent(Combobox.ItemLabel, { get children() {
-						return itemProps.item.rawValue;
-					} }), createComponent(Combobox.ItemIndicator, {
-						get ["class"]() {
-							return styles.itemIndicator;
-						},
-						get children() {
-							return createComponent(Check, { get ["class"]() {
-								return styles.icon;
-							} });
-						}
-					})];
-				}
-			}),
 			get children() {
-				return [createComponent(Combobox.Control, {
+				return [createComponent(Combobox.ItemLabel, { get children() {
+					return itemProps.item.rawValue;
+				} }), createComponent(Combobox.ItemIndicator, {
 					get ["class"]() {
-						return cx(styles.control, styles.controlMulti);
+						return styles.itemIndicator;
 					},
-					get ["aria-label"]() {
-						return props.label || "Selection";
-					},
-					children: (state) => [
-						(() => {
-							var _el$4 = _tmpl$2$4();
-							insert(_el$4, createComponent(For, {
-								get each() {
-									return state.selectedOptions();
-								},
-								children: (option) => createComponent(Badge, {
-									onPointerDown: (e) => e.stopPropagation(),
-									get ["class"]() {
-										return css({ fontSize: "0.75rem" });
-									},
-									get children() {
-										return [option, (() => {
-											var _el$6 = _tmpl$3$2();
-											_el$6.$$click = () => state.remove(option);
-											insert(_el$6, createComponent(X, { "class": "w-3 h-3" }));
-											effect(() => className(_el$6, styles.tagButton));
-											return _el$6;
-										})()];
-									}
-								})
-							}), null);
-							insert(_el$4, createComponent(Combobox.Input, {
-								ref(r$) {
-									var _ref$ = props.ref;
-									typeof _ref$ === "function" ? _ref$(r$) : props.ref = r$;
-								},
-								get ["class"]() {
-									return styles.input;
-								}
-							}), null);
-							effect(() => className(_el$4, cx(styles.inputContainer, css({
-								px: "0.25rem",
-								py: "0.5rem"
-							}))));
-							return _el$4;
-						})(),
-						createComponent(TransitionAnim, { get children() {
-							return createComponent(Show, {
-								get when() {
-									return state.selectedOptions().length > 0;
-								},
-								get children() {
-									var _el$5 = _tmpl$3$2();
-									addEventListener(_el$5, "click", state.clear, true);
-									_el$5.$$pointerdown = (e) => e.stopPropagation();
-									insert(_el$5, createComponent(X, { get ["class"]() {
-										return styles.icon;
-									} }));
-									effect(() => className(_el$5, `${styles.clearButton} transition-all duration-200 ease-out`));
-									return _el$5;
-								}
-							});
-						} }),
-						createComponent(Combobox.Trigger, {
+					get children() {
+						return createComponent(Check, { get ["class"]() {
+							return styles.icon;
+						} });
+					}
+				})];
+			}
+		}),
+		get children() {
+			return [createComponent(Combobox.Control, {
+				get ["class"]() {
+					return cx(styles.control, styles.controlMulti);
+				},
+				get ["aria-label"]() {
+					return props.label || "Selection";
+				},
+				children: (state) => [
+					ssr(_tmpl$2$4, ssrAttribute("class", escape(cx(styles.inputContainer, css({
+						px: "0.25rem",
+						py: "0.5rem"
+					})), true), false), escape(createComponent(For, {
+						get each() {
+							return state.selectedOptions();
+						},
+						children: (option) => createComponent(Badge, {
+							onPointerDown: (e) => e.stopPropagation(),
 							get ["class"]() {
-								return styles.trigger;
+								return css({ fontSize: "0.75rem" });
 							},
 							get children() {
-								return createComponent(Combobox.Icon, { get children() {
-									return createComponent(ChevronsUpDown, { get ["class"]() {
-										return styles.icon;
-									} });
-								} });
+								return [option, ssr(_tmpl$4$2, ssrAttribute("class", escape(styles.tagButton, true), false), escape(createComponent(X, { "class": "w-3 h-3" })))];
 							}
 						})
-					]
-				}), createComponent(Combobox.Portal, { get children() {
-					return createComponent(Combobox.Content, {
+					})), escape(createComponent(Combobox.Input, { get ["class"]() {
+						return styles.input;
+					} }))),
+					createComponent(TransitionAnim, { get children() {
+						return createComponent(Show, {
+							get when() {
+								return state.selectedOptions().length > 0;
+							},
+							get children() {
+								return ssr(_tmpl$3$2, `${escape(styles.clearButton, true)} transition-all duration-200 ease-out`, escape(createComponent(X, { get ["class"]() {
+									return styles.icon;
+								} })));
+							}
+						});
+					} }),
+					createComponent(Combobox.Trigger, {
 						get ["class"]() {
-							return styles.content;
+							return styles.trigger;
 						},
 						get children() {
-							return createComponent(Combobox.Listbox, { get ["class"]() {
-								return styles.listbox;
+							return createComponent(Combobox.Icon, { get children() {
+								return createComponent(ChevronsUpDown, { get ["class"]() {
+									return styles.icon;
+								} });
 							} });
 						}
-					});
-				} })];
-			}
-		}), _el$2);
-		insert(_el$2, () => value().join(", ") || "None", null);
-		effect(() => className(_el$2, styles.description));
-		return _el$;
-	})();
+					})
+				]
+			}), createComponent(Combobox.Portal, { get children() {
+				return createComponent(Combobox.Content, {
+					get ["class"]() {
+						return styles.content;
+					},
+					get children() {
+						return createComponent(Combobox.Listbox, { get ["class"]() {
+							return styles.listbox;
+						} });
+					}
+				});
+			} })];
+		}
+	})), ssrAttribute("class", escape(styles.description, true), false), escape(value().join(", ")) || "None");
 }
 const TransitionAnim = (props) => createComponent(Transition, {
 	enterClass: "opacity-0 scale-75 -translate-x-2",
@@ -4189,7 +4060,6 @@ const TransitionAnim = (props) => createComponent(Transition, {
 		return props.children;
 	}
 });
-delegateEvents(["pointerdown", "click"]);
 
 //#endregion
 //#region src/components/Layout/utilities/directives/resize-utils.ts
@@ -4225,7 +4095,7 @@ function useResizeKeybindings(options) {
 		const drawerInput = document.getElementById(createPeerId("drawer"));
 		if (drawerInput && !drawerInput.checked) drawerInput.checked = true;
 	};
-	const resize$1 = (direction) => {
+	const resize = (direction) => {
 		const opts = getOptions();
 		if (!opts.enabled) return;
 		if (!!opts.autoOpen && opts.autoOpen()) ensureSidebarOpen();
@@ -4244,11 +4114,11 @@ function useResizeKeybindings(options) {
 		if (e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
 			if (e.code === "BracketLeft") {
 				e.preventDefault();
-				resize$1("decrease");
+				resize("decrease");
 				setIsActive(true);
 			} else if (e.code === "BracketRight") {
 				e.preventDefault();
-				resize$1("increase");
+				resize("increase");
 				setIsActive(true);
 			}
 		}
@@ -4271,7 +4141,7 @@ function useResizeKeybindings(options) {
 	});
 	return {
 		isActive,
-		resize: resize$1
+		resize
 	};
 }
 
@@ -4308,7 +4178,7 @@ function flattenBy(arr, getChildren) {
 	recurse(arr);
 	return flat;
 }
-function memo$1(getDeps, fn, opts) {
+function memo(getDeps, fn, opts) {
 	let deps = [];
 	let result;
 	return (depArgs) => {
@@ -4362,7 +4232,7 @@ function createCell(table$1, row, column, columnId) {
 		column,
 		getValue: () => row.getValue(columnId),
 		renderValue: getRenderValue,
-		getContext: memo$1(() => [
+		getContext: memo(() => [
 			table$1,
 			column,
 			row,
@@ -4413,11 +4283,11 @@ function createColumn(table$1, columnDef, depth, parent) {
 		depth,
 		columnDef: resolvedColumnDef,
 		columns: [],
-		getFlatColumns: memo$1(() => [true], () => {
+		getFlatColumns: memo(() => [true], () => {
 			var _column$columns;
 			return [column, ...(_column$columns = column.columns) == null ? void 0 : _column$columns.flatMap((d) => d.getFlatColumns())];
 		}, getMemoOptions(table$1.options, "debugColumns", "column.getFlatColumns")),
-		getLeafColumns: memo$1(() => [table$1._getOrderColumnsFn()], (orderColumns$1) => {
+		getLeafColumns: memo(() => [table$1._getOrderColumnsFn()], (orderColumns$1) => {
 			var _column$columns2;
 			if ((_column$columns2 = column.columns) != null && _column$columns2.length) {
 				let leafColumns = column.columns.flatMap((column$1) => column$1.getLeafColumns());
@@ -4465,7 +4335,7 @@ function createHeader(table$1, column, options) {
 	return header;
 }
 const Headers = { createTable: (table$1) => {
-	table$1.getHeaderGroups = memo$1(() => [
+	table$1.getHeaderGroups = memo(() => [
 		table$1.getAllColumns(),
 		table$1.getVisibleLeafColumns(),
 		table$1.getState().columnPinning.left,
@@ -4482,7 +4352,7 @@ const Headers = { createTable: (table$1) => {
 		], table$1);
 		return headerGroups;
 	}, getMemoOptions(table$1.options, debug, "getHeaderGroups"));
-	table$1.getCenterHeaderGroups = memo$1(() => [
+	table$1.getCenterHeaderGroups = memo(() => [
 		table$1.getAllColumns(),
 		table$1.getVisibleLeafColumns(),
 		table$1.getState().columnPinning.left,
@@ -4491,7 +4361,7 @@ const Headers = { createTable: (table$1) => {
 		leafColumns = leafColumns.filter((column) => !(left != null && left.includes(column.id)) && !(right != null && right.includes(column.id)));
 		return buildHeaderGroups(allColumns, leafColumns, table$1, "center");
 	}, getMemoOptions(table$1.options, debug, "getCenterHeaderGroups"));
-	table$1.getLeftHeaderGroups = memo$1(() => [
+	table$1.getLeftHeaderGroups = memo(() => [
 		table$1.getAllColumns(),
 		table$1.getVisibleLeafColumns(),
 		table$1.getState().columnPinning.left
@@ -4500,7 +4370,7 @@ const Headers = { createTable: (table$1) => {
 		const orderedLeafColumns = (_left$map$filter2 = left == null ? void 0 : left.map((columnId) => leafColumns.find((d) => d.id === columnId)).filter(Boolean)) != null ? _left$map$filter2 : [];
 		return buildHeaderGroups(allColumns, orderedLeafColumns, table$1, "left");
 	}, getMemoOptions(table$1.options, debug, "getLeftHeaderGroups"));
-	table$1.getRightHeaderGroups = memo$1(() => [
+	table$1.getRightHeaderGroups = memo(() => [
 		table$1.getAllColumns(),
 		table$1.getVisibleLeafColumns(),
 		table$1.getState().columnPinning.right
@@ -4509,57 +4379,57 @@ const Headers = { createTable: (table$1) => {
 		const orderedLeafColumns = (_right$map$filter2 = right == null ? void 0 : right.map((columnId) => leafColumns.find((d) => d.id === columnId)).filter(Boolean)) != null ? _right$map$filter2 : [];
 		return buildHeaderGroups(allColumns, orderedLeafColumns, table$1, "right");
 	}, getMemoOptions(table$1.options, debug, "getRightHeaderGroups"));
-	table$1.getFooterGroups = memo$1(() => [table$1.getHeaderGroups()], (headerGroups) => {
+	table$1.getFooterGroups = memo(() => [table$1.getHeaderGroups()], (headerGroups) => {
 		return [...headerGroups].reverse();
 	}, getMemoOptions(table$1.options, debug, "getFooterGroups"));
-	table$1.getLeftFooterGroups = memo$1(() => [table$1.getLeftHeaderGroups()], (headerGroups) => {
+	table$1.getLeftFooterGroups = memo(() => [table$1.getLeftHeaderGroups()], (headerGroups) => {
 		return [...headerGroups].reverse();
 	}, getMemoOptions(table$1.options, debug, "getLeftFooterGroups"));
-	table$1.getCenterFooterGroups = memo$1(() => [table$1.getCenterHeaderGroups()], (headerGroups) => {
+	table$1.getCenterFooterGroups = memo(() => [table$1.getCenterHeaderGroups()], (headerGroups) => {
 		return [...headerGroups].reverse();
 	}, getMemoOptions(table$1.options, debug, "getCenterFooterGroups"));
-	table$1.getRightFooterGroups = memo$1(() => [table$1.getRightHeaderGroups()], (headerGroups) => {
+	table$1.getRightFooterGroups = memo(() => [table$1.getRightHeaderGroups()], (headerGroups) => {
 		return [...headerGroups].reverse();
 	}, getMemoOptions(table$1.options, debug, "getRightFooterGroups"));
-	table$1.getFlatHeaders = memo$1(() => [table$1.getHeaderGroups()], (headerGroups) => {
+	table$1.getFlatHeaders = memo(() => [table$1.getHeaderGroups()], (headerGroups) => {
 		return headerGroups.map((headerGroup) => {
 			return headerGroup.headers;
 		}).flat();
 	}, getMemoOptions(table$1.options, debug, "getFlatHeaders"));
-	table$1.getLeftFlatHeaders = memo$1(() => [table$1.getLeftHeaderGroups()], (left) => {
+	table$1.getLeftFlatHeaders = memo(() => [table$1.getLeftHeaderGroups()], (left) => {
 		return left.map((headerGroup) => {
 			return headerGroup.headers;
 		}).flat();
 	}, getMemoOptions(table$1.options, debug, "getLeftFlatHeaders"));
-	table$1.getCenterFlatHeaders = memo$1(() => [table$1.getCenterHeaderGroups()], (left) => {
+	table$1.getCenterFlatHeaders = memo(() => [table$1.getCenterHeaderGroups()], (left) => {
 		return left.map((headerGroup) => {
 			return headerGroup.headers;
 		}).flat();
 	}, getMemoOptions(table$1.options, debug, "getCenterFlatHeaders"));
-	table$1.getRightFlatHeaders = memo$1(() => [table$1.getRightHeaderGroups()], (left) => {
+	table$1.getRightFlatHeaders = memo(() => [table$1.getRightHeaderGroups()], (left) => {
 		return left.map((headerGroup) => {
 			return headerGroup.headers;
 		}).flat();
 	}, getMemoOptions(table$1.options, debug, "getRightFlatHeaders"));
-	table$1.getCenterLeafHeaders = memo$1(() => [table$1.getCenterFlatHeaders()], (flatHeaders) => {
+	table$1.getCenterLeafHeaders = memo(() => [table$1.getCenterFlatHeaders()], (flatHeaders) => {
 		return flatHeaders.filter((header) => {
 			var _header$subHeaders;
 			return !((_header$subHeaders = header.subHeaders) != null && _header$subHeaders.length);
 		});
 	}, getMemoOptions(table$1.options, debug, "getCenterLeafHeaders"));
-	table$1.getLeftLeafHeaders = memo$1(() => [table$1.getLeftFlatHeaders()], (flatHeaders) => {
+	table$1.getLeftLeafHeaders = memo(() => [table$1.getLeftFlatHeaders()], (flatHeaders) => {
 		return flatHeaders.filter((header) => {
 			var _header$subHeaders2;
 			return !((_header$subHeaders2 = header.subHeaders) != null && _header$subHeaders2.length);
 		});
 	}, getMemoOptions(table$1.options, debug, "getLeftLeafHeaders"));
-	table$1.getRightLeafHeaders = memo$1(() => [table$1.getRightFlatHeaders()], (flatHeaders) => {
+	table$1.getRightLeafHeaders = memo(() => [table$1.getRightFlatHeaders()], (flatHeaders) => {
 		return flatHeaders.filter((header) => {
 			var _header$subHeaders3;
 			return !((_header$subHeaders3 = header.subHeaders) != null && _header$subHeaders3.length);
 		});
 	}, getMemoOptions(table$1.options, debug, "getRightLeafHeaders"));
-	table$1.getLeafHeaders = memo$1(() => [
+	table$1.getLeafHeaders = memo(() => [
 		table$1.getLeftHeaderGroups(),
 		table$1.getCenterHeaderGroups(),
 		table$1.getRightHeaderGroups()
@@ -4705,12 +4575,12 @@ const createRow = (table$1, id, original, rowIndex, depth, subRows, parentId) =>
 			}
 			return parentRows.reverse();
 		},
-		getAllCells: memo$1(() => [table$1.getAllLeafColumns()], (leafColumns) => {
+		getAllCells: memo(() => [table$1.getAllLeafColumns()], (leafColumns) => {
 			return leafColumns.map((column) => {
 				return createCell(table$1, row, column, column.id);
 			});
 		}, getMemoOptions(table$1.options, "debugRows", "getAllCells")),
-		_getAllCellsByColumnId: memo$1(() => [row.getAllCells()], (allCells) => {
+		_getAllCellsByColumnId: memo(() => [row.getAllCells()], (allCells) => {
 			return allCells.reduce((acc, cell) => {
 				acc[cell.column.id] = cell;
 				return acc;
@@ -5106,7 +4976,7 @@ const ColumnOrdering = {
 		return { onColumnOrderChange: makeStateUpdater("columnOrder", table$1) };
 	},
 	createColumn: (column, table$1) => {
-		column.getIndex = memo$1((position) => [_getVisibleLeafColumns(table$1, position)], (columns) => columns.findIndex((d) => d.id === column.id), getMemoOptions(table$1.options, "debugColumns", "getIndex"));
+		column.getIndex = memo((position) => [_getVisibleLeafColumns(table$1, position)], (columns) => columns.findIndex((d) => d.id === column.id), getMemoOptions(table$1.options, "debugColumns", "getIndex"));
 		column.getIsFirstColumn = (position) => {
 			var _columns$;
 			const columns = _getVisibleLeafColumns(table$1, position);
@@ -5124,7 +4994,7 @@ const ColumnOrdering = {
 			var _table$initialState$c;
 			table$1.setColumnOrder(defaultState ? [] : (_table$initialState$c = table$1.initialState.columnOrder) != null ? _table$initialState$c : []);
 		};
-		table$1._getOrderColumnsFn = memo$1(() => [
+		table$1._getOrderColumnsFn = memo(() => [
 			table$1.getState().columnOrder,
 			table$1.getState().grouping,
 			table$1.options.groupedColumnMode
@@ -5205,7 +5075,7 @@ const ColumnPinning = {
 		};
 	},
 	createRow: (row, table$1) => {
-		row.getCenterVisibleCells = memo$1(() => [
+		row.getCenterVisibleCells = memo(() => [
 			row._getAllVisibleCells(),
 			table$1.getState().columnPinning.left,
 			table$1.getState().columnPinning.right
@@ -5213,14 +5083,14 @@ const ColumnPinning = {
 			const leftAndRight = [...left != null ? left : [], ...right != null ? right : []];
 			return allCells.filter((d) => !leftAndRight.includes(d.column.id));
 		}, getMemoOptions(table$1.options, "debugRows", "getCenterVisibleCells"));
-		row.getLeftVisibleCells = memo$1(() => [row._getAllVisibleCells(), table$1.getState().columnPinning.left], (allCells, left) => {
+		row.getLeftVisibleCells = memo(() => [row._getAllVisibleCells(), table$1.getState().columnPinning.left], (allCells, left) => {
 			const cells = (left != null ? left : []).map((columnId) => allCells.find((cell) => cell.column.id === columnId)).filter(Boolean).map((d) => ({
 				...d,
 				position: "left"
 			}));
 			return cells;
 		}, getMemoOptions(table$1.options, "debugRows", "getLeftVisibleCells"));
-		row.getRightVisibleCells = memo$1(() => [row._getAllVisibleCells(), table$1.getState().columnPinning.right], (allCells, right) => {
+		row.getRightVisibleCells = memo(() => [row._getAllVisibleCells(), table$1.getState().columnPinning.right], (allCells, right) => {
 			const cells = (right != null ? right : []).map((columnId) => allCells.find((cell) => cell.column.id === columnId)).filter(Boolean).map((d) => ({
 				...d,
 				position: "right"
@@ -5243,13 +5113,13 @@ const ColumnPinning = {
 			}
 			return Boolean((_pinningState$positio = pinningState[position]) == null ? void 0 : _pinningState$positio.length);
 		};
-		table$1.getLeftLeafColumns = memo$1(() => [table$1.getAllLeafColumns(), table$1.getState().columnPinning.left], (allColumns, left) => {
+		table$1.getLeftLeafColumns = memo(() => [table$1.getAllLeafColumns(), table$1.getState().columnPinning.left], (allColumns, left) => {
 			return (left != null ? left : []).map((columnId) => allColumns.find((column) => column.id === columnId)).filter(Boolean);
 		}, getMemoOptions(table$1.options, "debugColumns", "getLeftLeafColumns"));
-		table$1.getRightLeafColumns = memo$1(() => [table$1.getAllLeafColumns(), table$1.getState().columnPinning.right], (allColumns, right) => {
+		table$1.getRightLeafColumns = memo(() => [table$1.getAllLeafColumns(), table$1.getState().columnPinning.right], (allColumns, right) => {
 			return (right != null ? right : []).map((columnId) => allColumns.find((column) => column.id === columnId)).filter(Boolean);
 		}, getMemoOptions(table$1.options, "debugColumns", "getRightLeafColumns"));
-		table$1.getCenterLeafColumns = memo$1(() => [
+		table$1.getCenterLeafColumns = memo(() => [
 			table$1.getAllLeafColumns(),
 			table$1.getState().columnPinning.left,
 			table$1.getState().columnPinning.right
@@ -5300,12 +5170,12 @@ const ColumnSizing = {
 			const columnSize = table$1.getState().columnSizing[column.id];
 			return Math.min(Math.max((_column$columnDef$min = column.columnDef.minSize) != null ? _column$columnDef$min : defaultColumnSizing.minSize, (_ref = columnSize != null ? columnSize : column.columnDef.size) != null ? _ref : defaultColumnSizing.size), (_column$columnDef$max = column.columnDef.maxSize) != null ? _column$columnDef$max : defaultColumnSizing.maxSize);
 		};
-		column.getStart = memo$1((position) => [
+		column.getStart = memo((position) => [
 			position,
 			_getVisibleLeafColumns(table$1, position),
 			table$1.getState().columnSizing
 		], (position, columns) => columns.slice(0, column.getIndex(position)).reduce((sum$1, column$1) => sum$1 + column$1.getSize(), 0), getMemoOptions(table$1.options, "debugColumns", "getStart"));
-		column.getAfter = memo$1((position) => [
+		column.getAfter = memo((position) => [
 			position,
 			_getVisibleLeafColumns(table$1, position),
 			table$1.getState().columnSizing
@@ -5532,10 +5402,10 @@ const ColumnVisibility = {
 		};
 	},
 	createRow: (row, table$1) => {
-		row._getAllVisibleCells = memo$1(() => [row.getAllCells(), table$1.getState().columnVisibility], (cells) => {
+		row._getAllVisibleCells = memo(() => [row.getAllCells(), table$1.getState().columnVisibility], (cells) => {
 			return cells.filter((cell) => cell.column.getIsVisible());
 		}, getMemoOptions(table$1.options, "debugRows", "_getAllVisibleCells"));
-		row.getVisibleCells = memo$1(() => [
+		row.getVisibleCells = memo(() => [
 			row.getLeftVisibleCells(),
 			row.getCenterVisibleCells(),
 			row.getRightVisibleCells()
@@ -5547,7 +5417,7 @@ const ColumnVisibility = {
 	},
 	createTable: (table$1) => {
 		const makeVisibleColumnsMethod = (key, getColumns) => {
-			return memo$1(() => [getColumns(), getColumns().filter((d) => d.getIsVisible()).map((d) => d.id).join("_")], (columns) => {
+			return memo(() => [getColumns(), getColumns().filter((d) => d.getIsVisible()).map((d) => d.id).join("_")], (columns) => {
 				return columns.filter((d) => d.getIsVisible == null ? void 0 : d.getIsVisible());
 			}, getMemoOptions(table$1.options, "debugColumns", key));
 		};
@@ -5857,7 +5727,7 @@ const RowPagination = {
 				pageCount: newPageCount
 			};
 		});
-		table$1.getPageOptions = memo$1(() => [table$1.getPageCount()], (pageCount) => {
+		table$1.getPageOptions = memo(() => [table$1.getPageCount()], (pageCount) => {
 			let pageOptions = [];
 			if (pageCount && pageCount > 0) pageOptions = [...new Array(pageCount)].fill(null).map((_, i) => i);
 			return pageOptions;
@@ -6001,9 +5871,9 @@ const RowPinning = {
 				position
 			}));
 		};
-		table$1.getTopRows = memo$1(() => [table$1.getRowModel().rows, table$1.getState().rowPinning.top], (allRows, topPinnedRowIds) => table$1._getPinnedRows(allRows, topPinnedRowIds, "top"), getMemoOptions(table$1.options, "debugRows", "getTopRows"));
-		table$1.getBottomRows = memo$1(() => [table$1.getRowModel().rows, table$1.getState().rowPinning.bottom], (allRows, bottomPinnedRowIds) => table$1._getPinnedRows(allRows, bottomPinnedRowIds, "bottom"), getMemoOptions(table$1.options, "debugRows", "getBottomRows"));
-		table$1.getCenterRows = memo$1(() => [
+		table$1.getTopRows = memo(() => [table$1.getRowModel().rows, table$1.getState().rowPinning.top], (allRows, topPinnedRowIds) => table$1._getPinnedRows(allRows, topPinnedRowIds, "top"), getMemoOptions(table$1.options, "debugRows", "getTopRows"));
+		table$1.getBottomRows = memo(() => [table$1.getRowModel().rows, table$1.getState().rowPinning.bottom], (allRows, bottomPinnedRowIds) => table$1._getPinnedRows(allRows, bottomPinnedRowIds, "bottom"), getMemoOptions(table$1.options, "debugRows", "getBottomRows"));
+		table$1.getCenterRows = memo(() => [
 			table$1.getRowModel().rows,
 			table$1.getState().rowPinning.top,
 			table$1.getState().rowPinning.bottom
@@ -6058,7 +5928,7 @@ const RowSelection = {
 			return rowSelection;
 		});
 		table$1.getPreSelectedRowModel = () => table$1.getCoreRowModel();
-		table$1.getSelectedRowModel = memo$1(() => [table$1.getState().rowSelection, table$1.getCoreRowModel()], (rowSelection, rowModel) => {
+		table$1.getSelectedRowModel = memo(() => [table$1.getState().rowSelection, table$1.getCoreRowModel()], (rowSelection, rowModel) => {
 			if (!Object.keys(rowSelection).length) return {
 				rows: [],
 				flatRows: [],
@@ -6066,7 +5936,7 @@ const RowSelection = {
 			};
 			return selectRowsFn(table$1, rowModel);
 		}, getMemoOptions(table$1.options, "debugTable", "getSelectedRowModel"));
-		table$1.getFilteredSelectedRowModel = memo$1(() => [table$1.getState().rowSelection, table$1.getFilteredRowModel()], (rowSelection, rowModel) => {
+		table$1.getFilteredSelectedRowModel = memo(() => [table$1.getState().rowSelection, table$1.getFilteredRowModel()], (rowSelection, rowModel) => {
 			if (!Object.keys(rowSelection).length) return {
 				rows: [],
 				flatRows: [],
@@ -6074,7 +5944,7 @@ const RowSelection = {
 			};
 			return selectRowsFn(table$1, rowModel);
 		}, getMemoOptions(table$1.options, "debugTable", "getFilteredSelectedRowModel"));
-		table$1.getGroupedSelectedRowModel = memo$1(() => [table$1.getState().rowSelection, table$1.getSortedRowModel()], (rowSelection, rowModel) => {
+		table$1.getGroupedSelectedRowModel = memo(() => [table$1.getState().rowSelection, table$1.getSortedRowModel()], (rowSelection, rowModel) => {
 			if (!Object.keys(rowSelection).length) return {
 				rows: [],
 				flatRows: [],
@@ -6526,7 +6396,7 @@ function createTable(options) {
 			}
 			return row;
 		},
-		_getDefaultColumnDef: memo$1(() => [table$1.options.defaultColumn], (defaultColumn) => {
+		_getDefaultColumnDef: memo(() => [table$1.options.defaultColumn], (defaultColumn) => {
 			var _defaultColumn;
 			defaultColumn = (_defaultColumn = defaultColumn) != null ? _defaultColumn : {};
 			return {
@@ -6547,7 +6417,7 @@ function createTable(options) {
 			};
 		}, getMemoOptions(options, "debugColumns", "_getDefaultColumnDef")),
 		_getColumnDefs: () => table$1.options.columns,
-		getAllColumns: memo$1(() => [table$1._getColumnDefs()], (columnDefs) => {
+		getAllColumns: memo(() => [table$1._getColumnDefs()], (columnDefs) => {
 			const recurseColumns = function(columnDefs$1, parent, depth) {
 				if (depth === void 0) depth = 0;
 				return columnDefs$1.map((columnDef) => {
@@ -6559,18 +6429,18 @@ function createTable(options) {
 			};
 			return recurseColumns(columnDefs);
 		}, getMemoOptions(options, "debugColumns", "getAllColumns")),
-		getAllFlatColumns: memo$1(() => [table$1.getAllColumns()], (allColumns) => {
+		getAllFlatColumns: memo(() => [table$1.getAllColumns()], (allColumns) => {
 			return allColumns.flatMap((column) => {
 				return column.getFlatColumns();
 			});
 		}, getMemoOptions(options, "debugColumns", "getAllFlatColumns")),
-		_getAllFlatColumnsById: memo$1(() => [table$1.getAllFlatColumns()], (flatColumns) => {
+		_getAllFlatColumnsById: memo(() => [table$1.getAllFlatColumns()], (flatColumns) => {
 			return flatColumns.reduce((acc, column) => {
 				acc[column.id] = column;
 				return acc;
 			}, {});
 		}, getMemoOptions(options, "debugColumns", "getAllFlatColumnsById")),
-		getAllLeafColumns: memo$1(() => [table$1.getAllColumns(), table$1._getOrderColumnsFn()], (allColumns, orderColumns$1) => {
+		getAllLeafColumns: memo(() => [table$1.getAllColumns(), table$1._getOrderColumnsFn()], (allColumns, orderColumns$1) => {
 			let leafColumns = allColumns.flatMap((column) => column.getLeafColumns());
 			return orderColumns$1(leafColumns);
 		}, getMemoOptions(options, "debugColumns", "getAllLeafColumns")),
@@ -6588,7 +6458,7 @@ function createTable(options) {
 	return table$1;
 }
 function getCoreRowModel() {
-	return (table$1) => memo$1(() => [table$1.options.data], (data) => {
+	return (table$1) => memo(() => [table$1.options.data], (data) => {
 		const rowModel = {
 			rows: [],
 			flatRows: [],
@@ -6695,7 +6565,7 @@ function filterRowModelFromRoot(rowsToFilter, filterRow, table$1) {
 	};
 }
 function getFilteredRowModel() {
-	return (table$1) => memo$1(() => [
+	return (table$1) => memo(() => [
 		table$1.getPreFilteredRowModel(),
 		table$1.getState().columnFilters,
 		table$1.getState().globalFilter
@@ -6772,7 +6642,7 @@ function getFilteredRowModel() {
 	}, getMemoOptions(table$1.options, "debugTable", "getFilteredRowModel", () => table$1._autoResetPageIndex()));
 }
 function getSortedRowModel() {
-	return (table$1) => memo$1(() => [table$1.getState().sorting, table$1.getPreSortedRowModel()], (sorting, rowModel) => {
+	return (table$1) => memo(() => [table$1.getState().sorting, table$1.getPreSortedRowModel()], (sorting, rowModel) => {
 		if (!rowModel.rows.length || !(sorting != null && sorting.length)) return rowModel;
 		const sortingState = table$1.getState().sorting;
 		const sortedFlatRows = [];
@@ -7031,7 +6901,57 @@ const table = sva({
 
 //#endregion
 //#region src/components/DataTables/VirtualizedDatatable.tsx
-var _tmpl$$3 = /* @__PURE__ */ template(`<div><div style=overflow-y:hidden><table><thead></thead><tbody><tr><td></td></tr></tbody></table></div><div>Showing <!> of <!> rows`), _tmpl$2$3 = /* @__PURE__ */ template(`<div>`), _tmpl$3$1 = /* @__PURE__ */ template(`<tr>`), _tmpl$4 = /* @__PURE__ */ template(`<th>`), _tmpl$5 = /* @__PURE__ */ template(`<div style=flex-direction:column><button><span>`), _tmpl$6 = /* @__PURE__ */ template(`<td>`);
+var _tmpl$$3 = [
+	"<div",
+	">",
+	"<div style=\"",
+	"\"><table style=\"",
+	"\"",
+	"><thead",
+	" style=\"",
+	"\">",
+	"</thead><tbody style=\"",
+	"\"",
+	">",
+	"<tr style=\"",
+	"\"><td style=\"",
+	"\"></td></tr></tbody></table></div><div",
+	">Showing ",
+	" of ",
+	" rows</div></div>"
+], _tmpl$2$3 = [
+	"<div",
+	">",
+	"</div>"
+], _tmpl$3$1 = [
+	"<tr style=\"",
+	"\">",
+	"</tr>"
+], _tmpl$4$1 = [
+	"<th",
+	" style=\"",
+	"\">",
+	"</th>"
+], _tmpl$5 = [
+	"<div style=\"",
+	"\"><button",
+	"",
+	"><span>",
+	"</span>",
+	"",
+	"</button>",
+	"</div>"
+], _tmpl$6 = [
+	"<tr",
+	" style=\"",
+	"\">",
+	"</tr>"
+], _tmpl$7 = [
+	"<td",
+	" style=\"",
+	"\">",
+	"</td>"
+];
 const newTableStyles = table({ darkHeader: true });
 function VirtualizedDataTable(props) {
 	let parentRef;
@@ -7072,195 +6992,71 @@ function VirtualizedDataTable(props) {
 		estimateSize: props.estimateSize || (() => 48),
 		overscan: props.overscan || 5
 	}));
-	return (() => {
-		var _el$ = _tmpl$$3(), _el$2 = _el$.firstChild, _el$3 = _el$2.firstChild, _el$4 = _el$3.firstChild, _el$5 = _el$4.nextSibling, _el$6 = _el$5.firstChild, _el$7 = _el$6.firstChild, _el$8 = _el$2.nextSibling, _el$9 = _el$8.firstChild, _el$10 = _el$9.nextSibling, _el$0 = _el$10.nextSibling, _el$11 = _el$0.nextSibling;
-		_el$11.nextSibling;
-		insert(_el$, (() => {
-			var _c$ = memo(() => props.enableGlobalFilter !== false);
-			return () => _c$() && (() => {
-				var _el$12 = _tmpl$2$3();
-				insert(_el$12, createComponent(Input, {
-					get value() {
-						return globalFilter();
-					},
-					onInput: (e) => setGlobalFilter(e.currentTarget.value),
-					get placeholder() {
-						return props.searchPlaceholder || "Search all columns...";
-					},
-					get ["class"]() {
-						return newTableStyles.globalSearchInput;
-					}
-				}));
-				effect(() => className(_el$12, newTableStyles.outerHeader));
-				return _el$12;
-			})();
-		})(), _el$2);
-		setStyleProperty(_el$2, "overflow", "scroll");
-		setStyleProperty(_el$3, "width", "100%");
-		setStyleProperty(_el$4, "width", "100%");
-		setStyleProperty(_el$4, "display", "block");
-		insert(_el$4, createComponent(For, {
+	return ssr(_tmpl$$3, ssrAttribute("class", escape(newTableStyles.container, true), false), props.enableGlobalFilter !== false && ssr(_tmpl$2$3, ssrAttribute("class", escape(newTableStyles.outerHeader, true), false), escape(createComponent(Input, {
+		get value() {
+			return globalFilter();
+		},
+		onInput: (e) => setGlobalFilter(e.currentTarget.value),
+		get placeholder() {
+			return props.searchPlaceholder || "Search all columns...";
+		},
+		get ["class"]() {
+			return newTableStyles.globalSearchInput;
+		}
+	}))), ssrStyleProperty("overflow:", "scroll") + ssrStyleProperty(";overflow-y:", "hidden"), ssrStyleProperty("width:", "100%"), ssrAttribute("class", escape(newTableStyles.table, true), false), ssrAttribute("class", escape(newTableStyles.header, true), false), ssrStyleProperty("width:", "100%") + ssrStyleProperty(";display:", "block"), escape(createComponent(For, {
+		get each() {
+			return table$1().getHeaderGroups();
+		},
+		children: (headerGroup) => ssr(_tmpl$3$1, ssrStyleProperty("display:", "flex") + ssrStyleProperty(";width:", "100%"), escape(createComponent(For, {
 			get each() {
-				return table$1().getHeaderGroups();
+				return headerGroup.headers;
 			},
-			children: (headerGroup) => (() => {
-				var _el$13 = _tmpl$3$1();
-				setStyleProperty(_el$13, "display", "flex");
-				setStyleProperty(_el$13, "width", "100%");
-				insert(_el$13, createComponent(For, {
-					get each() {
-						return headerGroup.headers;
-					},
-					children: (header) => (() => {
-						var _el$14 = _tmpl$4();
-						insert(_el$14, (() => {
-							var _c$2 = memo(() => !!header.isPlaceholder);
-							return () => _c$2() ? null : (() => {
-								var _el$15 = _tmpl$5(), _el$16 = _el$15.firstChild, _el$17 = _el$16.firstChild;
-								setStyleProperty(_el$15, "display", "flex");
-								setStyleProperty(_el$15, "overflow", "hidden");
-								setStyleProperty(_el$15, "gap", "0.25rem");
-								addEventListener(_el$16, "click", header.column.getToggleSortingHandler(), true);
-								insert(_el$17, () => flexRender(header.column.columnDef.header, header.getContext()));
-								insert(_el$16, (() => {
-									var _c$3 = memo(() => !!(props.enableSorting !== false && header.column.getIsSorted() === "asc"));
-									return () => _c$3() && createComponent(ChevronUp, { size: 16 });
-								})(), null);
-								insert(_el$16, (() => {
-									var _c$4 = memo(() => !!(props.enableSorting !== false && header.column.getIsSorted() === "desc"));
-									return () => _c$4() && createComponent(ChevronDown, { size: 16 });
-								})(), null);
-								insert(_el$15, createComponent(Show, {
-									get when() {
-										return memo(() => props.enableColumnFilters !== false)() && header.column.getCanFilter();
-									},
-									get children() {
-										return createComponent(Input, {
-											style: { flex: "1" },
-											type: "text",
-											get value() {
-												return header.column.getFilterValue() || "";
-											},
-											onInput: (e) => header.column.setFilterValue(e.currentTarget.value),
-											placeholder: "Filter..."
-										});
-									}
-								}), null);
-								effect((_p$) => {
-									var _v$1 = tableStyles.sortButton, _v$10 = !header.column.getCanSort() || props.enableSorting === false;
-									_v$1 !== _p$.e && className(_el$16, _p$.e = _v$1);
-									_v$10 !== _p$.t && (_el$16.disabled = _p$.t = _v$10);
-									return _p$;
-								}, {
-									e: void 0,
-									t: void 0
-								});
-								return _el$15;
-							})();
-						})());
-						effect((_p$) => {
-							var _v$8 = newTableStyles.th, _v$9 = header.column.columnDef.size ? `${header.column.columnDef.size}px` : "auto", _v$0 = header.column.columnDef.size ? "none" : "1";
-							_v$8 !== _p$.e && className(_el$14, _p$.e = _v$8);
-							_v$9 !== _p$.t && setStyleProperty(_el$14, "width", _p$.t = _v$9);
-							_v$0 !== _p$.a && setStyleProperty(_el$14, "flex", _p$.a = _v$0);
-							return _p$;
-						}, {
-							e: void 0,
-							t: void 0,
-							a: void 0
-						});
-						return _el$14;
-					})()
-				}));
-				return _el$13;
-			})()
-		}));
-		var _ref$ = parentRef;
-		typeof _ref$ === "function" ? use(_ref$, _el$5) : parentRef = _el$5;
-		setStyleProperty(_el$5, "display", "block");
-		setStyleProperty(_el$5, "overflow", "auto");
-		setStyleProperty(_el$5, "position", "relative");
-		insert(_el$5, createComponent(For, {
-			get each() {
-				return rowVirtualizer().getVirtualItems();
-			},
-			children: (virtualItem) => {
-				const row = filteredRows()[virtualItem.index];
-				if (!row) return null;
-				return (() => {
-					var _el$18 = _tmpl$3$1();
-					setStyleProperty(_el$18, "position", "absolute");
-					setStyleProperty(_el$18, "top", "0");
-					setStyleProperty(_el$18, "left", "0");
-					setStyleProperty(_el$18, "width", "100%");
-					setStyleProperty(_el$18, "display", "flex");
-					insert(_el$18, createComponent(For, {
-						get each() {
-							return row.getVisibleCells();
+			children: (header) => ssr(_tmpl$4$1, ssrAttribute("class", escape(newTableStyles.th, true), false), ssrStyleProperty("width:", header.column.columnDef.size ? `${escape(header.column.columnDef.size, true)}px` : "auto") + ssrStyleProperty(";flex:", header.column.columnDef.size ? "none" : "1"), header.isPlaceholder ? escape(null) : ssr(_tmpl$5, ssrStyleProperty("display:", "flex") + ssrStyleProperty(";flex-direction:", "column") + ssrStyleProperty(";overflow:", "hidden") + ssrStyleProperty(";gap:", "0.25rem"), ssrAttribute("class", escape(tableStyles.sortButton, true), false), ssrAttribute("disabled", !header.column.getCanSort() || props.enableSorting === false, true), escape(flexRender(header.column.columnDef.header, header.getContext())), props.enableSorting !== false && header.column.getIsSorted() === "asc" && escape(createComponent(ChevronUp, { size: 16 })), props.enableSorting !== false && header.column.getIsSorted() === "desc" && escape(createComponent(ChevronDown, { size: 16 })), escape(createComponent(Show, {
+				get when() {
+					return props.enableColumnFilters !== false && header.column.getCanFilter();
+				},
+				get children() {
+					return createComponent(Input, {
+						style: { flex: "1" },
+						type: "text",
+						get value() {
+							return header.column.getFilterValue() || "";
 						},
-						children: (cell) => (() => {
-							var _el$19 = _tmpl$6();
-							insert(_el$19, () => flexRender(cell.column.columnDef.cell, cell.getContext()));
-							effect((_p$) => {
-								var _v$14 = newTableStyles.cell, _v$15 = cell.column.columnDef.size ? `${cell.column.columnDef.size}px` : "auto", _v$16 = cell.column.columnDef.size ? "none" : "1";
-								_v$14 !== _p$.e && className(_el$19, _p$.e = _v$14);
-								_v$15 !== _p$.t && setStyleProperty(_el$19, "width", _p$.t = _v$15);
-								_v$16 !== _p$.a && setStyleProperty(_el$19, "flex", _p$.a = _v$16);
-								return _p$;
-							}, {
-								e: void 0,
-								t: void 0,
-								a: void 0
-							});
-							return _el$19;
-						})()
-					}));
-					effect((_p$) => {
-						var _v$11 = newTableStyles.row, _v$12 = `${virtualItem.size}px`, _v$13 = `translateY(${virtualItem.start}px)`;
-						_v$11 !== _p$.e && className(_el$18, _p$.e = _v$11);
-						_v$12 !== _p$.t && setStyleProperty(_el$18, "height", _p$.t = _v$12);
-						_v$13 !== _p$.a && setStyleProperty(_el$18, "transform", _p$.a = _v$13);
-						return _p$;
-					}, {
-						e: void 0,
-						t: void 0,
-						a: void 0
+						onInput: (e) => header.column.setFilterValue(e.currentTarget.value),
+						placeholder: "Filter..."
 					});
-					return _el$18;
-				})();
-			}
-		}), _el$6);
-		setStyleProperty(_el$6, "visibility", "hidden");
-		setStyleProperty(_el$7, "display", "block");
-		insert(_el$8, () => filteredRows().length, _el$10);
-		insert(_el$8, () => props.data.length, _el$11);
-		effect((_p$) => {
-			var _v$ = newTableStyles.container, _v$2 = newTableStyles.table, _v$3 = newTableStyles.header, _v$4 = props.height || "400px", _v$5 = newTableStyles.body, _v$6 = `${rowVirtualizer().getTotalSize()}px`, _v$7 = newTableStyles.outerFooter;
-			_v$ !== _p$.e && className(_el$, _p$.e = _v$);
-			_v$2 !== _p$.t && className(_el$3, _p$.t = _v$2);
-			_v$3 !== _p$.a && className(_el$4, _p$.a = _v$3);
-			_v$4 !== _p$.o && setStyleProperty(_el$5, "height", _p$.o = _v$4);
-			_v$5 !== _p$.i && className(_el$5, _p$.i = _v$5);
-			_v$6 !== _p$.n && setStyleProperty(_el$6, "height", _p$.n = _v$6);
-			_v$7 !== _p$.s && className(_el$8, _p$.s = _v$7);
-			return _p$;
-		}, {
-			e: void 0,
-			t: void 0,
-			a: void 0,
-			o: void 0,
-			i: void 0,
-			n: void 0,
-			s: void 0
-		});
-		return _el$;
-	})();
+				}
+			}))))
+		})))
+	})), ssrStyleProperty("display:", "block") + ssrStyleProperty(";overflow:", "auto") + ssrStyleProperty(";position:", "relative") + ssrStyleProperty(";height:", escape(props.height, true) || "400px"), ssrAttribute("class", escape(newTableStyles.body, true), false), escape(createComponent(For, {
+		get each() {
+			return rowVirtualizer().getVirtualItems();
+		},
+		children: (virtualItem) => {
+			const row = filteredRows()[virtualItem.index];
+			if (!row) return null;
+			return ssr(_tmpl$6, ssrAttribute("class", escape(newTableStyles.row, true), false), ssrStyleProperty("height:", `${escape(virtualItem.size, true)}px`) + ssrStyleProperty(";transform:", `translateY(${escape(virtualItem.start, true)}px)`) + ssrStyleProperty(";position:", "absolute") + ssrStyleProperty(";top:", "0") + ssrStyleProperty(";left:", "0") + ssrStyleProperty(";width:", "100%") + ssrStyleProperty(";display:", "flex"), escape(createComponent(For, {
+				get each() {
+					return row.getVisibleCells();
+				},
+				children: (cell) => ssr(_tmpl$7, ssrAttribute("class", escape(newTableStyles.cell, true), false), ssrStyleProperty("width:", cell.column.columnDef.size ? `${escape(cell.column.columnDef.size, true)}px` : "auto") + ssrStyleProperty(";flex:", cell.column.columnDef.size ? "none" : "1"), escape(flexRender(cell.column.columnDef.cell, cell.getContext())))
+			})));
+		}
+	})), ssrStyleProperty("height:", `${escape(rowVirtualizer().getTotalSize(), true)}px`) + ssrStyleProperty(";visibility:", "hidden"), ssrStyleProperty("display:", "block"), ssrAttribute("class", escape(newTableStyles.outerFooter, true), false), escape(filteredRows().length), escape(props.data.length));
 }
-delegateEvents(["click"]);
 
 //#endregion
 //#region src/components/VirtualList.tsx
-var _tmpl$$2 = /* @__PURE__ */ template(`<div><div>`), _tmpl$2$2 = /* @__PURE__ */ template(`<div>`);
+var _tmpl$$2 = [
+	"<div style=\"",
+	"\"><div style=\"",
+	"\">",
+	"</div></div>"
+], _tmpl$2$2 = [
+	"<div style=\"",
+	"\">",
+	"</div>"
+];
 function VirtualList(props) {
 	let parentRef;
 	const rowVirtualizer = createMemo(() => createVirtualizer({
@@ -7269,52 +7065,41 @@ function VirtualList(props) {
 		estimateSize: props.estimateSize || (() => 35),
 		overscan: props.overscan || 5
 	}));
-	return (() => {
-		var _el$ = _tmpl$$2(), _el$2 = _el$.firstChild;
-		var _ref$ = parentRef;
-		typeof _ref$ === "function" ? use(_ref$, _el$) : parentRef = _el$;
-		setStyleProperty(_el$, "overflow", "auto");
-		setStyleProperty(_el$2, "width", "100%");
-		setStyleProperty(_el$2, "position", "relative");
-		insert(_el$2, createComponent(For, {
-			get each() {
-				return rowVirtualizer().getVirtualItems();
-			},
-			children: (virtualItem) => (() => {
-				var _el$3 = _tmpl$2$2();
-				setStyleProperty(_el$3, "position", "absolute");
-				setStyleProperty(_el$3, "top", "0");
-				setStyleProperty(_el$3, "left", "0");
-				setStyleProperty(_el$3, "width", "100%");
-				insert(_el$3, () => props.renderItemCallback(virtualItem.index, virtualItem.size));
-				effect((_p$) => {
-					var _v$3 = `${virtualItem.size}px`, _v$4 = `translateY(${virtualItem.start}px)`;
-					_v$3 !== _p$.e && setStyleProperty(_el$3, "height", _p$.e = _v$3);
-					_v$4 !== _p$.t && setStyleProperty(_el$3, "transform", _p$.t = _v$4);
-					return _p$;
-				}, {
-					e: void 0,
-					t: void 0
-				});
-				return _el$3;
-			})()
-		}));
-		effect((_p$) => {
-			var _v$ = props.height || "400px", _v$2 = `${rowVirtualizer().getTotalSize()}px`;
-			_v$ !== _p$.e && setStyleProperty(_el$, "height", _p$.e = _v$);
-			_v$2 !== _p$.t && setStyleProperty(_el$2, "height", _p$.t = _v$2);
-			return _p$;
-		}, {
-			e: void 0,
-			t: void 0
-		});
-		return _el$;
-	})();
+	return ssr(_tmpl$$2, ssrStyleProperty("height:", escape(props.height, true) || "400px") + ssrStyleProperty(";overflow:", "auto"), ssrStyleProperty("height:", `${escape(rowVirtualizer().getTotalSize(), true)}px`) + ssrStyleProperty(";width:", "100%") + ssrStyleProperty(";position:", "relative"), escape(createComponent(For, {
+		get each() {
+			return rowVirtualizer().getVirtualItems();
+		},
+		children: (virtualItem) => ssr(_tmpl$2$2, ssrStyleProperty("position:", "absolute") + ssrStyleProperty(";top:", 0) + ssrStyleProperty(";left:", 0) + ssrStyleProperty(";width:", "100%") + ssrStyleProperty(";height:", `${escape(virtualItem.size, true)}px`) + ssrStyleProperty(";transform:", `translateY(${escape(virtualItem.start, true)}px)`), escape(props.renderItemCallback(virtualItem.index, virtualItem.size)))
+	})));
 }
 
 //#endregion
 //#region src/components/VirtualPhotoGrid.tsx
-var _tmpl$$1 = /* @__PURE__ */ template(`<div><div>`), _tmpl$2$1 = /* @__PURE__ */ template(`<div><div><img loading=lazy><div><h3>`, true, false, false), _tmpl$3 = /* @__PURE__ */ template(`<p>`);
+var _tmpl$$1 = [
+	"<div",
+	"><div style=\"",
+	"\">",
+	"</div></div>"
+], _tmpl$2$1 = [
+	"<div style=\"",
+	"\"><div",
+	" style=\"",
+	"\">",
+	"</div></div>"
+], _tmpl$3 = [
+	"<div",
+	"><div",
+	"><img",
+	" loading=\"lazy\"><div",
+	"><h3",
+	">",
+	"</h3>",
+	"</div></div></div>"
+], _tmpl$4 = [
+	"<p",
+	">",
+	"</p>"
+];
 function VirtualPhotoGrid(props) {
 	const getColumnsForViewport = () => {
 		if (typeof window === "undefined") return 2;
@@ -7349,147 +7134,74 @@ function VirtualPhotoGrid(props) {
 		const end = Math.min(start + columns(), props.photos.length);
 		return props.photos.slice(start, end);
 	};
-	return (() => {
-		var _el$ = _tmpl$$1(), _el$2 = _el$.firstChild;
-		var _ref$ = parentRef;
-		typeof _ref$ === "function" ? use(_ref$, _el$) : parentRef = _el$;
-		setStyleProperty(_el$2, "width", "100%");
-		setStyleProperty(_el$2, "position", "relative");
-		insert(_el$2, () => rowVirtualizer().getVirtualItems().map((virtualRow) => (() => {
-			var _el$3 = _tmpl$$1(), _el$4 = _el$3.firstChild;
-			setStyleProperty(_el$3, "position", "absolute");
-			setStyleProperty(_el$3, "top", "0");
-			setStyleProperty(_el$3, "left", "0");
-			setStyleProperty(_el$3, "width", "100%");
-			setStyleProperty(_el$3, "height", "220px");
-			setStyleProperty(_el$3, "padding", "0 0 16px 0");
-			insert(_el$4, createComponent(For, {
-				get each() {
-					return getPhotosForRow(virtualRow.index);
-				},
-				children: (photo) => (() => {
-					var _el$5 = _tmpl$2$1(), _el$6 = _el$5.firstChild, _el$7 = _el$6.firstChild, _el$8 = _el$7.nextSibling, _el$9 = _el$8.firstChild;
-					_el$5.$$mousedown = (e) => {
-						if (e.button === 1) {
-							e.preventDefault();
-							props.onPhotoDblClick?.(photo);
-						}
-					};
-					_el$5.$$dblclick = () => props.onPhotoDblClick?.(photo);
-					_el$5.$$click = () => props.onPhotoClick?.(photo);
-					insert(_el$9, () => photo.title);
-					insert(_el$8, (() => {
-						var _c$ = memo(() => !!photo.date);
-						return () => _c$() && (() => {
-							var _el$0 = _tmpl$3();
-							insert(_el$0, () => photo.date);
-							effect(() => className(_el$0, css({
-								fontSize: "xs",
-								color: props.selectedPhotoId === photo.id ? "white" : "content.neutral"
-							})));
-							return _el$0;
-						})();
-					})(), null);
-					effect((_p$) => {
-						var _v$6 = css({
-							height: `${rowHeight - gap}px`,
-							width: "100%",
-							bg: props.selectedPhotoId === photo.id ? "primary" : "base.200",
-							borderRadius: "box",
-							overflow: "hidden",
-							cursor: "pointer",
-							transition: "all 0.2s ease",
-							_hover: {
-								transform: "scale(1.02)",
-								boxShadow: "lg"
-							},
-							border: props.selectedPhotoId === photo.id ? "2px solid" : "1px solid",
-							borderColor: props.selectedPhotoId === photo.id ? "primary" : "base.300"
-						}), _v$7 = css({
-							position: "relative",
-							height: "100%"
-						}), _v$8 = photo.url, _v$9 = photo.title, _v$0 = css({
-							width: "100%",
-							height: "70%",
-							objectFit: "cover"
-						}), _v$1 = css({
-							p: 2,
-							height: "30%",
-							display: "flex",
-							flexDirection: "column",
-							justifyContent: "center"
-						}), _v$10 = css({
-							fontSize: "sm",
-							fontWeight: "semibold",
-							color: props.selectedPhotoId === photo.id ? "white" : "base.content",
-							mb: 1,
-							overflow: "hidden",
-							textOverflow: "ellipsis",
-							whiteSpace: "nowrap"
-						});
-						_v$6 !== _p$.e && className(_el$5, _p$.e = _v$6);
-						_v$7 !== _p$.t && className(_el$6, _p$.t = _v$7);
-						_v$8 !== _p$.a && setAttribute(_el$7, "src", _p$.a = _v$8);
-						_v$9 !== _p$.o && setAttribute(_el$7, "alt", _p$.o = _v$9);
-						_v$0 !== _p$.i && className(_el$7, _p$.i = _v$0);
-						_v$1 !== _p$.n && className(_el$8, _p$.n = _v$1);
-						_v$10 !== _p$.s && className(_el$9, _p$.s = _v$10);
-						return _p$;
-					}, {
-						e: void 0,
-						t: void 0,
-						a: void 0,
-						o: void 0,
-						i: void 0,
-						n: void 0,
-						s: void 0
-					});
-					return _el$5;
-				})()
-			}));
-			effect((_p$) => {
-				var _v$3 = `translateY(${virtualRow.start}px)`, _v$4 = css({
-					display: "grid",
-					gap: 4,
-					height: `${rowHeight - gap}px`,
-					px: 4
-				}), _v$5 = `repeat(${columns()}, 1fr)`;
-				_v$3 !== _p$.e && setStyleProperty(_el$3, "transform", _p$.e = _v$3);
-				_v$4 !== _p$.t && className(_el$4, _p$.t = _v$4);
-				_v$5 !== _p$.a && setStyleProperty(_el$4, "grid-template-columns", _p$.a = _v$5);
-				return _p$;
-			}, {
-				e: void 0,
-				t: void 0,
-				a: void 0
-			});
-			return _el$3;
-		})()));
-		effect((_p$) => {
-			var _v$ = css({
-				height: props.height || "100%",
-				overflow: "auto",
-				bg: "base.100"
-			}), _v$2 = `${rowVirtualizer().getTotalSize()}px`;
-			_v$ !== _p$.e && className(_el$, _p$.e = _v$);
-			_v$2 !== _p$.t && setStyleProperty(_el$2, "height", _p$.t = _v$2);
-			return _p$;
-		}, {
-			e: void 0,
-			t: void 0
-		});
-		return _el$;
-	})();
+	return ssr(_tmpl$$1, ssrAttribute("class", escape(css({
+		height: props.height || "100%",
+		overflow: "auto",
+		bg: "base.100"
+	}), true), false), ssrStyleProperty("height:", `${escape(rowVirtualizer().getTotalSize(), true)}px`) + ssrStyleProperty(";width:", "100%") + ssrStyleProperty(";position:", "relative"), escape(rowVirtualizer().getVirtualItems().map((virtualRow) => ssr(_tmpl$2$1, ssrStyleProperty("position:", "absolute") + ssrStyleProperty(";top:", 0) + ssrStyleProperty(";left:", 0) + ssrStyleProperty(";width:", "100%") + ssrStyleProperty(";height:", `${escape(rowHeight, true)}px`) + ssrStyleProperty(";transform:", `translateY(${escape(virtualRow.start, true)}px)`) + ssrStyleProperty(";padding:", `0 0 ${escape(gap, true)}px 0`), ssrAttribute("class", escape(css({
+		display: "grid",
+		gap: 4,
+		height: `${rowHeight - gap}px`,
+		px: 4
+	}), true), false), ssrStyleProperty("grid-template-columns:", `repeat(${escape(columns(), true)}, 1fr)`), escape(createComponent(For, {
+		get each() {
+			return getPhotosForRow(virtualRow.index);
+		},
+		children: (photo) => ssr(_tmpl$3, ssrAttribute("class", escape(css({
+			height: `${rowHeight - gap}px`,
+			width: "100%",
+			bg: props.selectedPhotoId === photo.id ? "primary" : "base.200",
+			borderRadius: "box",
+			overflow: "hidden",
+			cursor: "pointer",
+			transition: "all 0.2s ease",
+			_hover: {
+				transform: "scale(1.02)",
+				boxShadow: "lg"
+			},
+			border: props.selectedPhotoId === photo.id ? "2px solid" : "1px solid",
+			borderColor: props.selectedPhotoId === photo.id ? "primary" : "base.300"
+		}), true), false), ssrAttribute("class", escape(css({
+			position: "relative",
+			height: "100%"
+		}), true), false), ssrAttribute("src", escape(photo.url, true), false) + ssrAttribute("alt", escape(photo.title, true), false) + ssrAttribute("class", escape(css({
+			width: "100%",
+			height: "70%",
+			objectFit: "cover"
+		}), true), false), ssrAttribute("class", escape(css({
+			p: 2,
+			height: "30%",
+			display: "flex",
+			flexDirection: "column",
+			justifyContent: "center"
+		}), true), false), ssrAttribute("class", escape(css({
+			fontSize: "sm",
+			fontWeight: "semibold",
+			color: props.selectedPhotoId === photo.id ? "white" : "base.content",
+			mb: 1,
+			overflow: "hidden",
+			textOverflow: "ellipsis",
+			whiteSpace: "nowrap"
+		}), true), false), escape(photo.title), photo.date && ssr(_tmpl$4, ssrAttribute("class", escape(css({
+			fontSize: "xs",
+			color: props.selectedPhotoId === photo.id ? "white" : "content.neutral"
+		}), true), false), escape(photo.date)))
+	}))))));
 }
-delegateEvents([
-	"click",
-	"dblclick",
-	"mousedown"
-]);
 
 //#endregion
 //#region src/components/Progress.tsx
-var _tmpl$ = /* @__PURE__ */ template(`<span style=font-size:0.75rem;min-width:2rem;text-align:right>%`), _tmpl$2 = /* @__PURE__ */ template(`<div style=align-items:center>`);
+var _tmpl$ = [
+	"<span style=\"",
+	"\">",
+	"%</span>"
+], _tmpl$2 = [
+	"<div style=\"",
+	"\">",
+	"",
+	"",
+	"</div>"
+];
 const progressStyle = cva({
 	base: {
 		bg: "base.300",
@@ -7522,43 +7234,32 @@ const ProgressContainer = styled("div", progressStyle);
 const ProgressBar = styled("div", progressBarStyle);
 function Progress(props) {
 	const percentage = () => Math.min(Math.max(props.value() / (props.max?.() || 100) * 100, 0), 100);
-	return (() => {
-		var _el$ = _tmpl$2();
-		setStyleProperty(_el$, "display", "flex");
-		setStyleProperty(_el$, "gap", "0.5rem");
-		insert(_el$, createComponent(ProgressContainer, {
-			get size() {
-				return props.size;
-			},
-			get ["class"]() {
-				return props.class;
-			},
-			style: { flex: "1" },
-			get children() {
-				return createComponent(ProgressBar, {
-					get variant() {
-						return props.variant;
-					},
-					get style() {
-						return { width: `${percentage()}%` };
-					}
-				});
-			}
-		}), null);
-		insert(_el$, createComponent(Show, {
-			get when() {
-				return props.showLabel?.();
-			},
-			get children() {
-				var _el$2 = _tmpl$(), _el$3 = _el$2.firstChild;
-				setStyleProperty(_el$2, "color", "var(--colors-base-content)");
-				insert(_el$2, () => Math.round(percentage()), _el$3);
-				return _el$2;
-			}
-		}), null);
-		insert(_el$, () => props.children, null);
-		return _el$;
-	})();
+	return ssr(_tmpl$2, ssrStyleProperty("display:", "flex") + ssrStyleProperty(";align-items:", "center") + ssrStyleProperty(";gap:", "0.5rem"), escape(createComponent(ProgressContainer, {
+		get size() {
+			return props.size;
+		},
+		get ["class"]() {
+			return props.class;
+		},
+		style: { flex: "1" },
+		get children() {
+			return createComponent(ProgressBar, {
+				get variant() {
+					return props.variant;
+				},
+				get style() {
+					return { width: `${percentage()}%` };
+				}
+			});
+		}
+	})), escape(createComponent(Show, {
+		get when() {
+			return props.showLabel?.();
+		},
+		get children() {
+			return ssr(_tmpl$, ssrStyleProperty("font-size:", "0.75rem") + ssrStyleProperty(";color:", "var(--colors-base-content)") + ssrStyleProperty(";min-width:", "2rem") + ssrStyleProperty(";text-align:", "right"), escape(Math.round(percentage())));
+		}
+	})), escape(props.children));
 }
 
 //#endregion
