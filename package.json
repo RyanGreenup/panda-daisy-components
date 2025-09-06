@@ -31,14 +31,14 @@
   ],
   "scripts": {
     "storybook": "storybook dev -p 6006",
-    "build:ship": "panda ship --outfile dist/panda.buildinfo.json",
-    "build:cssgen": "panda cssgen --outfile dist/styles.css",
+    "build:ship": "panda ship --cwd packages/styles --outfile dist/panda.buildinfo.json",
+    "build:cssgen": "panda cssgen --cwd packages/styles --outfile dist/styles.css",
     "build:tsdown": "tsdown",
     "build:storybook": "storybook build",
     "build": "npm run build:ship && npm run build:cssgen && npm run build:tsdown && npm run build:storybook",
     "build-storybook": "storybook build",
-    "prepare": "panda codegen",
-    "prepare-clean": "panda codegen --clean"
+    "prepare": "panda codegen --cwd packages/styles/",
+    "prepare-clean": "panda codegen --cwd packages/styles/ --clean"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.1",
@@ -57,13 +57,17 @@
   },
   "dependencies": {
     "@kobalte/core": "^0.13.11",
+    "@ryangreenup/panda-daisy-components-styled-system": "*",
+    "@tanstack/solid-table": "^8.21.3",
     "@tanstack/solid-virtual": "^3.13.12",
     "lucide-solid": "^0.500.0",
+    "rolldown-plugin-solid": "^0.2.1",
     "solid-js": "^1.9.9",
     "solid-transition-group": "^0.3.0",
     "tsdown": "^0.14.2"
   },
   "peerDependencies": {
+    "@ryangreenup/panda-daisy-components-styled-system": "*",
     "@kobalte/core": "^0.13.11",
     "solid-js": "^1.9.0",
     "@tanstack/solid-virtual": "^3.0.0",

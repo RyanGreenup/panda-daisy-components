@@ -1,5 +1,5 @@
 import { JSX } from "solid-js";
-import { css, cx } from "../../../styled-system/css";
+import { css, cx } from "@ryangreenup/panda-daisy-components-styled-system/css";
 
 type KbdSize = "xs" | "sm" | "md" | "lg" | "xl";
 

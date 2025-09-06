@@ -1,5 +1,5 @@
 import { JSX, splitProps } from "solid-js";
-import { css, cx } from "../../../styled-system/css";
+import { css, cx } from "@ryangreenup/panda-daisy-components-styled-system/css";
 import { Label } from "./utilities/PeerInputs";
 
 type LabelProps = JSX.IntrinsicElements["label"];

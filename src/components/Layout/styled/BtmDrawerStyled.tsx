@@ -1,7 +1,7 @@
 import { JSX, splitProps } from "solid-js";
 import { classesFromRecipe } from "../styles";
 import { BtmDrawer } from "../Drawers";
-import { css, cx } from "../../../../styled-system/css";
+import { css, cx } from "@ryangreenup/panda-daisy-components-styled-system/css";
 
 const btmDrawerDaisyStyles = css({
   backgroundColor: "base.200",

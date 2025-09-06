@@ -1,7 +1,7 @@
-import { css } from '../styled-system/css';
 import VirtualList from "../src/components/VirtualList";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { createSignal } from "solid-js";
+import { css } from "@ryangreenup/panda-daisy-components-styled-system/css";
 
 const meta = {
   title: "Example/VirtualList",
@@ -177,7 +177,7 @@ export const NotificationFeed: Story = {
 export const ReactiveSlider: Story = {
   render: () => {
     const [count, setCount] = createSignal(20);
-    
+
     return (
       <div>
         <div class={css({ mb: 4, p: 4, bg: 'base.200', borderRadius: 'box' })}>
@@ -204,9 +204,9 @@ export const ReactiveSlider: Story = {
           count={count}
           height="300px"
           renderItemCallback={(index: number) => (
-            <div class={css({ 
-              p: 3, 
-              borderBottom: '1px solid', 
+            <div class={css({
+              p: 3,
+              borderBottom: '1px solid',
               borderColor: 'base.300',
               bg: { base: 'base.100', _hover: 'base.200' }
             })}>

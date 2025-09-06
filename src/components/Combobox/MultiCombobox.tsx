@@ -8,7 +8,7 @@ import { Transition } from "solid-transition-group";
 
 import ChevronsUpDown from "lucide-solid/icons/chevrons-up-down";
 import { comboboxStyles } from "./style";
-import { css, cx } from "../../../styled-system/css";
+import { css, cx } from "@ryangreenup/panda-daisy-components-styled-system/css";
 import { Badge } from "../Badge";
 
 const styles = comboboxStyles();

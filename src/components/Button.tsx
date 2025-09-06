@@ -1,5 +1,5 @@
-import { cva, type RecipeVariantProps } from "../../styled-system/css";
-import { styled } from "../../styled-system/jsx";
+import { cva, type RecipeVariantProps } from "@ryangreenup/panda-daisy-components-styled-system/css";
+import { styled } from "@ryangreenup/panda-daisy-components-styled-system/jsx";
 
 const buttonStyle = cva({
   base: {

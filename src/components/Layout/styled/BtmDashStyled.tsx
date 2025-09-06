@@ -1,7 +1,7 @@
 import { JSX, splitProps } from "solid-js";
 import { classesFromRecipe } from "../styles";
 import { BtmDash } from "../Layout";
-import { css, cx } from "../../../../styled-system/css";
+import { css, cx } from "@ryangreenup/panda-daisy-components-styled-system/css";
 
 const btmDashDaisyStyles = css({
   backgroundColor: "base.200",

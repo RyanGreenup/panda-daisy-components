@@ -1,7 +1,7 @@
 import { JSX, splitProps } from "solid-js";
 import { classesFromRecipe } from "../styles";
 import { RightSidebar } from "../Drawers";
-import { css, cx } from "../../../../styled-system/css";
+import { css, cx } from "@ryangreenup/panda-daisy-components-styled-system/css";
 
 const rightDrawerStyles = css({
   backgroundColor: "base.200",

@@ -4,7 +4,7 @@ import {
   PeerName,
 } from "../../../presets/layout/layout";
 import { children, JSX, splitProps } from "solid-js";
-import { cx, css } from "../../../../styled-system/css";
+import { cx, css } from "@ryangreenup/panda-daisy-components-styled-system/css";
 
 export const InputHidden = (props: { name: PeerName }) => {
   return (

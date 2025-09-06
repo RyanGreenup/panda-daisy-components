@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { Progress } from "@ryangreenup/panda-daisy-components";
-import { css } from "../styled-system/css";
 import { createSignal, createEffect } from "solid-js";
+import { css } from "@ryangreenup/panda-daisy-components-styled-system/css";
 
 const meta = {
   title: "Components/Progress",

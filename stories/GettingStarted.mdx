@@ -1,5 +1,5 @@
 import { Meta } from "@storybook/addon-docs/blocks";
-import { css } from '../styled-system/css';
+import { css } from '@ryangreenup/panda-daisy-components-styled-system/css';
 
 <Meta title="Getting Started" />
 
@@ -167,16 +167,16 @@ import { css } from '../styled-system/css';
        all: revert; /* Reverts all applied styles to browser defaults */
      }
      ```
-     
+
      Then wrap all `mdx` files in:
-     
+
      ```html
      <div class="sbdocs-no-override">
 
      CONTENT HERE
 
      </div>
-     
+
      Use Panda CSS here, e.g.
 
      <div class={css({
@@ -194,7 +194,7 @@ import { css } from '../styled-system/css';
 
      </div>
      ```
-     
+
      This is not mentioned in the [Panda Docs](https://panda-css.com/docs/installation/storybook) although there are tangential Github issues on storybook, see e.g. [#10270](https://github.com/storybookjs/storybook/issues/10270)
 
 3. Track Styled-System by removing it from `.gitignore`, `git add`, `git commit`

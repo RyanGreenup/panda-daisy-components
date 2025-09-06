@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { Badge } from "../src/components/Badge";
-import { css } from "../styled-system/css";
 import Mail from "lucide-solid/icons/mail";
 import { Button } from "../src/components/Button";
-import { Center } from "../styled-system/jsx";
+import { css } from "@ryangreenup/panda-daisy-components-styled-system/css";
 
 const meta = {
   title: "Components/Badge",

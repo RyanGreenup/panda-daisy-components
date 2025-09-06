@@ -36,14 +36,14 @@ import {
   SidebarPlaceHolder,
 } from "./PlaceholderComponents";
 
-import { circle, flex } from "../../styled-system/patterns";
+import { circle, flex } from "@ryangreenup/panda-daisy-components-styled-system/patterns";
 import {
   BtmDrawerStyled,
   NavbarStyled,
   RightDrawerStyled,
   SidebarStyled,
 } from "@ryangreenup/panda-daisy-components";
-import { css } from "../../styled-system/css";
+import { css } from "@ryangreenup/panda-daisy-components-styled-system/css";
 
 const LayoutComponent = () => (
   <div>Layout Component - Use individual stories to see compositions</div>

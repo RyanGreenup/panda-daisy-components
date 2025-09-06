@@ -1,5 +1,5 @@
 import { children, JSX, splitProps } from "solid-js";
-import { css, cx } from "../../../styled-system/css";
+import { css, cx } from "@ryangreenup/panda-daisy-components-styled-system/css";
 
 type DivProps = JSX.IntrinsicElements["div"];
 type AnchorProps = JSX.IntrinsicElements["a"];

@@ -8,7 +8,7 @@ import "./style.css";
 // @ts-ignore
 import ChevronsUpDown from "lucide-solid/icons/chevrons-up-down";
 import { comboboxStyles } from "./style";
-import { cx } from "../../../styled-system/css";
+import { cx } from "@ryangreenup/panda-daisy-components-styled-system/css";
 
 const styles = comboboxStyles();
 

@@ -1,3 +1,4 @@
+import { css } from "@ryangreenup/panda-daisy-components-styled-system/css";
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import {
   createMemo,
@@ -7,7 +8,6 @@ import {
   onCleanup,
   onMount,
 } from "solid-js";
-import { css } from "../../styled-system/css";
 
 // Image validation utility - matches reference project approach
 const filterValidImages = async (photos: Photo[]): Promise<Photo[]> => {

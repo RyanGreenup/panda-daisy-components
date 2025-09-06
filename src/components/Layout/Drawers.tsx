@@ -1,6 +1,6 @@
 import { children, JSX, splitProps } from "solid-js";
 import { LabelPropsWithoutChildren } from "./types";
-import { cx } from "../../../styled-system/css";
+import { cx } from "@ryangreenup/panda-daisy-components-styled-system/css";
 import { classesFromRecipe } from "./styles";
 import { createPeerId } from "../../presets/layout/layout";
 

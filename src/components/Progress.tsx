@@ -1,6 +1,6 @@
-import { cva, type RecipeVariantProps } from "../../styled-system/css";
-import { styled } from "../../styled-system/jsx";
 import { Accessor, JSXElement, Show } from "solid-js";
+import { styled } from "@ryangreenup/panda-daisy-components-styled-system/jsx"
+import { cva, RecipeVariantProps } from "@ryangreenup/panda-daisy-components-styled-system/css";
 
 const progressStyle = cva({
   base: {

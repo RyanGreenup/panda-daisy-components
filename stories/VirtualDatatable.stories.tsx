@@ -6,7 +6,7 @@ import {
   Badge,
   Progress,
 } from "@ryangreenup/panda-daisy-components";
-import { css } from "../styled-system/css";
+import { css } from "@ryangreenup/panda-daisy-components-styled-system/css";
 
 interface Employee {
   id: number;

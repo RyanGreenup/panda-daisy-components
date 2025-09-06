@@ -1,6 +1,6 @@
 import { mergeProps } from "solid-js";
 
-import { css } from "../styled-system/css";
+import { css } from "@ryangreenup/panda-daisy-components-styled-system/css";
 import { Button } from "../src/components/Button";
 
 export interface HeaderProps {

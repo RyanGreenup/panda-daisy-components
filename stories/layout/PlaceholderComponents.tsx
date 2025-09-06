@@ -1,6 +1,6 @@
-import { css } from "../../styled-system/css";
-import { Center } from "../../styled-system/jsx";
-import { grid } from "../../styled-system/patterns";
+import { css } from "@ryangreenup/panda-daisy-components-styled-system/css";
+import { Center } from "@ryangreenup/panda-daisy-components-styled-system/jsx";
+import { grid } from "@ryangreenup/panda-daisy-components-styled-system/patterns";
 
 export const colors = {
   1: css({ bg: "red.600/50" }),

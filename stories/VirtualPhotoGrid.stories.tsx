@@ -1,7 +1,7 @@
-import { css } from '../styled-system/css';
 import VirtualPhotoGrid, { filterValidImages } from "../src/components/VirtualPhotoGrid";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { createSignal, createResource, Suspense } from "solid-js";
+import { css } from "@ryangreenup/panda-daisy-components-styled-system/css";
 
 const meta = {
   title: "Example/VirtualPhotoGrid",
