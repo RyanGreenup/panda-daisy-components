@@ -44,7 +44,7 @@ export default defineConfig({
   ],
 
   // Files to exclude
-  exclude: [],
+  exclude: ["./stories/VirtualDatatable.stories.tsx"],
   // TODO resolve typing error
   presets: [pandaPreset, DaisyPreset, layoutPreset],
 

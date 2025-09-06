@@ -6,7 +6,12 @@ import {
   Badge,
   Progress,
 } from "@ryangreenup/panda-daisy-components";
-import { css } from "../styled-system/css";
+
+/**
+ * NOTE Panda CSS struggles to scan this file, it's been excluded from
+ * ../panda.config.ts and inline style props used instead.
+ *
+ */
 
 interface Employee {
   id: number;
@@ -58,14 +63,6 @@ const statusVariants = {
   Suspended: "error",
 } as const;
 
-const emailLinkStyle = css.raw({
-  color: "primary",
-  textDecoration: "none",
-  _hover: {
-    textDecoration: "underline",
-  },
-});
-
 const getColumns = (): ColumnDef<Employee>[] => [
   {
     accessorKey: "id",
@@ -87,7 +84,13 @@ const getColumns = (): ColumnDef<Employee>[] => [
     accessorKey: "email",
     header: "Email",
     cell: (info) => (
-      <a href={`mailto:${info.getValue()}`} class={css(emailLinkStyle)}>
+      <a
+        href={`mailto:${info.getValue()}`}
+        style={{
+          color: "var(--colors-primary)",
+          "text-decoration": "none",
+        }}
+      >
         {info.getValue() as string}
       </a>
     ),
@@ -141,7 +144,7 @@ const getColumns = (): ColumnDef<Employee>[] => [
           value={value}
           variant={getPerformanceVariant(performance)}
           showLabel={showLabel}
-          class={css({ w: "4rem" })}
+          style={{ width: "4rem" }}
         />
       );
     },
@@ -208,23 +211,23 @@ export const Default: Story = {
     const [data] = createSignal(generateEmployeeData(1000));
 
     return (
-      <div class={css({ p: "1.5rem" })}>
-        <div class={css({ mb: "1.5rem" })}>
+      <div style={{ padding: "1.5rem" }}>
+        <div style={{ "margin-bottom": "1.5rem" }}>
           <h1
-            class={css({
-              fontSize: "1.5rem",
-              fontWeight: "bold",
-              color: "base.content",
-              mb: "0.25rem",
-            })}
+            style={{
+              "font-size": "1.5rem",
+              "font-weight": "bold",
+              color: "var(--colors-base-content)",
+              "margin-bottom": "0.25rem",
+            }}
           >
             Employee Directory
           </h1>
           <p
-            class={css({
-              color: "base.content",
+            style={{
+              color: "var(--colors-base-content)",
               opacity: "0.7",
-            })}
+            }}
           >
             Virtualized table showing 1,000 employee records with full filtering
             and sorting
@@ -232,11 +235,11 @@ export const Default: Story = {
         </div>
 
         <div
-          class={css({
-            // TODO find a better way to handle this.
-            w: "min-content",
-            p: 4,
-          })}
+          style={{
+            // TODO is there a better way to handle this, e.g. in the component?
+            width: "min-content",
+            padding: "1rem",
+          }}
         >
           <VirtualizedDataTable
             {...args}
@@ -263,7 +266,7 @@ export const BasicTable: Story = {
     const [data] = createSignal(generateEmployeeData(100));
 
     return (
-      <div class={css({ p: "1.5rem" })}>
+      <div style={{ padding: "1.5rem" }}>
         <VirtualizedDataTable
           data={data()}
           columns={getColumns().slice(0, 4)} // Show fewer columns
@@ -282,7 +285,7 @@ export const WithGlobalSearchOnly: Story = {
     const [data] = createSignal(generateEmployeeData(500));
 
     return (
-      <div class={css({ p: "1.5rem" })}>
+      <div style={{ padding: "1.5rem" }}>
         <VirtualizedDataTable
           data={data()}
           columns={getColumns()}
@@ -302,7 +305,7 @@ export const CompactView: Story = {
     const [data] = createSignal(generateEmployeeData(2000));
 
     return (
-      <div class={css({ p: "1.5rem" })}>
+      <div style={{ padding: "1.5rem" }}>
         <VirtualizedDataTable
           data={data()}
           columns={getColumns()}
