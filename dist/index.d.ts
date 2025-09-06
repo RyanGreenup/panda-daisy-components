@@ -18581,7 +18581,7 @@ declare const Badge: StyledComponent<"span", {
 //#endregion
 //#region src/components/Button.d.ts
 declare const Button: StyledComponent<"button", {
-  variant?: "link" | "primary" | "secondary" | "accent" | "neutral" | "info" | "success" | "warning" | "error" | "outline" | "ghost";
+  variant?: "primary" | "secondary" | "accent" | "neutral" | "info" | "success" | "warning" | "error" | "outline" | "link" | "ghost";
   size?: "sm" | "md" | "lg" | "xl" | "xs";
   fullWidth?: boolean;
 }>;
