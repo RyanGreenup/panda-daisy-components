@@ -26,6 +26,10 @@
       "import": "./src/index.ts",
       "types": "./src/index.ts"
     },
+    "./src": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    },
     "./presets/*": {
       "import": "./src/presets/*.ts",
       "types": "./src/presets/*.ts"
