@@ -1,4 +1,4 @@
-import * as solid_js0 from "solid-js";
+import * as solid_js5 from "solid-js";
 import { Accessor, Component, ComponentProps, JSX, JSXElement } from "solid-js";
 import { ComboboxTriggerMode } from "@kobalte/core/combobox";
 import { ColumnDef } from "@tanstack/solid-table";
@@ -85,23 +85,23 @@ declare const HamburgerIcon: (props: HamburgerIconProps) => JSX.Element;
 //#region src/components/Layout/index.d.ts
 declare const LayoutComponents: LayoutComponentsType;
 declare const NavbarComponents: {
-  NavbarContent: (props: solid_js0.JSX.HTMLAttributes<HTMLDivElement>) => solid_js0.JSX.Element;
-  NavbarStart: (props: solid_js0.JSX.HTMLAttributes<HTMLDivElement>) => solid_js0.JSX.Element;
-  NavbarCenter: (props: solid_js0.JSX.HTMLAttributes<HTMLDivElement>) => solid_js0.JSX.Element;
-  NavbarEnd: (props: solid_js0.JSX.HTMLAttributes<HTMLDivElement>) => solid_js0.JSX.Element;
-  NavbarLink: (props: solid_js0.JSX.AnchorHTMLAttributes<HTMLAnchorElement>) => solid_js0.JSX.Element;
+  NavbarContent: (props: solid_js5.JSX.HTMLAttributes<HTMLDivElement>) => solid_js5.JSX.Element;
+  NavbarStart: (props: solid_js5.JSX.HTMLAttributes<HTMLDivElement>) => solid_js5.JSX.Element;
+  NavbarCenter: (props: solid_js5.JSX.HTMLAttributes<HTMLDivElement>) => solid_js5.JSX.Element;
+  NavbarEnd: (props: solid_js5.JSX.HTMLAttributes<HTMLDivElement>) => solid_js5.JSX.Element;
+  NavbarLink: (props: solid_js5.JSX.AnchorHTMLAttributes<HTMLAnchorElement>) => solid_js5.JSX.Element;
 };
 declare const BtmDashComponents: {
-  BtmDashContainer: (props: solid_js0.JSX.HTMLAttributes<HTMLDivElement>) => solid_js0.JSX.Element;
-  BtmDashItem: (props: BtmDashItemProps) => solid_js0.JSX.Element;
+  BtmDashContainer: (props: solid_js5.JSX.HTMLAttributes<HTMLDivElement>) => solid_js5.JSX.Element;
+  BtmDashItem: (props: BtmDashItemProps) => solid_js5.JSX.Element;
 };
 declare const ToggleComponents: {
-  ToggleButton: (props: ToggleButtonProps) => solid_js0.JSX.Element;
-  DrawerToggle: (props: Omit<ToggleButtonProps, "name">) => solid_js0.JSX.Element;
-  NavbarToggle: (props: Omit<ToggleButtonProps, "name">) => solid_js0.JSX.Element;
-  RightDrawerToggle: (props: Omit<ToggleButtonProps, "name">) => solid_js0.JSX.Element;
-  BtmDrawerToggle: (props: Omit<ToggleButtonProps, "name">) => solid_js0.JSX.Element;
-  BtmDashToggle: (props: Omit<ToggleButtonProps, "name">) => solid_js0.JSX.Element;
+  ToggleButton: (props: ToggleButtonProps) => solid_js5.JSX.Element;
+  DrawerToggle: (props: Omit<ToggleButtonProps, "name">) => solid_js5.JSX.Element;
+  NavbarToggle: (props: Omit<ToggleButtonProps, "name">) => solid_js5.JSX.Element;
+  RightDrawerToggle: (props: Omit<ToggleButtonProps, "name">) => solid_js5.JSX.Element;
+  BtmDrawerToggle: (props: Omit<ToggleButtonProps, "name">) => solid_js5.JSX.Element;
+  BtmDashToggle: (props: Omit<ToggleButtonProps, "name">) => solid_js5.JSX.Element;
 };
 //#endregion
 //#region src/components/Layout/styled/ToggleButtonsStyled.d.ts
@@ -133,12 +133,12 @@ declare const SidebarStyled: (props: JSX.IntrinsicElements["aside"]) => JSX.Elem
 //#region src/components/Layout/styled/index.d.ts
 declare const StyledLayout: LayoutComponentsType;
 declare const StyledToggleComponents: {
-  ToggleButton: (props: StyledToggleButtonProps) => solid_js0.JSX.Element;
-  DrawerToggle: (props: Omit<StyledToggleButtonProps, "name">) => solid_js0.JSX.Element;
-  NavbarToggle: (props: Omit<StyledToggleButtonProps, "name">) => solid_js0.JSX.Element;
-  RightDrawerToggle: (props: Omit<StyledToggleButtonProps, "name">) => solid_js0.JSX.Element;
-  BtmDrawerToggle: (props: Omit<StyledToggleButtonProps, "name">) => solid_js0.JSX.Element;
-  BtmDashToggle: (props: Omit<StyledToggleButtonProps, "name">) => solid_js0.JSX.Element;
+  ToggleButton: (props: StyledToggleButtonProps) => solid_js5.JSX.Element;
+  DrawerToggle: (props: Omit<StyledToggleButtonProps, "name">) => solid_js5.JSX.Element;
+  NavbarToggle: (props: Omit<StyledToggleButtonProps, "name">) => solid_js5.JSX.Element;
+  RightDrawerToggle: (props: Omit<StyledToggleButtonProps, "name">) => solid_js5.JSX.Element;
+  BtmDrawerToggle: (props: Omit<StyledToggleButtonProps, "name">) => solid_js5.JSX.Element;
+  BtmDashToggle: (props: Omit<StyledToggleButtonProps, "name">) => solid_js5.JSX.Element;
 };
 //#endregion
 //#region src/components/Combobox/SingleCombobox.d.ts
